@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../core/jsml.xsd">
+
+	<panel jsml-class="rte_plugin_statistics" dock="fill" width="1" overflow="visible" padding="0,5,0,5">
+		<label jsml-local="label" dock="fill" vertical_align="middle" horizontal_align="center" text="Statistics" width="1" overflow="visible"></label>
+		<initialize>
+			<![CDATA[
+			self.editoreventid=editor.AttachEvent("TextChanged",function(editor,e)
+			{
+				self.UpdateUI();
+			});
+			self.UpdateUI();
+			]]>
+		</initialize>
+		<method name="UpdateUI">
+			<![CDATA[
+			var code=editor.GetHtmlCode();
+			var div=document.createElement("DIV");
+			div.innerHTML=code;
+			var text=div.innerText||div.textContent||"";
+			var word=0;
+			text.replace(/\S+/g,function(a,b)
+			{
+				word++;
+				return a;
+			});
+			var tcode=editor.GetLangText("code");
+			var ttext=editor.GetLangText("text");
+			var tword=editor.GetLangText("words");
+///		label.set_text(tcode+":"+code.length+","+ttext+":"+text.length+","+tword+":"+word);
+			label.set_text(tword+":"+word+" "+tcode+":"+code.length);
+			]]>
+		</method>
+		<attach name="dispose">
+			editor.DetachEvent("TextChanged",self.editoreventid);
+		</attach>
+	</panel>
+
+	<execute>
+		<![CDATA[
+		plugin.Execute=function(element,arg1,arg2)
+		{
+			
+		}
+		plugin.LoadUI=function(ctrl,arg0)
+		{
+			ctrl.append_child(jsml.class_create_instance("rte_plugin_statistics"));
+		}
+		]]>
+	</execute>
+
+
+</jsml>

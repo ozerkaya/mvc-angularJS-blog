@@ -1,0 +1,519 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="jsml.xsl"?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../core/jsml.xsd">
+	
+	<panel jsml-class="contextmenuitem" height="30" border_color="transparent" border_width="1" css_text="border-radius:3px;" margin="2,3,2,3">
+		<panel dock="left" width ="26" height="28" vertical_align="middle" horizontal_align="center" margin="-1,0,-1,0">
+			<panel width="24" margin="3,0,0,0">
+				<image jsml-local="menu_image" visible="0" border_width="0"></image>
+			</panel>
+		</panel>
+		<panel dock="right" width="18" height="28" vertical_align="middle" horizontal_align="center">
+			<panel width="18" height="18">
+				<image jsml-local="menu_subimage" visible="0" border_width="0"></image>
+			</panel>
+		</panel>
+		<panel dock="fill" vertical_align="middle" margin="0,0,0,5" height="28">
+			<label jsml-local="label_name" vertical_align="middle" padding="1"></label>
+		</panel>
+		<initialize>
+			<![CDATA[
+			self.get_element().oncontextmenu = function(e)
+			{
+				var evt = window.event || e;
+				if(jsml.msie) evt.cancelBubble = true;
+				if (evt.stopPropagation) evt.stopPropagation();
+				if (evt.preventDefault) evt.preventDefault();
+				evt.returnValue = false;
+				return false;
+			}
+			]]>
+		</initialize>
+		<property name="menutext">
+			<get>
+				return label_name.get_text();
+			</get>
+			<set arguments="val">
+				label_name.set_text(val);
+			</set>
+		</property>
+		<property name="enabled">
+			<get>
+				return self._enabled;
+			</get>
+			<set arguments="val">
+				<![CDATA[
+				self._enabled = val;
+				if(val=="0")
+				{
+					label_name.set_text_color("gray");
+					menu_subimage.set_visible(0);
+				}
+				else
+				{
+					label_name.set_text_color("");
+					if(self.get_subimage())
+						menu_subimage.set_visible(1);
+				}
+				]]>
+			</set>
+		</property>
+		<property name="menuimage">
+			<get>
+				return self._img;
+			</get>
+			<set arguments="val">
+				self._img = val;
+				menu_image.set_src(val);
+				menu_image.set_visible(1);
+			</set>
+		</property>
+		<property name="subimage">
+			<get>
+				return self._subimg;
+			</get>
+			<set arguments="val">
+				self._subimg = val;
+				menu_subimage.set_src(val);
+				if(self.get_enabled()!="0")
+					menu_subimage.set_visible(1);
+			</set>
+		</property>
+		<attach name="mousehover">
+			<![CDATA[
+			 var scm = self.get_parent()._doc._subcontextmenu;
+			 if(scm && scm.get_target()!=self && scm != self.get_parent())
+			 {
+				scm.Remove();
+				self.get_parent()._doc._subcontextmenu = null;
+			 }
+			 if(self.get_enabled()=="0")
+				return;
+			 self.set_border_width(1);
+			 self.set_border_color("#FFBD69");
+			 self.set_back_color("#FFE7A2");
+			]]>
+		</attach>
+		<attach name="mouseleave">
+			<![CDATA[			
+			 if(self.get_enabled()=="0")
+				return;
+			 self.set_border_color("transparent");
+			 self.set_back_color("transparent");
+			]]>
+		</attach>
+		<attach name="click" arguments="sender,evt">
+			<![CDATA[
+			if(self.get_enabled()!="0" && !menu_subimage.get_visible())
+			{		
+				self.get_parent()._doc.$043();
+			}
+			var e = window.event || evt.event;
+			if(jsml.msie) e.cancelBubble = true;
+			if (e.stopPropagation) e.stopPropagation();
+			if (e.preventDefault) e.preventDefault();
+			e.returnValue = false;
+			return false;
+			]]>
+		</attach>
+	</panel>
+	<panel jsml-class="canvascontextmenupanel" width="210" height="238" border_color="rgb(169, 169, 169)" border_width="1" css_text="box-shadow: rgb(153, 153, 153) 3px 3px 12px;" background="transparent url(images/menuleft.gif) repeat-y">
+		<panel jsml-base="contextmenuitem" dock="top" menutext="@Context_Unselect">
+			<initialize>
+				<![CDATA[
+				var sel = instance._doc.get_selection();
+				if(!sel)
+					self.set_enabled("0");				
+				]]>
+			</initialize>
+			<attach name="click">
+				<![CDATA[
+				if(self.get_enabled()=="0")
+					return;
+				var layer = instance.FindPixelLayer();
+				instance._doc.set_selection(null);
+				instance._doc.$0116();
+				]]>
+			</attach>
+		</panel>
+		<panel jsml-base="contextmenuitem" dock="top" menutext="@Context_Invert">
+			<initialize>
+				<![CDATA[
+				var sel = instance._doc.get_selection();
+				if(!sel)
+					self.set_enabled("0");				
+				]]>
+			</initialize>
+			<attach name="click">
+				<![CDATA[
+				if(self.get_enabled()=="0")
+					return;
+				var _canvas = document.createElement("canvas");
+				_canvas.width = instance._doc._canvas.width;
+				_canvas.height = instance._doc._canvas.height;
+				var _2d = _canvas.getContext("2d");
+				_2d.fillStyle = instance._doc.GetOption("SelectionPattern");
+
+				var _oldselection = instance._doc.get_selection();
+				instance._doc.set_selection(null);
+				
+				var w = _canvas.width;
+				var h = _canvas.height;
+				var c1 = ToolSelection_Inverse(_oldselection);
+
+				_2d.drawImage(c1, 0, 0, w, h);
+
+				instance._doc.$0116();
+				instance._doc.set_selection(_canvas);
+				instance._doc.$055(_canvas);
+				
+				
+				instance._doc._invertcount = instance._doc._invertcount+1;
+				
+				function ToolSelection_Inverse(canvas)
+				{
+					var newc = document.createElement("canvas");
+					newc.width = canvas.width;
+					newc.height = canvas.height;
+					var new2d = newc.getContext("2d");
+					new2d.fillStyle = ImageEditorDocument.GetOption("SelectionPattern");
+					new2d.fillRect(0, 0, canvas.width, canvas.height);
+					new2d.globalCompositeOperation = "destination-out"
+					new2d.drawImage(canvas, 0, 0, canvas.width, canvas.height);
+					return newc;
+				}
+				]]>
+			</attach>
+		</panel>
+		<panel jsml-base="contextmenuitem" dock="top" menutext="@Context_SelectLayer" enabled="0" menuimage="images/select.png" subimage="images/submenu.gif">
+			<initialize>
+				<![CDATA[
+				var sel = instance._doc.get_selection();
+				if(!sel)
+				{
+					self.setDelegateTimeout(function(){
+						var layer = instance.FindPixelLayer();
+						if(layer!=null)
+						{
+							self.set_enabled("1");
+							var layername = layer.get_name().length>12?layer.get_name().substr(0,9)+"...":layer.get_name();
+							self.set_menutext(self.get_menutext() + " ("+ layername + ")");
+						}
+					},100);
+				}
+				]]>
+			</initialize>
+			<attach name="mousehover">
+				<![CDATA[
+				if(self.get_enabled()=="0")
+					return;
+				var scm = instance._doc._subcontextmenu;
+				if(scm && scm.get_target()==self)
+					return;
+				var cmp = jsml.class_create_instance("subcontextmenuselectlayer", [instance._doc]);
+				cmp.set_parent(document.body);
+				cmp.SetPos(instance,self,{x:0,y:60,width:210,height:30});
+				instance._doc._subcontextmenu = cmp;
+				]]>
+			</attach>
+		</panel>
+		<panel jsml-base="contextmenuitem" dock="top" menutext="@Context_MoveUp">
+			<initialize>
+				<![CDATA[
+				var layerlist = instance._doc.$068();							  
+				var currlayer = instance._doc.get_layer();
+				if(layerlist.length==0 || layerlist[layerlist.length-1]._layerid==currlayer._layerid)
+					self.set_enabled("0");
+				else
+				{
+					var layername = currlayer.get_name().length>12?currlayer.get_name().substr(0,9)+"...":currlayer.get_name();
+					self.set_menutext(self.get_menutext() + " ("+ layername + ")");
+				}
+				]]>
+			</initialize>
+			<attach name="click">
+				<![CDATA[
+				if(self.get_enabled()=="0")
+					return;
+				var currlayer = instance._doc.get_layer();
+				instance._doc.$085(currlayer);				
+				]]>
+			</attach>
+		</panel>
+		<panel jsml-base="contextmenuitem" dock="top" menutext="@Context_Delete">
+			<initialize>
+				<![CDATA[
+				var sel = instance._doc.get_selection();
+				if(!sel)
+					self.set_enabled("0");				
+				]]>
+			</initialize>
+			<attach name="click">
+				<![CDATA[
+				if(self.get_enabled()=="0")
+					return;				
+				instance._doc.$021();				
+				]]>
+			</attach>
+		</panel>
+		<panel jsml-base="contextmenuitem" dock="top" menutext="@Context_Copy">
+			<initialize>
+				<![CDATA[
+				var sel = instance._doc.get_selection();
+				if(!sel)
+					self.set_enabled("0");				
+				]]>
+			</initialize>
+			<attach name="click">
+				<![CDATA[
+				if(self.get_enabled()=="0")
+					return;
+				var sel = instance._doc.get_selection();
+				//Create a new history using selected area				
+				var newlayer = jsml.class_create_instance("$042", [instance._doc]);
+				newlayer.set_name(ImageEditorDocument.Text["Layer_Copy"]);
+				
+				//Draw new layer
+				var ctx = newlayer._2d;
+				var layer = instance._doc.get_layer();
+				var sw = layer._canvas.width;
+				var sh = layer._canvas.height;
+				var dw = newlayer._canvas.width;
+				var dh = newlayer._canvas.height;
+				ctx.drawImage(layer._canvas, 0 - layer._canvas_x, 0 - layer._canvas_y, dw, dh, 0, 0, dw, dh);
+				ctx.save();
+				ctx.globalCompositeOperation = "destination-out";
+				ctx.drawImage(sel, 0, 0, sel.width, sel.height);
+				ctx.restore();				
+				instance._doc._clipboard = newlayer;
+				instance._doc.set_selection(null); 
+				instance._doc.$0116();
+				]]>
+			</attach>
+		</panel>
+		<panel jsml-base="contextmenuitem" dock="top" menutext="@Context_Paste">
+			<initialize>
+				<![CDATA[
+				if(!instance._doc._clipboard)
+					self.set_enabled("0"); 
+				]]>
+			</initialize>
+			<attach name="click">
+				<![CDATA[	 
+				if(self.get_enabled()=="0")
+					return;  
+				var newlayer = jsml.class_create_instance("$042", [instance._doc]);
+				newlayer.set_name(ImageEditorDocument.Text["Layer_Paste"]);
+				var ctx = newlayer._2d;
+				var sw = instance._doc._clipboard._canvas.width;
+				var sh = instance._doc._clipboard._canvas.height;
+				var dw = newlayer._canvas.width;
+				var dh = newlayer._canvas.height;
+				ctx.drawImage(instance._doc._clipboard._canvas, 0 - instance._doc._clipboard._canvas_x, 0 - instance._doc._clipboard._canvas_y, dw, dh, 0, 0, dw, dh);
+				
+				instance._doc.$092(newlayer);
+				//select this layer
+				//instance._doc.$013(newlayer);
+				]]>
+			</attach>
+		</panel>
+		<constructor arguments="doc,pos">
+			self.panel_constructor();
+			self._doc = doc;
+			self._pos = pos;
+		</constructor>
+		<initialize>
+			<![CDATA[
+			self.get_element().oncontextmenu = function(e)
+			{
+				var evt = window.event || e;
+				if (evt.stopPropagation) evt.stopPropagation();
+				if (evt.preventDefault) evt.preventDefault();
+				evt.returnValue = false;
+				return false;
+			}
+			]]>
+		</initialize>
+		<method name="Remove">
+			try {document.body.removeChild(self.get_element());}catch(x){}
+		</method>
+		<method name="SetPos">
+			<![CDATA[
+				//self._pos = pos;
+				var pos = self._pos;
+				var rect=jsml.get_body_rect();
+				var sw = self.get_current_width();
+				var sh = self.get_current_height();
+				var left = pos.x;
+				if(left+sw>rect.width)
+				  left = rect.width-sw;
+				var top = pos.y;
+				if(top+sh>rect.height)
+				  top = rect.height-sh;
+				var style = self.get_element().style;
+				style.position = "absolute";  
+				self.set_offset_x(left);
+				self.set_offset_y(top); 
+				self._pos.rx = left;
+				self._pos.ry = top;
+				self._pos.width = sw;
+				self._pos.height = sh;
+			]]>
+		</method>
+		<method name="FindPixelLayer">
+			<![CDATA[
+			var history = self._doc.get_history();
+			var ls = history._layers;
+			var layer = null;
+			for (var i = ls.length - 1; i >= 0; i--) {
+				var _layer = ls[i];
+				var tp = self._doc.$0101({x:self._pos.offsetX,y:self._pos.offsetY});
+				var x = tp.x - _layer._canvas_x;
+				var y = tp.y - _layer._canvas_y;
+				var imgdata = _layer._2d.getImageData(x, y, 1, 1);
+				if (imgdata && imgdata.data && imgdata.data[3] > 0) {
+					layer = _layer;
+					break;
+				}
+			}
+			return layer;
+			]]>
+		</method>
+	</panel>
+
+	<panel jsml-class="subcontextmenubase">
+		<constructor arguments="doc">
+			self.panel_constructor();
+			self._doc = doc;
+		</constructor>
+		<initialize>
+			<![CDATA[
+			self.get_element().oncontextmenu = function(e)
+			{
+				var evt = window.event || e;
+				if (evt.stopPropagation) evt.stopPropagation();
+				if (evt.preventDefault) evt.preventDefault();
+				evt.returnValue = false;
+				return false;
+			}
+			]]>
+		</initialize>
+		<method name="Remove">
+			try {document.body.removeChild(self.get_element());}catch(x){}
+		</method>
+		<method name="SetPos" arguments="parentmenu,target,targetoffset">
+			<![CDATA[
+			var parentpos = parentmenu._pos;
+			self.set_owner(parentmenu);
+			self.set_target(target);
+			var rect=jsml.get_body_rect();
+			var sw = self.get_current_width();
+			var sh = self.get_current_height();
+			var left = parentpos.rx + targetoffset.width;
+			if(left+sw>rect.width)
+				left = parentpos.rx-sw;
+			var top = parentpos.ry + targetoffset.y;
+			if(top+sh>rect.height)
+				top = top-sh;
+			var style = self.get_element().style;
+			style.position = "absolute";  
+			self.set_offset_x(left);
+			self.set_offset_y(top); 
+			self._pos = {x:left,y:top,width:sw,height:sh};
+			]]>
+		</method>
+		<property name="target">
+			<get>
+				return self._target;
+			</get>
+			<set>
+				<![CDATA[
+			self._target = value;			
+			]]>
+			</set>
+		</property>
+		<property name="owner">
+			<get>
+				return self._owner;
+			</get>
+			<set>
+				<![CDATA[
+			self._owner = value;			
+			]]>
+			</set>
+		</property>
+	</panel>
+	<panel jsml-class="subcontextmenuselectlayer" jsml-base="subcontextmenubase" width="210" height="68" border_color="transparent" border_width="1" css_text="box-shadow: rgb(153, 153, 153) 3px 3px 12px;" background="transparent url(images/menuleft.gif) repeat-y">
+		<panel jsml-base="contextmenuitem" dock="top" menutext="@Context_SetSelection" enabled="0">
+			<initialize>
+				<![CDATA[
+				var sel = instance._doc.get_selection();
+				if(!sel)
+				{
+					try
+					{
+						self.setDelegateTimeout(function(){
+							var layer = instance.get_owner().FindPixelLayer();
+							if(layer!=null)
+								self.set_enabled("1");
+						},100);
+					}catch(x){}
+				}
+				]]>
+			</initialize>
+			<attach name="click">
+				<![CDATA[
+				if(self.get_enabled()=="0")
+					return;
+				var layer = instance.get_owner().FindPixelLayer();
+				if(layer==null)
+					return;
+				instance._doc.$013(layer);
+				//instance._doc.set_layer(layer);
+				]]>
+			</attach>
+		</panel>
+		<panel jsml-base="contextmenuitem" dock="top" menutext="@Context_SelectLayer" enabled="0">
+			<initialize>
+				<![CDATA[
+				var sel = instance._doc.get_selection();
+				if(!sel)
+				{
+					try
+					{
+						self.setDelegateTimeout(function(){
+							var layer = instance.get_owner().FindPixelLayer();
+							if(layer!=null)
+								self.set_enabled("1");
+						},100);
+					}catch(x){}
+				}
+				]]>
+			</initialize>
+			<attach name="click">
+				<![CDATA[
+				if(self.get_enabled()=="0")
+					return;
+				var layer = instance.get_owner().FindPixelLayer();
+				if(layer==null)
+					return;
+				//instance._doc.$013(layer);
+				instance._doc.set_layer(layer);
+				]]>
+			</attach>
+		</panel>
+	</panel>
+
+	<execute>
+		<![CDATA[
+		plugin.LoadUI = function(ctrl,pos)
+		{
+			var cmp = jsml.class_create_instance("canvascontextmenupanel",[doc, pos]);
+			cmp.set_parent(ctrl);
+			cmp.SetPos(pos);
+			doc._contextmenu = cmp;
+		}
+		]]>
+	</execute>
+</jsml>

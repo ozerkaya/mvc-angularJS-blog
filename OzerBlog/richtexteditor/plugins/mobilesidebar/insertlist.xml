@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../core/jsml.xsd">
+
+
+	<panel jsml-class="sidebar_insertlist" jsml-base="sidebarmenu" dock="fill">
+		<panel jsml-base="sidebarmenuitem" text="Back">
+			<attach name="click">
+				sidebar.back();
+			</attach>
+		</panel>
+
+		<panel jsml-base="sidebarmenuitem"  command="InsertOrderedList" arguments="decimal" noactive="1" text="1,2,3,4,5"  />
+		<panel jsml-base="sidebarmenuitem" command="InsertOrderedList" arguments="lower-latin" noactive="1" text="a,b,c,d,e"  />
+		<panel jsml-base="sidebarmenuitem" command="InsertOrderedList" arguments="lower-roman" noactive="1" text="ⅰ,ⅱ,ⅲ,ⅳ,ⅴ"  />
+		<panel jsml-base="sidebarmenuitem" command="InsertOrderedList" arguments="upper-latin" noactive="1" text="A,B,C,D,E"  />
+		<panel jsml-base="sidebarmenuitem" command="InsertOrderedList" arguments="upper-roman" noactive="1" text="Ⅰ,Ⅱ,ⅢⅢ,Ⅳ,Ⅴ"  />
+
+		<panel jsml-base="sidebarmenuitem" command="InsertUnorderedList" arguments="disc" noactive="1" imagename="ul-disc" text="@UL_DISC"  />
+		<panel jsml-base="sidebarmenuitem" command="InsertUnorderedList" arguments="circle" noactive="1" imagename="ul-circle" text="@UL_CIRCLE"  />
+		<panel jsml-base="sidebarmenuitem" command="InsertUnorderedList" arguments="square" noactive="1" imagename="ul-square" text="@UL_SQUARE"  />
+
+		<panel jsml-base="sidebarmenuitem" command="FormatBlock" arguments="p" text="Cancel List"></panel>
+		
+
+	</panel>
+
+	<panel jsml-base="sidebar_insertlist" />
+
+
+</jsml>

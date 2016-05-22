@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../core/jsml.xsd">
+
+
+	<panel jsml-class="sidebar_insert" jsml-base="sidebarmenu" dock="fill">
+		<panel jsml-base="sidebarmenuitem" text="Back">
+			<attach name="click">
+				sidebar.back();
+			</attach>
+		</panel>
+
+		<panel jsml-base="sidebarmenuitem" command="InsertHorizontalRule" text="@INSERTHORIZONTALRULE" imagename="rule" />
+		
+		<panel jsml-base="sidebarmenuitem"  command="InsertLink" text="@INSERTLINK" imagename="link" />
+		<panel jsml-base="sidebarmenuitem" command="InsertAnchor" text="@INSERTANCHOR" imagename="anchor" />
+		<panel jsml-base="sidebarmenuitem" command="InsertDate" text="@INSERTDATE" imagename="insertdate" />
+		<panel jsml-base="sidebarmenuitem" command="ExecPlugin" arguments="insertchars" text="@INSERTCHARS" imagename="specialchar" />
+
+		<panel jsml-base="sidebarmenuitem" command="InsertGallery" text="@INSERTGALLERY" imagename="gallery" />
+		<panel jsml-base="sidebarmenuitem" command="InsertImage" text="@INSERTIMAGE" imagename="image" />
+		<panel jsml-base="sidebarmenuitem" command="InsertVideo" text="@INSERTVIDEO" imagename="media" />
+		<panel jsml-base="sidebarmenuitem" command="InsertDocument" text="@INSERTDOCUMENT" imagename="document" />
+		<panel jsml-base="sidebarmenuitem" command="InsertTemplate" text="@INSERTTEMPLATE" imagename="template" />
+		<panel jsml-base="sidebarmenuitem" command="ExecPlugin" arguments="syntaxhighlighter" text="@SYNTAXHIGHLIGHTER" imagename="code" />
+
+		<panel jsml-base="sidebarmenuitem" command="InsertTable"  text="@INSERTTABLE" />
+		
+		<panel jsml-base="sidebarmenuitem" command="InsertBox" text="@INSERTBOX" imagename="box" />
+		<panel jsml-base="sidebarmenuitem" command="InsertFieldSet" text="@INSERTFIELDSET" imagename="groupbox" />
+		
+
+		<panel jsml-base="sidebarmenuitem" arrow="true" text="@INSERTFORM" imagename="InsertForm">
+			<attach name="click">
+				sidebar.loadpanel("insertform.xml");
+			</attach>
+		</panel>
+
+	</panel>
+
+	<panel jsml-base="sidebar_insert" />
+
+
+</jsml>

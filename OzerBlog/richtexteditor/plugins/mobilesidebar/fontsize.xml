@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../core/jsml.xsd">
+
+
+	<panel jsml-class="sidebar_fontsize" jsml-base="sidebarmenu" dock="fill">
+		<panel jsml-base="sidebarmenuitem" text="Back">
+			<attach name="click">
+				sidebar.back();
+			</attach>
+		</panel>
+
+		<panel jsml-base="sidebarmenuitem"  command="FontSize" arguments="!" text="Default"  />
+
+		<initialize>
+			<![CDATA[
+			var sizelist=editor._config.fontsizelist||'8px,9px,10px,11px,12px,13px,14px,16px,18px,20px,24px,36px';
+			sizelist=sizelist.split(',');
+			for(var i=0;i<sizelist.length;i++)
+			{
+				var item=jsml.class_create_instance("sidebarmenuitem");
+				item.set_command("FontSize")
+				item.set_arguments(sizelist[i])
+				item.set_text(sizelist[i]);
+				item.label.set_font_size(sizelist[i]);
+				self.append_child(item);
+			}
+			]]>
+		</initialize>
+		
+
+	</panel>
+
+	<panel jsml-base="sidebar_fontsize" />
+
+
+</jsml>

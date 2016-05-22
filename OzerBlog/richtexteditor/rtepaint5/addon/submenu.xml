@@ -1,0 +1,1851 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="jsml.xsl"?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../JSML/jsml.xsd">
+	<panel jsml-class="subitemfilltype" height="20" width="150">
+		<panel dock="fill" vertical_align="middle">
+			<label dock="left" width="10" overflow="visible" text="@Tool_Draw_Mode" horizontal_align="center" vertical_align="middle"></label>
+			<dropdown dock="left" width="70">
+				<initialize>
+					<![CDATA[
+					self.set_text(ImageEditorDocument.GetOption("Ctx_FillType"));
+					]]>
+				</initialize>
+				<attach name="click">
+					<![CDATA[					
+						ImageEditorDocument.SetOption("Ctx_FillType", self.get_text());
+						previewpanel.Refresh();
+					]]>
+				</attach>
+				<listitem text="@Select_Mode_Fill" value="fill"></listitem>
+				<listitem text="@Select_Mode_Stroke" value="stroke"></listitem>
+				<listitem text="@Select_Mode_FillStroke" value="fillstroke"></listitem>
+			</dropdown>
+			<panel dock="left" width="20" margin="0,0,0,5" vertical_align="middle" horizontal_align="center">
+				<panel width="16" height="16" jsml-local="previewpanel" tooltip="@Title_Preview">
+					<initialize>
+					<![CDATA[
+					self.Refresh();
+					]]>
+					</initialize>
+					<method name="Refresh">
+					<![CDATA[
+					var _forecolor = ImageEditorDocument.GetOption("Ctx_ForeColor");
+					var _backcolor = ImageEditorDocument.GetOption("Ctx_BackColor");
+					var _filltype = ImageEditorDocument.GetOption("Ctx_FillType");
+					self.set_border_width(0);
+					self.set_back_color("transparent");
+					if(_filltype=="fill" || _filltype=="fillstroke")
+						self.set_back_color(_backcolor);
+					if(_filltype=="stroke" || _filltype=="fillstroke")
+					{
+						self.set_border_width(1);
+						self.set_border_color(_forecolor);
+					}
+					]]>
+					</method>
+					<attach name="attach_dom">
+						<![CDATA[
+						if(self._eventattached)return;
+						self._eventattached=true;
+						self._handleOptionChanged=function()
+						{
+							self.Refresh();
+						}
+						ImageEditorDocument.attach_event("OptionChanged",self._handleOptionChanged);
+						]]>
+					</attach>
+					<attach name="detach_dom">
+						<![CDATA[
+						self._eventattached=false;
+						ImageEditorDocument.detach_event("OptionChanged",self._handleOptionChanged);
+						]]>
+					</attach>
+					<attach name="click" arguments="sender,evt">
+						<![CDATA[
+						//popup color picker dialog likes PS
+						var cp = ImageEditorDocument.$051();						
+						cp.set_target(self);
+						cp.set_visible(1);
+						//var style = cp._element.style;
+						function AdjustPos()
+						{			
+							var target = self.get_element();
+							var y = 0;
+							var x = 0;
+							while(target != document.body)
+							{
+								x += parseInt(target.offsetLeft)||0;
+								y += parseInt(target.offsetTop)||0;
+								target = target.parentNode;
+							}
+							var left = x + self.get_current_width() + 5;
+							var top = y;
+							if(top<0) top =0;
+							cp.set_offset_x(left);
+							cp.set_offset_y(top);
+						}
+						AdjustPos();
+						ImageEditorDocument.CancelBubble(evt);
+						return false;
+					]]>
+					</attach>
+					<method name="SaveColor" arguments="color">
+						<![CDATA[
+						if(ImageEditorDocument.GetOption("Ctx_FillType")=="stroke")
+						{
+							self.set_border_color(color);
+							ImageEditorDocument.SetOption("Ctx_ForeColor",color);
+						}
+						else
+						{
+							self.set_back_color(color);
+							ImageEditorDocument.SetOption("Ctx_BackColor",color);
+						}
+						]]>
+					</method>
+				</panel>
+			</panel>
+		</panel>
+	</panel>
+
+	<panel jsml-class="subitempentype" height="20" width="150">
+		<panel dock="fill" vertical_align="middle">
+			<label dock="left" width="10" overflow="visible" text="@Tool_Draw_Mode" horizontal_align="center" vertical_align="middle"></label>
+			<dropdown dock="left" width="70">
+				<initialize>
+					<![CDATA[
+					self.set_text(ImageEditorDocument.GetOption("Ctx_PenType"));
+					]]>
+				</initialize>
+				<attach name="click">
+					<![CDATA[					
+						ImageEditorDocument.SetOption("Ctx_PenType", self.get_text());
+						previewpanel.Refresh();
+					]]>
+				</attach>
+				<listitem text="@Select_Mode_Fill" value="fill"></listitem>
+				<listitem text="@Select_Mode_Stroke" value="stroke"></listitem>
+				<listitem text="@Select_Mode_FillStroke" value="fillstroke"></listitem>
+			</dropdown>
+			<panel dock="left" width="20" margin="0,0,0,5" vertical_align="middle" horizontal_align="center">
+				<panel width="16" height="16" jsml-local="previewpanel" tooltip="@Title_Preview">
+					<initialize>
+					<![CDATA[
+					self.Refresh();
+					]]>
+					</initialize>
+					<method name="Refresh">
+					<![CDATA[
+					var _forecolor = ImageEditorDocument.GetOption("Ctx_ForeColor");
+					var _backcolor = ImageEditorDocument.GetOption("Ctx_BackColor");
+					var _filltype = ImageEditorDocument.GetOption("Ctx_PenType");
+					self.set_border_width(0);
+					self.set_back_color("transparent");
+					if(_filltype=="fill" || _filltype=="fillstroke")
+						self.set_back_color(_forecolor);
+					if(_filltype=="stroke" || _filltype=="fillstroke")
+					{
+						self.set_border_width(1);
+						self.set_border_color(_backcolor);
+					}
+					]]>
+					</method>
+					<attach name="attach_dom">
+						<![CDATA[
+						if(self._eventattached)return;
+						self._eventattached=true;
+						self._handleOptionChanged=function()
+						{
+							self.Refresh();
+						}
+						ImageEditorDocument.attach_event("OptionChanged",self._handleOptionChanged);
+						]]>
+					</attach>
+					<attach name="detach_dom">
+						<![CDATA[
+						self._eventattached=false;
+						ImageEditorDocument.detach_event("OptionChanged",self._handleOptionChanged);
+						]]>
+					</attach>
+				</panel>
+			</panel>
+		</panel>
+	</panel>
+
+	<panel jsml-class="patternitem" width="23" height="20" border_width="1" padding="2,1,0,1" border_color="transparent" vertical_align="middle" horizontal_align="center">
+		<property name="pattern_url">
+			<get>
+				return self._pattern_url;
+			</get>
+			<set arguments="val">
+				self._pattern_url = val;
+				patt.set_src(val);
+			</set>
+		</property>
+		<image jsml-local="patt">
+			<attach name="click">
+				<![CDATA[
+				instance.SetSelected();
+				]]>
+			</attach>
+		</image>
+		<method name="SetSelected">
+			<![CDATA[
+			var img = new Image();
+			img.onload = function()
+			{
+				ImageEditorDocument.SetOption("Ctx_FillPattern",ImageEditorDocument._2d.createPattern(img,"repeat"));
+				self.set_border_color("rgb(89,89,89)");
+			}
+			img.src = self.get_pattern_url();
+			]]>
+		</method>
+		<method name="UnSelected">
+			<![CDATA[
+			self.set_border_color("transparent");
+			]]>
+		</method>
+	</panel>
+	<panel jsml-class="subitempattern">
+		<htmlcontrol width="20" dock="left" margin="1,0,0,0">
+			<xmldata>
+				<input id="cbx_usepattern" type="checkbox">
+				</input>
+			</xmldata>
+			<initialize>
+				var _usepattern = ImageEditorDocument.GetOption("Ctx_UsePattern");
+				self.find_element("cbx_usepattern").checked = _usepattern;
+			</initialize>
+			<attach name="click">
+				ImageEditorDocument.SetOption("Ctx_UsePattern",self.find_element("cbx_usepattern").checked);
+			</attach>
+		</htmlcontrol>
+		<label dock="left" width="10" overflow="visible" text="@Tool_Draw_Pattern" tooltip="@Title_UsePattern" vertical_align="middle"></label>
+		<panel dock="left" jsml-local="patt_1" jsml-base="patternitem" pattern_url="images/pattern/patt_1.gif">
+			<initialize>
+				self.SetSelected();
+			</initialize>
+			<attach name="click">
+				instance.ClearAllSelected();
+			</attach>
+		</panel>
+		<panel dock="left" jsml-local="patt_2" jsml-base="patternitem" pattern_url="images/pattern/patt_2.gif">
+			<attach name="click">
+				instance.ClearAllSelected();
+			</attach>
+		</panel>
+		<method name="ClearAllSelected">
+			<![CDATA[
+			var arr=[patt_1,patt_2];
+			for(var i=0;i<arr.length;i++)
+				arr[i].UnSelected();
+			]]>
+		</method>
+	</panel>
+
+	<panel jsml-class="subitemgradtype" height="20" width="150">
+		<panel dock="fill" vertical_align="middle">
+			<label dock="left" width="10" overflow="visible" text="@Tool_Draw_Mode" horizontal_align="center" vertical_align="middle"></label>
+			<dropdown dock="left" width="70">
+				<initialize>
+					<![CDATA[
+					self.set_text(ImageEditorDocument.GetOption("Ctx_GradientType"));
+					]]>
+				</initialize>
+				<attach name="click">
+					<![CDATA[					
+						ImageEditorDocument.SetOption("Ctx_GradientType", self.get_text());
+						previewpanel.Refresh();
+					]]>
+				</attach>
+				<listitem text="@Select_Gradient_Linear" value="linear"></listitem>
+				<listitem text="@Select_Gradient_Radial" value="radial"></listitem>
+			</dropdown>
+			<panel dock="left" width="20" margin="0,0,0,5" vertical_align="middle" horizontal_align="center">
+				<panel width="20" height="20" jsml-local="previewpanel" tooltip="Preview">
+					<initialize>
+						<![CDATA[
+						self.Refresh();
+						]]>
+					</initialize>
+					<property name="currenttype">
+						<get>
+							return self._currenttype;
+						</get>
+						<set arguments="val">
+							self._currenttype = val;
+						</set>
+					</property>
+					<method name="Refresh">
+						<![CDATA[
+						var _gradienttype = ImageEditorDocument.GetOption("Ctx_GradientType");
+						if(_gradienttype==self.get_currenttype())
+							return;
+						self.set_currenttype(_gradienttype);
+						var suffix = _gradienttype=="radial"?"_radial":"";
+						self.get_element().style.background="url(images/grad"+suffix+".png) left 2px no-repeat";
+						]]>
+					</method>
+				</panel>
+			</panel>
+		</panel>
+	</panel>
+
+	<panel jsml-class="subitemcompositeoperation" vertical_align="middle" horizontal_align="left">
+		<label dock="left" width="10" overflow="visible" text="@Tool_Draw_Composite" vertical_align="middle"></label>
+		<image dock="left" jsml-local="img_sourceover" width="18" border_color="rgb(89,89,89)" border_width="1" vertical_align="bottom" src="images/composite_sourceover.gif" tooltip="source-over">
+			<attach name="click">
+				<![CDATA[
+				instance.SaveConfig(self.get_tooltip());
+				]]>
+			</attach>
+		</image>
+		<image dock="left" jsml-local="img_destinationout" width="18" border_color="transparent" border_width="1" vertical_align="bottom" src="images/composite_destinationout.gif" tooltip="destination-out">
+			<attach name="click">
+				<![CDATA[
+				instance.SaveConfig(self.get_tooltip());
+				]]>
+			</attach>
+		</image>
+		<image dock="left" jsml-local="img_destinationin" width="18" border_color="transparent" border_width="1" vertical_align="bottom" src="images/composite_destinationin.gif" tooltip="destination-in">
+			<attach name="click">
+				<![CDATA[
+				instance.SaveConfig(self.get_tooltip());
+				]]>
+			</attach>
+		</image>
+		<image dock="left" jsml-local="img_xor" width="18" border_color="transparent" border_width="1" vertical_align="bottom" src="images/composite_xor.gif" tooltip="xor">
+			<attach name="click">
+				<![CDATA[
+				instance.SaveConfig(self.get_tooltip());
+				]]>
+			</attach>
+		</image>
+		<initialize>
+			<![CDATA[
+			ImageEditorDocument.SetOption("Ctx_CompositeOperation","source-over");
+			]]>
+		</initialize>
+		<method name="SaveConfig" arguments="val">
+			<![CDATA[
+			ImageEditorDocument.SetOption("Ctx_CompositeOperation",val);
+			var imgs = [img_sourceover,img_destinationout,img_destinationin,img_xor];
+			for(var i=0;i<imgs.length;i++)
+			{
+				var img = imgs[i];
+				if(img.get_tooltip()==val)
+					img.set_border_color("rgb(89,89,89)");
+				else
+					img.set_border_color("transparent");
+			}
+			]]>
+		</method>
+	</panel>
+
+	<panel jsml-class="submenudrawarea" dock="fill" vertical_align="middle">
+		<panel dock="left" jsml-base="subitemfilltype"></panel>
+		<label dock="left" width="10" horizontal_align="center" text="|" text_color="gray"></label>
+		<checkbox dock="left" margin="2,0,0,0">
+			<attach name="click">
+				<![CDATA[
+				if(self.get_checked())
+					radiuspanel.set_visible(1);
+				else
+					radiuspanel.set_visible(0);
+				ImageEditorDocument.SetOption("Ctx_UseRadius",self.get_checked());
+				]]>
+			</attach>
+		</checkbox>
+		<label dock="left" width="10" overflow="visible" vertical_align="middle" text="@Tool_Rect_Radius"></label>
+		<panel dock="left" width="60" jsml-local="radiuspanel" visible="0">
+			<textbox dock="left" width="40" text="3">
+				<initialize>
+					<![CDATA[
+					ImageEditorDocument.SetOption("Ctx_UseRadius",false);
+					ImageEditorDocument.SetOption("Ctx_RadiusVal",self.get_text());
+					self._input.onkeyup = function()
+					{
+						var invalidChars = /[^0-9]/gi
+						if(invalidChars.test(self.get_text())) {
+							self.set_text(self.get_text().replace(invalidChars,""));
+						}
+					}
+					self._input.onblur = function()
+					{
+						var val = self.get_text();
+						ImageEditorDocument.SetOption("Ctx_RadiusVal",val);
+					}
+					]]>
+				</initialize>
+			</textbox>
+			<label dock="left" width="10" text="px"></label>
+		</panel>
+		<label dock="left" width="10" horizontal_align="center" text="|" text_color="gray"></label>
+		<panel dock="left" jsml-base="subitempattern" width="150" vertical_align="middle"></panel>
+		<label dock="left" width="10" horizontal_align="center" text="|" text_color="gray"></label>
+		<panel dock="left" jsml-base="subitemcompositeoperation" width="300"></panel>
+	</panel>
+	<panel jsml-class="submenudrawarc" dock="fill" vertical_align="middle">
+		<panel dock="left" jsml-base="subitemfilltype"></panel>
+		<label dock="left" width="10" horizontal_align="center" text="|" text_color="gray"></label>
+		<panel dock="left" jsml-base="subitempattern" width="150" vertical_align="middle"></panel>
+		<label dock="left" width="10" horizontal_align="center" text="|" text_color="gray"></label>
+		<panel dock="left" jsml-base="subitemcompositeoperation" width="300"></panel>
+	</panel>
+	<panel jsml-class="submenugradient" vertical_align="middle">
+		<panel dock="left" jsml-base="subitemgradtype"></panel>
+	</panel>
+	<panel jsml-class="submenudrawline">
+		<panel dock="left" jsml-base="subitempattern" width="300"></panel>
+	</panel>
+	<panel jsml-class="submenudrawpen">
+		<panel dock="left" jsml-base="subitempentype"></panel>
+		<label dock="left" width="10" horizontal_align="center" text="|" text_color="gray"></label>
+		<panel dock="left" jsml-base="subitempattern" width="300"></panel>
+	</panel>
+
+	<panel jsml-class="submenuvarnish">
+		<label dock="left" width="10" overflow="visible" text="@Tool_Fill_Color" horizontal_align="center" vertical_align="middle"></label>
+		<panel dock="left" width="20" margin="0,0,0,5" vertical_align="middle" horizontal_align="center">
+			<panel width="16" height="16" jsml-local="previewpanel" tooltip="@Title_Preview">
+				<initialize>
+					<![CDATA[
+					self.Refresh();
+					]]>
+				</initialize>
+				<method name="Refresh">
+					<![CDATA[
+					var _backcolor = ImageEditorDocument.GetOption("Ctx_BackColor");
+					self.set_border_width(0);
+					self.set_back_color("transparent");
+					self.set_back_color(_backcolor);
+					]]>
+				</method>
+				<attach name="attach_dom">
+					<![CDATA[
+						if(self._eventattached)return;
+						self._eventattached=true;
+						self._handleOptionChanged=function()
+						{
+							self.Refresh();
+						}
+						ImageEditorDocument.attach_event("OptionChanged",self._handleOptionChanged);
+						]]>
+				</attach>
+				<attach name="detach_dom">
+					<![CDATA[
+						self._eventattached=false;
+						ImageEditorDocument.detach_event("OptionChanged",self._handleOptionChanged);
+						]]>
+				</attach>
+				<attach name="click" arguments="sender,evt">
+					<![CDATA[
+						//popup color picker dialog likes PS
+						var cp = ImageEditorDocument.$051();						
+						cp.set_target(self);
+						cp.set_visible(1);
+						//var style = cp._element.style;
+						function AdjustPos()
+						{			
+							var target = self.get_element();
+							var y = 0;
+							var x = 0;
+							while(target != document.body)
+							{
+								x += parseInt(target.offsetLeft)||0;
+								y += parseInt(target.offsetTop)||0;
+								target = target.parentNode;
+							}
+							var left = x + self.get_current_width() + 5;
+							var top = y;
+							if(top<0) top =0;
+							cp.set_offset_x(left);
+							cp.set_offset_y(top);
+						}
+						AdjustPos();
+						ImageEditorDocument.CancelBubble(evt);
+						return false;
+					]]>
+				</attach>
+				<method name="SaveColor" arguments="color">
+					self.set_back_color(color);
+					ImageEditorDocument.SetOption("Ctx_BackColor",color);
+				</method>
+			</panel>
+		</panel>
+		<label dock="left" width="10" horizontal_align="center" text="|" text_color="gray"></label>
+		<panel dock="left" jsml-base="subitempattern" width="150" vertical_align="middle"></panel>
+	</panel>
+
+	<panel jsml-class="submenutext" width="450" height="30">
+		<panel dock="left" width="0">
+			<panel dock="left" width="40" visible="0">
+				<label dock="top" height="20" text=""></label>
+			</panel>
+			<textbox jsml-local="ipt_text" text_mode="multipleline" height="0"></textbox>
+		</panel>
+		<panel dock="top" height="23">
+			<label dock="left" width="10" overflow="visible" text="@Tool_Text_Font" margin="0,0,0,5" vertical_align="middle"></label>
+			<panel dock="left"  width="100">
+				<panel jsml-local="ddl_font" jsml-base="subitemdropdown" dock="top" height="22">
+					<initialize>
+						self.set_text("Arial");
+						self._oldval = self.get_text();
+					</initialize>
+					<attach name="click">
+						<![CDATA[
+						var owner = instance;
+						var ddl = self;
+						var box=jsml.class_create_instance("floatbox");
+						box.show(self.get_element(),0,0,{"floatMode":"b-r"});
+						var xh = jsml.xmlhttp();
+						xh.onreadystatechange = function () {
+							if (xh.readyState < 4) return;
+							xh.onreadystatechange = new Function();
+							if (xh.status == 0) return;
+							var gvars = {};
+							gvars.doc = ImageEditorDocument;
+							gvars.box = box;
+							gvars.loadfunc = function(name)
+							{
+							}
+							gvars.selectfunc = function(name)
+							{ 
+								ddl.set_text(name);
+								owner.OptionChanged(ddl,name);
+							}
+							function initfunc(obj) {
+								box.append_child(obj);
+							}
+							jsml.parse_xmldoc(xh.responseXML, initfunc, gvars);
+						}
+						xh.open("GET", "dropdown/fontfamily.xml", true);
+						xh.send("");
+						]]>
+					</attach>
+				</panel>
+			</panel>
+			<button dock="left" width="80" text="@Btn_MoreFonts" margin="0,0,0,2" vertical_align="middle" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px; text-align:center;">
+				<attach name="click">
+					<![CDATA[
+					var owner = instance;
+					var ddl = ddl_font;
+					var box=jsml.class_create_instance("floatbox");
+					box.show(self.get_element(),0,0,{"floatMode":"b-r"});
+					var xh = jsml.xmlhttp();
+					xh.onreadystatechange = function () {
+						if (xh.readyState < 4) return;
+						xh.onreadystatechange = new Function();
+						if (xh.status == 0) return;
+
+						var gvars = {};
+						gvars.doc = ImageEditorDocument;
+						gvars.box = box;
+						gvars.loadfunc = function(name)
+						{
+							ImageEditorDocument.$0109(name);
+							//ddl.add_item(name);
+							ddl.set_text(name);
+							owner.OptionChanged(ddl,name);
+						}
+						gvars.selectfunc = function(name)
+						{ 
+							ddl.set_text(name);
+							owner.OptionChanged(ddl,name);
+						}
+						function initfunc(obj) {
+							box.append_child(obj);
+						}
+						jsml.parse_xmldoc(xh.responseXML, initfunc, gvars);
+					}
+					xh.open("GET", "dropdown/font.xml", true);
+					xh.send("");
+					]]>
+				</attach>
+			</button>
+			<label dock="left" width="10" overflow="visible" text="@Tool_Text_Size" margin="0,0,0,5" vertical_align="middle"></label>
+
+			<panel dock="left"  width="80">
+				<panel jsml-local="ddl_size" jsml-base="subitemdropdown" dock="top" height="22">
+					<initialize>
+						self.set_text("16px");
+						self._oldval = self.get_text();
+					</initialize>
+					<attach name="click">
+						<![CDATA[
+						var owner = instance;
+						var ddl = self;
+						var box=jsml.class_create_instance("floatbox");
+						box.show(self.get_element(),0,0,{"floatMode":"b-r"});
+						var xh = jsml.xmlhttp();
+						xh.onreadystatechange = function () {
+							if (xh.readyState < 4) return;
+							xh.onreadystatechange = new Function();
+							if (xh.status == 0) return;
+							var gvars = {};
+							gvars.doc = ImageEditorDocument;
+							gvars.box = box;
+							gvars.loadfunc = function(name)
+							{
+							}
+							gvars.selectfunc = function(name)
+							{ 
+								ddl.set_text(name);
+								owner.OptionChanged(ddl,name);
+							}
+							function initfunc(obj) {
+								box.append_child(obj);
+							}
+							jsml.parse_xmldoc(xh.responseXML, initfunc, gvars);
+						}
+						xh.open("GET", "dropdown/fontsize.xml", true);
+						xh.send("");
+						]]>
+					</attach>
+				</panel>
+			</panel>
+			<label dock="left" width="10" overflow="visible" text="@Tool_Text_Bold" margin="0,0,0,5" vertical_align="middle"></label>
+			<panel dock="left"  width="60">
+				<panel jsml-local="ddl_bold" jsml-base="subitemdropdown" dock="top" height="22">
+					<initialize>
+						self.set_text(ImageEditorDocument.Text["Select_Bool_False"]);
+						self._oldval = self.get_text();
+					</initialize>
+					<attach name="click">
+						<![CDATA[
+						var owner = instance;
+						var ddl = self;
+						var box=jsml.class_create_instance("floatbox");
+						box.set_width(60);
+						box.show(self.get_element(),0,0,{"floatMode":"b-r"});
+						var xh = jsml.xmlhttp();
+						xh.onreadystatechange = function () {
+							if (xh.readyState < 4) return;
+							xh.onreadystatechange = new Function();
+							if (xh.status == 0) return;
+							var gvars = {};
+							gvars.doc = ImageEditorDocument;
+							gvars.box = box;
+							gvars.loadfunc = function(name)
+							{
+							}
+							gvars.selectfunc = function(name)
+							{ 
+								ddl.set_text(name);
+								owner.OptionChanged(ddl,name);
+							}
+							function initfunc(obj) {
+								box.append_child(obj);
+							}
+							jsml.parse_xmldoc(xh.responseXML, initfunc, gvars);
+						}
+						xh.open("GET", "dropdown/bool.xml", true);
+						xh.send("");
+						]]>
+					</attach>
+				</panel>
+				<dropdown jsml-local="ddl_bold1" dock="top" height="20">
+					<initialize>
+						self._oldval = self.get_text();
+					</initialize>
+					<attach name="click">
+					<![CDATA[					
+					instance.OptionChanged(self,self.get_text());
+					]]>
+					</attach>
+					<listitem text="@Select_Bool_False" value="normal"></listitem>
+					<listitem text="@Select_Bool_True" value="bold"></listitem>
+				</dropdown>
+			</panel>
+			<label dock="left" width="10" overflow="visible" text="@Tool_Text_Color" margin="0,0,0,5" vertical_align="middle"></label>
+			<panel dock="left" width="20">
+				<panel jsml-local="Ctx_TextColor" width="16" height="16" border_width="1" margin="3,2,3,2" border_color="gray" tooltip="@Title_Preview">
+					<attach name="click" arguments="sender,evt">
+						<![CDATA[
+						//popup color picker dialog likes PS
+						var cp = ImageEditorDocument.$051();						
+						cp.set_target(self);
+						cp.set_visible(1);
+						//var style = cp._element.style;
+						function AdjustPos()
+						{			
+							var target = self.get_element();
+							var y = 0;
+							var x = 0;
+							while(target != document.body)
+							{
+								x += parseInt(target.offsetLeft)||0;
+								y += parseInt(target.offsetTop)||0;
+								target = target.parentNode;
+							}
+							var left = x + self.get_current_width() + 5;
+							var top = y;
+							if(top<0) top =0;
+							cp.set_offset_x(left);
+							cp.set_offset_y(top);
+						}
+						AdjustPos();
+						ImageEditorDocument.CancelBubble(evt);
+						return false;
+					]]>
+					</attach>
+					<method name="SaveColor" arguments="color">
+						self.set_back_color(color);
+						ImageEditorDocument.SetOption("Ctx_TextColor",color);
+						instance.OptionChanged(self,color);
+						ipt_text.set_text_color(color);
+					</method>
+					<initialize>
+						self.set_back_color(ImageEditorDocument.GetOption('Ctx_TextColor') || 'Black');
+					</initialize>
+				</panel>
+			</panel>
+			<panel dock="left" width="10" overflow="visible" vertical_align="middle">
+				<htmlcontrol dock="left" width="25" vertical_align="middle">
+					<xmldata>
+						<input type="checkbox" id="cbx_newlayer"></input>
+					</xmldata>
+				</htmlcontrol>
+				<label dock="left" width="10" overflow="visible" vertical_align="middle" padding="0,3,0,0" text="@Tool_Text_NewLayer"></label>
+			</panel>
+			<panel  dock="left" width="60" margin="0,0,0,5" >
+				<button dock="fill" text="@Btn_Apply" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+					<attach name="click">
+						<![CDATA[
+						var bv = ddl_bold.get_text() == ImageEditorDocument.Text["Select_Bool_False"]?"normal":"bold";
+						instance.Apply(ipt_text.get_text(),ddl_font.get_text(),ddl_size.get_text(),bv,instance.find_element("cbx_newlayer").checked);
+						ipt_text.set_text("");
+						]]>
+					</attach>
+				</button>
+			</panel>
+			<panel  dock="left" width="60" margin="0,0,0,5" >
+				<button dock="fill" text="@Btn_Cancel" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+					<attach name="click">
+					<![CDATA[
+					ipt_text.set_text("");
+					ipt_text._input.focus();
+					ImageEditorDocument.$0116();
+					]]>
+					</attach>
+				</button>
+			</panel>
+		</panel>
+		<panel dock="top" height="23" margin="2,0,0,0" visible="0">			
+		</panel>
+		<method name="OptionChanged" arguments="sender,val">
+			<![CDATA[
+			if(typeof(sender._oldval)!="undefined" && sender._oldval==val)
+				return;
+			sender._oldval = val;
+			var bv = ddl_bold.get_text() == ImageEditorDocument.Text["Select_Bool_False"]?"normal":"bold";
+			instance.Preview(ipt_text.get_text(),ddl_font.get_text(),ddl_size.get_text(),bv);
+			]]>
+		</method>
+		<method name="GetEditor">
+			<![CDATA[
+			return ipt_text._input;
+			]]>
+		</method>
+	</panel>	
+	
+	<panel jsml-class="submenurotate">
+		<panel dock="left" width="115">
+			<image dock="left" margin="0,3,0,3" width="20" border_color="transparent" border_width="1" vertical_align="middle" horizontal_align="center" src="images/rotateleft90.png" tooltip="@Title_Rotate90Left">
+				<attach name="click">
+					instance.DoRotate(270);
+				</attach>
+				<attach name="mousehover">
+					self.set_back_color("white");
+					self.set_border_color("Gray");
+				</attach>
+				<attach name="mouseleave">
+					self.set_back_color("");
+					self.set_border_color("transparent");
+				</attach>
+			</image>
+			<image dock="left" margin="0,3,0,3" width="20" border_color="transparent" border_width="1" vertical_align="middle" horizontal_align="center" src="images/rotateright90.png" tooltip="@Title_Rotate90Right">
+				<attach name="click">
+					instance.DoRotate(90);
+				</attach>
+				<attach name="mousehover">
+					self.set_back_color("white");
+					self.set_border_color("Gray");
+				</attach>
+				<attach name="mouseleave">
+					self.set_back_color("");
+					self.set_border_color("transparent");
+				</attach>
+			</image>
+			<image dock="left" margin="0,3,0,3" width="20" border_color="transparent" border_width="1" vertical_align="middle" horizontal_align="center" src="images/fliph.png" tooltip="@Title_FlipH">
+				<attach name="click">
+					instance.DoFlip("h");
+				</attach>
+				<attach name="mousehover">
+					self.set_back_color("white");
+					self.set_border_color("Gray");
+				</attach>
+				<attach name="mouseleave">
+					self.set_back_color("");
+					self.set_border_color("transparent");
+				</attach>
+			</image>
+			<image dock="left" margin="0,3,0,3" width="20" border_color="transparent" border_width="1" vertical_align="middle" horizontal_align="center" src="images/flipv.png" tooltip="@Title_FlipV">
+				<attach name="click">
+					instance.DoFlip("v");
+				</attach>
+				<attach name="mousehover">
+					self.set_back_color("white");
+					self.set_border_color("Gray");
+				</attach>
+				<attach name="mouseleave">
+					self.set_back_color("");
+					self.set_border_color("transparent");
+				</attach>
+			</image>
+		</panel>
+		<label dock="left" width="10" overflow="visible" vertical_align="middle" margin="0,0,0,5" text="@Tool_Rotate_Degree"></label>
+		<textbox dock="left" jsml-local="txt_degree" width="60" text="30">
+			<initialize>
+				ImageEditorDocument.$087(self._input);
+			</initialize>
+		</textbox>
+		<dropdown dock="left" jsml-local="ddl_direct" width ="80">
+			<listitem text="@Select_Rotate_CW" value="clockwise"></listitem>
+			<listitem text="@Select_Rotate_ACW" value="anticlockwise"></listitem>
+		</dropdown>
+		<button text="@Btn_Apply" dock="left" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;" margin="0,0,0,5" width="60">
+			<attach name="click">
+				<![CDATA[
+				var dgtxt = txt_degree.get_text();
+				if(!dgtxt || isNaN(dgtxt))
+				{
+					txt_degree.set_text("");
+					txt_degree.get_element().focus();
+					return;
+				}
+				var degree = parseInt(dgtxt);
+				var calcdegree = degree%360;
+				if(calcdegree==0)
+				{
+					return;
+				}
+				var direct = ddl_direct.get_text();
+				if(direct == "anticlockwise")
+					calcdegree = 360 - calcdegree;
+				instance.DoRotate(calcdegree);
+				]]>
+			</attach>
+		</button>
+		<method name="DoRotate" arguments="degree">
+			<![CDATA[
+			if(!degree)
+				return;
+			ImageEditorDocument.$0120(degree);
+			]]>
+		</method>
+		<method name="DoFlip" arguments="direct">
+			<![CDATA[
+			if(!direct)
+				return;
+			ImageEditorDocument.$0127(direct);
+			]]>
+		</method>
+	</panel>
+	<panel jsml-class="submenuselect" width="280">
+		<label dock="left" width="10" overflow="visible" text="Zoom:" horizontal_align="center" vertical_align="middle"></label>
+		<panel jsml-enable="0" jsml-local="scrollbarselect" jsml-base="scrollbarbase" dock="left" width="130" min="0.4" max="6" default="1">
+			<initialize>
+				<![CDATA[
+				function DoScale(scale)
+				{
+					instance.Fire();
+				}
+				self.set_action(DoScale);
+				]]>
+			</initialize>
+		</panel>
+		<dropdown jsml-local="ddlzoom" dock="left" width="80">
+			<initialize>
+				self._oldval = self.get_text();
+			</initialize>
+			<attach name="click">
+				<![CDATA[
+				if(self.get_text()==self._oldval)
+					return;
+				self._oldval = self.get_text();
+				instance.Fire();
+				]]>
+			</attach>
+			<listitem value="1" text="100%"></listitem>
+			<listitem value="0.2" text="20%"></listitem>
+			<listitem value="0.5" text="50%"></listitem>
+			<listitem value="0.8" text="80%"></listitem>
+			<listitem value="1.5" text="150%"></listitem>
+			<listitem value="2" text="200%"></listitem>
+			<listitem value="2.5" text="250%"></listitem>
+			<listitem value="3" text="300%"></listitem>
+			<listitem value="4" text="400%"></listitem>
+			<listitem value="5" text="500%"></listitem>
+			<listitem value="6" text="600%"></listitem>
+			<listitem value="7" text="700%"></listitem>
+			<listitem value="8" text="800%"></listitem>
+			<listitem value="9" text="900%"></listitem>
+			<listitem value="10" text="1000%"></listitem>
+		</dropdown>
+		<button text="@Btn_ActualSize" dock="left" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;" margin="0,0,0,5" width="80">
+			<attach name="click">
+				<![CDATA[
+				ddlzoom.set_text("1");
+				ddlzoom._oldval="1";			 
+				instance.Fire();
+				]]>
+			</attach>
+		</button>
+		<label jsml-enable="0" dock="left" width="50" text="OffsetX:" horizontal_align="center" vertical_align="middle"></label>
+		<panel jsml-enable="0" jsml-local="scrollbaroffsetx" jsml-base="scrollbarbase" dock="left" width="160" min="-100" max="300" default="0">
+			<initialize>
+				<![CDATA[
+				function DoScale(scale)
+				{
+					instance.Fire();
+				}
+				self.set_action(DoScale);
+				]]>
+			</initialize>
+		</panel>
+		<label jsml-enable="0" dock="left" width="50" text="OffsetY:" horizontal_align="center" vertical_align="middle"></label>
+		<panel jsml-enable="0" jsml-local="scrollbaroffsety" jsml-base="scrollbarbase" dock="left" width="130" min="-100" max="200" default="0">
+			<initialize>
+				<![CDATA[
+				function DoScale(scale)
+				{
+					instance.Fire();
+				}
+				self.set_action(DoScale);
+				]]>
+			</initialize>
+		</panel>
+		<initialize>
+			<![CDATA[
+			var sel = ImageEditorDocument.get_selection();
+			if (!sel)
+				return;
+			if(sel._scale)
+			{			
+				ddlzoom.set_text(sel._scale.x+"");
+				ddlzoom._oldval=sel._scale.x+"";  
+				//scrollbarselect.set_default(sel._scale.x);
+				//scrollbarselect.CalcScrollbarPos();
+				//scrollbaroffsetx.set_default(sel._offset.x);
+				//scrollbaroffsetx.CalcScrollbarPos();
+				//scrollbaroffsety.set_default(sel._offset.y);
+				//scrollbaroffsety.CalcScrollbarPos();
+			}
+			]]>
+		</initialize>
+		<method name="Fire">
+			var offsety = 0;//scrollbaroffsety.GetValue();
+			var offsetx = 0;//scrollbaroffsetx.GetValue();
+			//var scale = scrollbarselect.GetValue();
+			var scale = parseFloat(ddlzoom.get_text());
+			ImageEditorDocument.$045(scale,scale,offsetx,offsety);
+		</method>
+		<method name="Restore">
+			ddlzoom.set_text("1");
+			ddlzoom._oldval="1";
+			//scrollbaroffsetx.set_default(0);
+			//scrollbaroffsety.set_default(0);
+			//scrollbarselect.set_default(1);
+			//scrollbaroffsetx.CalcScrollbarPos();
+			//scrollbaroffsety.CalcScrollbarPos();
+			//scrollbarselect.CalcScrollbarPos();
+		</method>
+	</panel>
+	<panel jsml-class="submenucrop" width="420">
+		<label dock="left" width="10" overflow="visible" text="@Tool_Width" vertical_align="middle"></label>
+		<textbox jsml-local="txt_width" dock="left" width="60" vertical_align="middle">
+			<initialize>
+				<![CDATA[
+					ImageEditorDocument.$087(self._input);
+					self._oldval = "";
+					self._input.onblur=function()
+					{
+						instance.OptionChanged(self,self.get_text());
+					}
+					]]>
+			</initialize>		  
+		</textbox>
+		<label dock="left" width="10" overflow="visible" text="@Tool_Height" vertical_align="middle" margin="0,0,0,5"></label>
+		<textbox jsml-local="txt_height" dock="left" width="60" vertical_align="middle">
+			<initialize>
+				<![CDATA[
+					ImageEditorDocument.$087(self._input);
+					self._oldval = "";
+					self._input.onblur=function()
+					{
+						instance.OptionChanged(self,self.get_text());
+					}
+					]]>
+			</initialize>
+		</textbox>
+		<label dock="left" width="10" overflow="visible" text="@Tool_Crop_OffsetX" vertical_align="middle" margin="0,0,0,5"></label>
+		<textbox jsml-local="txt_offsetx" dock="left" width="60" vertical_align="middle">
+			<initialize>
+				<![CDATA[
+					ImageEditorDocument.$087(self._input);
+					self._oldval = "";
+					self._input.onblur=function()
+					{
+						instance.OptionChanged(self,self.get_text());
+					}
+					]]>
+			</initialize>
+		</textbox>
+		<label dock="left" width="10" overflow="visible" text="@Tool_Crop_OffsetY" vertical_align="middle" margin="0,0,0,5"></label>
+		<textbox jsml-local="txt_offsety" dock="left" width="60" vertical_align="middle">
+			<initialize>
+				<![CDATA[
+					ImageEditorDocument.$087(self._input);
+					self._oldval = "";
+					self._input.onblur=function()
+					{
+						instance.OptionChanged(self,self.get_text());
+					}
+					]]>
+			</initialize>
+		</textbox>
+    <htmlcontrol dock="left" width="10" overflow="visible" margin="0,0,0,5">
+      <xmldata>
+        <input type="checkbox" id="rteie_crop_keepratio" style="vertical-align:middle;"/>
+        <label id="rteie_crop_keepratio_label" for="rteie_crop_keepratio" style="vertical-align:middle;"></label>
+      </xmldata>
+    </htmlcontrol>
+		<button text="@Btn_Apply" dock="left" width="60" margin="0,0,0,5" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+			<attach name="click">
+				<![CDATA[
+				ImageEditorDocument.$033();
+				]]>
+			</attach>
+		</button>
+		<button text="@Btn_Cancel" dock="left" width="60" margin="0,0,0,5" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+			<attach name="click">
+				<![CDATA[
+				ImageEditorDocument.set_selection(null);
+				ImageEditorDocument.set_SelectedTool(null);
+				instance.set_visible(0);
+				ImageEditorDocument._cropcomp._cropdiv.style.display = "none";
+				ImageEditorDocument.$0116();
+				]]>
+			</attach>
+		</button>
+		<initialize>
+			<![CDATA[
+      self.find_element("rteie_crop_keepratio_label").innerHTML = imageeditor_lang["Tool_Crop_KeepRatio"]||"Keep Ratio";
+      var cbx = self.find_element("rteie_crop_keepratio");
+      cbx.checked = ImageEditorDocument._cropcomp._keepratio;
+      cbx.onclick = function()
+      {
+        ImageEditorDocument._cropcomp._keepratio = this.checked;
+        if(this.checked)
+          ImageEditorDocument.$053();
+      }
+			var cropdiv = ImageEditorDocument._cropcomp._cropdiv;
+			self.UpdateCropPos(parseInt(cropdiv.style.width),parseInt(cropdiv.style.height),cropdiv._offsetX,cropdiv._offsetY);
+			]]>
+		</initialize>
+		<method name="UpdateCropPos" arguments="w,h,x,y">
+			<![CDATA[
+			txt_width.set_text(w+"");
+			txt_width._oldval = w;
+			txt_height.set_text(h+"");
+			txt_height._oldval = h;
+			txt_offsetx.set_text(x+"");
+			txt_offsetx._oldval = x;
+			txt_offsety.set_text(y+"");
+			txt_offsety._oldval = y;
+			]]>
+		</method>
+		<method name="OptionChanged" arguments="sender,val">
+			<![CDATA[
+			if(typeof(sender._oldval)!="undefined" && sender._oldval==val)
+				return;
+			if(val.length==0)
+			{
+				sender.set_text(sender._oldval);
+				return;
+			}
+			if(isNaN(val))
+			{
+				sender.set_text(sender._oldval);
+				return;
+			}
+			if(parseInt(val)<0)
+			{
+				sender.set_text(sender._oldval);
+				return;
+			}
+			var w = parseInt(txt_width.get_text());
+			var h = parseInt(txt_height.get_text());
+			var x = parseInt(txt_offsetx.get_text());
+			var y = parseInt(txt_offsety.get_text());	
+			
+			var cropdiv = ImageEditorDocument._cropcomp._cropdiv;
+			if(cropdiv.style.display=="none")
+				return;
+			
+			var canvas = ImageEditorDocument._canvas;
+			if(w>canvas.width || h>canvas.height)
+			{
+				txt_width.set_text(parseInt(cropdiv.style.width));
+				txt_height.set_text(parseInt(cropdiv.style.height));
+				return;
+			}
+			if(w+x>canvas.width)
+			{
+				x = canvas.width-w;
+			}
+			if(h+y>canvas.height)
+			{
+				y = canvas.height-h;
+			}
+			cropdiv._offsetX = x;
+			cropdiv._offsetY = y;
+			cropdiv.style.width = w + "px";
+			cropdiv.style.height = h + "px";
+			
+			ImageEditorDocument.$053();
+			
+			sender._oldval = val;
+			]]>
+		</method>
+	</panel>
+	<panel jsml-class="submenuerase" width="460" height="20" vertical_align="middle">
+		<label dock="left" width="10" overflow="visible" text="@Tool_Erase_BrushType" horizontal_align="center" vertical_align="middle"></label>
+		<dropdown dock="left" width="60">
+			<initialize>
+				<![CDATA[
+				self.set_text(ImageEditorDocument.GetOption("EraseBrushShape"));
+				self._oldval = self.get_text();
+				]]>
+			</initialize>
+			<attach name="click">
+				<![CDATA[
+				if(self.get_text() == self._oldval)
+					return;
+				self._oldval = self.get_text();
+				ImageEditorDocument.SetOption("EraseBrushShape",self._oldval);
+				ImageEditorDocument.$099();
+				]]>
+			</attach>
+			<listitem text="@Select_Erase_Rect" value="rect"></listitem>
+			<listitem text="@Select_Erase_Arc" value="arc"></listitem>
+		</dropdown>
+		<label dock="left" width="10" overflow="visible" text="@Tool_Erase_BrushColor" vertical_align="middle" margin="0,0,0,5"></label>
+		<dropdown jsml-local="ddl_brushcolor" dock="left" width="90">
+			<initialize>
+				ImageEditorDocument.SetOption("EraseBrushColor","transparent");
+			</initialize>
+			<attach name="click">
+				<![CDATA[
+				var bc = self.get_text();
+				var rc = "transparent";
+				if(bc=="transparent")
+				{
+					previewpanel.set_back_color("transparent");
+				}
+				else if(bc=="backcolor")
+				{
+					rc = ImageEditorDocument.GetOption("Ctx_BackColor");
+					previewpanel.set_back_color(rc);
+				}
+				else
+				{
+					rc = ImageEditorDocument.GetOption("Ctx_ForeColor");
+					previewpanel.set_back_color(rc);
+				}
+				ImageEditorDocument.SetOption("EraseBrushColor",rc);
+				ImageEditorDocument.$099();
+				]]>
+			</attach>
+			<listitem value="transparent" text="@Select_Color_Transparent"></listitem>
+			<listitem value="backcolor" text="@Select_Color_BackColor"></listitem>
+			<listitem value="forecolor" text="@Select_Color_ForeColor"></listitem>
+		</dropdown>
+		<panel dock="left" width="20" margin="0,0,0,5" vertical_align="middle" horizontal_align="center">
+			<panel width="16" height="16" jsml-local="previewpanel" tooltip="@Title_Preview" border_color="Gray" border_width="1">
+			</panel>
+		</panel>
+		<label dock="left" width="10" overflow="visible" text="@Tool_Erase_BrushSize" horizontal_align="center" vertical_align="middle"></label>
+		<panel jsml-local="scrollbarselect" jsml-base="scrollbarbase" dock="left" width="110" min="2" max="50" default="20">
+			<initialize>
+				<![CDATA[
+				self.set_default(ImageEditorDocument.GetOption("EraseBrushSize"));
+				self.CalcScrollbarPos();
+				function SizeChanged(size)
+				{
+					instance.UpdateDiameter(size);
+				}
+				function SizeRelease(size)
+				{
+					ImageEditorDocument.SetOption("EraseBrushSize", size);
+					ImageEditorDocument.$099();
+				}
+				self.set_action(SizeChanged);
+				self.set_release(SizeRelease);
+				]]>
+			</initialize>
+		</panel>
+		<label dock="left" width="10" overflow="visible" text="@Tool_Erase_Diameter" horizontal_align="center" vertical_align="middle"></label>
+		<label jsml-local="labeldiameter" dock="left" width="10" overflow="visible" horizontal_align="left" vertical_align="middle">
+			<initialize>
+				instance.UpdateDiameter(ImageEditorDocument.GetOption("EraseBrushSize"));
+			</initialize>
+		</label>
+		<method name="UpdateDiameter" arguments="val">
+			labeldiameter.set_text(Math.floor(val) + "px");
+		</method>
+	</panel>
+
+	<panel jsml-class="submenuredeye" width="460" height="20" vertical_align="middle">
+		<label dock="left" width="10" overflow="visible" text="@Tool_Erase_BrushSize" horizontal_align="center" vertical_align="middle"></label>
+		<panel jsml-local="scrollbarselect" jsml-base="scrollbarbase" dock="left" width="110" min="2" max="50" default="20">
+			<initialize>
+				<![CDATA[
+				self.set_default(ImageEditorDocument.GetOption("EraseBrushSize"));
+				self.CalcScrollbarPos();
+				function SizeChanged(size)
+				{
+					instance.UpdateDiameter(size);
+				}
+				function SizeRelease(size)
+				{
+					ImageEditorDocument.SetOption("EraseBrushSize", size);
+					ImageEditorDocument.$099();
+				}
+				self.set_action(SizeChanged);
+				self.set_release(SizeRelease);
+				]]>
+			</initialize>
+		</panel>
+		<label dock="left" width="10" overflow="visible" text="@Tool_Erase_Diameter" horizontal_align="center" vertical_align="middle"></label>
+		<label jsml-local="labeldiameter" dock="left" width="10" overflow="visible" horizontal_align="left" vertical_align="middle">
+			<initialize>
+				instance.UpdateDiameter(ImageEditorDocument.GetOption("EraseBrushSize"));
+			</initialize>
+		</label>
+		<method name="UpdateDiameter" arguments="val">
+			labeldiameter.set_text(Math.floor(val) + "px");
+		</method>
+	</panel>
+
+	<panel jsml-class="submenunewdoc" width="520">
+		<label dock="left" width="10" overflow="visible" text="Create Type:" vertical_align="middle"></label>
+		<dropdown dock="left" width="110">
+			<initialize>
+				<![CDATA[
+				if(typeof(window.FileReader)=="undefined")
+				{
+					//var items = self._items;
+					//self.del_item(items[items.length-1]);
+					self._sel.options[2] = null;
+				}
+				]]>
+			</initialize>
+			<attach name="click">
+				<![CDATA[
+				panel_1.set_visible(0);
+				panel_2.set_visible(0);
+				panel_3.set_visible(0);
+				var ct = self.get_text();
+				if(ct=="new")
+					panel_1.set_visible(1);
+				else if(ct=="url")
+					panel_2.set_visible(1);
+				else if(ct=="local")
+					panel_3.set_visible(1);
+				]]>
+			</attach>
+			<listitem text="Create Canvas" value="new"></listitem>
+			<listitem text="From URL" value="url"></listitem>
+			<listitem text="Local File" value="local"></listitem>
+		</dropdown>
+		<panel jsml-local="panel_1" dock="fill">
+			<label dock="left" width="60" text="File Name:" vertical_align="middle"></label>
+			<textbox jsml-local="txt_docname" dock="left" width="80" vertical_align="middle" text="Unnamed"></textbox>
+			<label dock="left" width="45" text="Width:" vertical_align="middle" margin="0,0,0,5"></label>
+			<textbox jsml-local="txt_width" dock="left" width="60" vertical_align="middle"></textbox>
+			<label dock="left" width="45" text="Height:" vertical_align="middle" margin="0,0,0,5"></label>
+			<textbox jsml-local="txt_height" dock="left" width="60" vertical_align="middle"></textbox>
+			<label dock="left" width="65" text="Fill Color:" vertical_align="middle" margin="0,0,0,5"></label>
+			<dropdown jsml-local="ddl_fillcolor" dock="left" width="90">
+				<listitem value="transparent" text="Transparent"></listitem>
+				<listitem value="backcolor" text="Back Color"></listitem>
+				<listitem value="forecolor" text="Fore Color"></listitem>
+			</dropdown>
+			<button dock="left" text="@Btn_Apply" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;" width="60" margin="0,0,0,5">
+				<attach name="click">
+					<![CDATA[
+					var w = txt_width.get_text();
+					var h = txt_height.get_text();
+					if(!w || !h)
+						return;
+					if(isNaN(w) || parseInt(w)<=0)
+					{
+						alert(ImageEditorDocument.Text["CreateWidth"]);
+						return;
+					}
+					if(isNaN(h) || parseInt(h)<=0)
+					{
+						alert(ImageEditorDocument.Text["CreateHeight"]);
+						return;
+					}
+					if(!txt_docname.get_text())
+					{
+						alert(ImageEditorDocument.Text["NeedFileName"]);
+						return;
+					}
+					if(!confirm(ImageEditorDocument.Text["ConfirmCreate"]))
+						return;
+						
+					var fillcolor = ddl_fillcolor.get_text();
+					var backcolor = ImageEditorDocument.GetOption("Ctx_BackColor");
+					var forecolor = ImageEditorDocument.GetOption("Ctx_ForeColor");
+					
+					ImageEditorDocument.$089();					
+					ImageEditorDocument.SetOption("FileName", txt_docname.get_text());
+					ImageEditorDocument._canvas.width = parseInt(w);
+					ImageEditorDocument._canvas.height = parseInt(h);
+					ImageEditorDocument.SetOption("CanvasRealSize", {width:parseInt(w),height:parseInt(h)});
+					ImageEditorDocument.$0115();
+					ImageEditorDocument._history = null;
+					ImageEditorDocument._history = jsml.class_create_instance("$027", [ImageEditorDocument]);
+					ImageEditorDocument._history.set_name(ImageEditorDocument.Text["Layer_Background"]);
+					if(fillcolor!="transparent")
+					{
+						var layer = jsml.class_create_instance("$042", [ImageEditorDocument]);
+						layer.set_name(ImageEditorDocument.Text["Layer_Background"]);
+						layer._2d.fillStyle = fillcolor=="backcolor"?backcolor:forecolor;
+						layer._2d.fillRect(0,0,layer._canvas.width,layer._canvas.height);
+						ImageEditorDocument._history._layers[0] = layer;
+					}
+					ImageEditorDocument.$052([ImageEditorDocument._history]);
+					ImageEditorDocument.set_SelectedTool(null);
+					ImageEditorDocument._canvas.calcpos();
+					//ImageEditorDocument.$0116();
+					instance.set_visible(0);
+					]]>
+				</attach>
+			</button>
+		</panel>
+
+		<panel jsml-local="panel_2" dock="fill" visible="0">
+			<label dock="left" width="70" text="File Name:" vertical_align="middle"></label>
+			<textbox jsml-local="txt_docname2" dock="left" width="90" vertical_align="middle" text="Unnamed"></textbox>
+			<label dock="left" width="30" text="Url:" vertical_align="middle" margin="0,0,0,5"></label>
+			<textbox jsml-local="txt_imageurl" dock="left" width="240" vertical_align="middle"></textbox>
+			<button dock="left" text="@Btn_Apply" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;" width="60" margin="0,0,0,5">
+				<attach name="click">
+					<![CDATA[
+					if(!txt_docname2.get_text())
+					{
+						alert(ImageEditorDocument.Text["NeedFileName"]);
+						return;
+					}
+					if(!txt_imageurl.get_text())
+					{
+						alert(ImageEditorDocument.Text["NeedUrl"]);
+						return;
+					}
+					if(!confirm(ImageEditorDocument.Text["ConfirmCreate"]))
+						return;
+					
+					ImageEditorDocument.LoadUrl(txt_docname2.get_text(),txt_imageurl.get_text());
+				  
+					instance.set_visible(0);
+					]]>
+				</attach>
+			</button>
+		</panel>
+		<panel jsml-local="panel_3" dock="fill" visible="0">
+			<button dock="left" text="Select File" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;" width="90" margin="0,0,0,5">
+				<attach name="click">
+					<![CDATA[
+					var input=document.getElementById("imageeditorloadfile");
+					if(!input.files)
+					{
+						alert(ImageEditorDocument.Text["FileAPI"]);
+						return;
+					}
+					input.onchange=function()
+					{
+						var file=input.files[0];
+						ImageEditorDocument.$0110(file,true);
+						instance.set_visible(0);
+					}
+					input.click();
+					]]>
+				</attach>
+			</button>
+		</panel>
+	</panel>
+
+	<panel jsml-class="submenuresize" width="550">
+		<label dock="left" width="10" overflow="visible" text="@Tool_Resize_Mode" vertical_align="middle"></label>
+		<dropdown jsml-local="ddl_mode" dock="left" width="80">
+			<attach name="click">
+				<![CDATA[
+				if(self.get_text()=="canvas")
+				{
+					positionpanel.set_visible(1);
+				}
+				else
+				{
+					positionpanel.set_visible(0);
+				}
+				]]>
+			</attach>
+			<listitem value="image" text="@Select_Resize_Image"></listitem>
+			<listitem value="canvas" text="@Select_Resize_Canvas"></listitem>
+		</dropdown>
+		<panel jsml-local="positionpanel" dock="left" width="170" visible="0">
+			<label dock="left" width="10" overflow="visible" text="@Tool_Resize_Position" tooltip="@Title_Resize_Position" vertical_align="middle" margin="0,0,0,5"></label>
+			<dropdown jsml-local="ddl_position" dock="left" width="110">			
+				<listitem value="center" text="@Select_Resize_Center"></listitem>
+				<listitem value="topleft" text="@Select_Resize_TL"></listitem>
+				<listitem value="topcenter" text="@Select_Resize_TC"></listitem>
+				<listitem value="topright" text="@Select_Resize_TR"></listitem>
+				<listitem value="middleleft" text="@Select_Resize_ML"></listitem>
+				<listitem value="middleright" text="@Select_Resize_MR"></listitem>
+				<listitem value="bottomleft" text="@Select_Resize_BL"></listitem>
+				<listitem value="bottomcenter" text="@Select_Resize_BC"></listitem>
+				<listitem value="bottomright" text="@Select_Resize_BR"></listitem>
+			</dropdown>
+		</panel>
+		<label dock="left" width="10" overflow="visible" text="@Tool_Width" vertical_align="middle" margin="0,0,0,5"></label>
+		<textbox jsml-local="txt_width" dock="left" width="60" vertical_align="middle">
+			<initialize>
+				<![CDATA[
+				ImageEditorDocument.$087(self._input);				
+				self._input.onblur = function()
+				{
+					instance.CheckConstrain(self);
+				}
+				]]>
+			</initialize>
+		</textbox>
+		<label dock="left" width="10" overflow="visible" text="@Tool_Height" vertical_align="middle" margin="0,0,0,5"></label>
+		<textbox jsml-local="txt_height" dock="left" width="60" vertical_align="middle">
+			<initialize>
+				<![CDATA[
+				ImageEditorDocument.$087(self._input);
+				self._input.onblur = function()
+				{
+					instance.CheckConstrain(self);
+				}
+				]]>
+			</initialize>
+		</textbox>
+		<checkbox jsml-local="cbx_constrain" dock="left" width="20" vertical_align="middle" margin="0,0,2,5" checked="true"></checkbox>
+		<label dock="left" width="10" overflow="visible" text="@Tool_Constrained_Size" vertical_align="middle"></label>
+		<button dock="left" text="@Btn_Apply" width="60" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;" margin="0,0,0,5">
+			<attach name="click">
+				<![CDATA[
+				var w = txt_width.get_text();
+				var h = txt_height.get_text();
+				if(!w || !h)
+					return;
+				if(isNaN(w) || parseInt(w)<=0)
+				{
+					alert(ImageEditorDocument.Text["CreateWidth"]);
+					return;
+				}
+				if(isNaN(h) || parseInt(h)<=0)
+				{
+					alert(ImageEditorDocument.Text["CreateHeight"]);
+					return;
+				}
+				
+				var mode = ddl_mode.get_text();
+				if(mode=="canvas")
+				{
+					var pos = ddl_position.get_text();
+					ImageEditorDocument.$070(parseInt(w),parseInt(h),pos);
+				}
+				else
+				{
+					ImageEditorDocument.$084(parseInt(w),parseInt(h));
+				}	
+				//ImageEditorDocument.set_SelectedTool(null);
+				//instance.set_visible(0);
+				]]>
+			</attach>
+		</button>
+		<initialize>
+			<![CDATA[
+			var rs = ImageEditorDocument.GetOption("CanvasRealSize");
+			txt_width.set_text(rs.width);
+			txt_height.set_text(rs.height);
+			txt_width.oldval = rs.width;
+			txt_height.oldval = rs.height;
+			]]>
+		</initialize>
+		<method name="CheckConstrain" arguments="txt_ctl">
+			<![CDATA[
+			var cons = cbx_constrain.get_checked();
+			if(!cons) 
+			{
+				if(txt_ctl.get_text()) 
+					txt_ctl.oldval = parseInt(txt_ctl.get_text());
+				else
+					txt_ctl.set_text(txt_ctl.oldval);
+				return;
+			}
+			var txt_ctl2;
+			if(txt_ctl==txt_width)
+				txt_ctl2 = txt_height;
+			else
+				txt_ctl2 = txt_width;
+			if(!txt_ctl2.get_text() || !txt_ctl.get_text() || txt_ctl.get_text() == txt_ctl.oldval)
+				return;
+			var val1 = parseInt(txt_ctl.get_text());
+			var val2 = parseInt(parseInt(txt_ctl2.get_text()) * val1 / txt_ctl.oldval);
+			txt_ctl.oldval = val1;
+			txt_ctl2.oldval = val2;
+			txt_ctl2.set_text(val2);
+			]]>
+		</method>
+	</panel>
+
+	<panel jsml-class="submenuzoom" width="300">
+		<label dock="left" width="10" overflow="visible" text="@Tool_Zoom_Mode" vertical_align="middle"></label>
+		<panel jsml-local="mode1" dock="left" width="24" border_color="gray" back_color="white" border_width="1" tooltip="@Title_ZoomIn">
+			<image src="images/zoomin.png" dock="fill" vertical_align="middle" horizontal_align="center">
+				<attach name="click">
+					mode2.set_border_color("transparent");
+					mode2.set_back_color("");
+					mode1.set_border_color("gray");
+					mode1.set_back_color("white");
+					ImageEditorDocument._zoommode = "in";
+				</attach>
+			</image>
+		</panel>
+		<panel jsml-local="mode2" dock="left" width="24" margin="0,5,0,5" border_color="transparent" border_width="1" tooltip="@Title_ZoomOut">
+			<image src="images/zoomout.png" dock="fill" vertical_align="middle" horizontal_align="center">
+				<attach name="click">
+					mode1.set_border_color("transparent");
+					mode1.set_back_color("");
+					mode2.set_border_color("gray");
+					mode2.set_back_color("white");
+					ImageEditorDocument._zoommode = "out";
+				</attach>
+			</image>
+		</panel>
+		<button text="@Btn_ActualSize" dock="left" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;" margin="0,0,0,5" width="80">
+			<attach name="click">
+				<![CDATA[
+				ImageEditorDocument.SetOption("ZoomCount",0);
+				ImageEditorDocument.SetOption("ZoomX", 0);
+				ImageEditorDocument.SetOption("ZoomY", 0);
+				ImageEditorDocument.$0116();
+				ImageEditorDocument._canvas.calcpos();
+				]]>
+			</attach>
+		</button>
+		<initialize>
+			<![CDATA[
+			ImageEditorDocument._zoommode = "in";
+			]]>
+		</initialize>
+	</panel>
+
+	<panel jsml-class="submenusave" width="400">
+		<label dock="left" width="10" overflow="visible" text="@Tool_Save_FileName" vertical_align="middle"></label>
+		<textbox jsml-local="txt_filename" dock="left" width="100" vertical_align="middle">
+			<initialize>
+				<![CDATA[
+				self.set_text(ImageEditorDocument.GetOption("FileName")||"");
+				]]>
+			</initialize>
+		</textbox>
+		<label dock="left" width="10" overflow="visible" text="@Tool_Save_FileType" vertical_align="middle" margin="0,0,0,5"></label>
+		<dropdown jsml-local="ddl_type" dock="left" width="50">
+			<initialize>
+				<![CDATA[
+				self.set_text(ImageEditorDocument.GetOption("FileType")||"png");
+				if(ImageEditorDocument.GetOption("LockFileName")==true)
+				{
+					txt_filename._input.setAttribute("readonly","readonly");
+					ddl_type._sel.disabled = true;
+				}
+				]]>
+			</initialize>
+			<listitem value="png" text="png"></listitem>
+			<listitem value="jpg" text="jpg"></listitem>
+			<listitem value="gif" text="gif"></listitem>
+			<listitem value="bmp" text="bmp"></listitem>
+		</dropdown>
+		<label dock="left" jsml-local="txt_overwrite" width="10" overflow="visible" text="@Tool_Save_Overwrite" vertical_align="middle" margin="0,0,0,5"></label>
+		<dropdown jsml-local="ddl_overwrite" dock="left" width="60">
+			<initialize>
+				<![CDATA[				
+				self.set_text(ImageEditorDocument.GetOption("Overwrite"));
+				if(ImageEditorDocument.GetOption("LockOverwrite")==true)
+				{
+					txt_overwrite.set_visible(0);
+					self.set_visible(0);
+					//self._sel.disabled = true;
+				}
+				]]>
+			</initialize>
+			<listitem value="false" text="@Select_Bool_False"></listitem>
+			<listitem value="true" text="@Select_Bool_True"></listitem>
+		</dropdown>
+		<button text="@Btn_Save" dock="left" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;" margin="0,0,0,5" width="50">
+			<attach name="click">
+				<![CDATA[
+				var filename = txt_filename.get_text();
+				filename = filename.replace(/(^\s*)/g, "").replace(/(\s*$)/g, "");
+				if(!filename)
+				{
+					alert(ImageEditorDocument.Text["NeedFileName"]);
+					return;
+				}
+				var filetype = ddl_type.get_text();
+				var overwrite = ddl_overwrite.get_text();
+				
+				ImageEditorDocument.SetOption("ZoomCount",0);
+				ImageEditorDocument.SetOption("ZoomX", 0);
+				ImageEditorDocument.SetOption("ZoomY", 0);
+				ImageEditorDocument.$0116();
+				
+				//save
+				ImageEditorDocument.$050(filename, filetype, overwrite);
+				]]>
+			</attach>
+		</button>
+	</panel>
+
+	<panel jsml-class="submenupolygon" dock="fill" vertical_align="middle">
+		<label dock="left" width="10" overflow="visible" text="@Tool_Polygon_Sides" vertical_align="middle"></label>
+		<textbox dock="left" width="30" text="5">
+			<initialize>
+				<![CDATA[
+				self.set_text(ImageEditorDocument.GetOption("Ctx_PolygonSides"));
+				self._input.onkeyup = function()
+				{
+					var val = self.get_text();
+					var invalidChars = /[^0-9]/gi;
+					if(invalidChars.test(val)) {
+						self.set_text(val.replace(invalidChars,""));
+					}						  
+				}
+				self._input.onblur = function()
+				{
+					var val = self.get_text();
+					if(!val || parseInt(val)<3)
+					{
+						self.set_text("3");						
+					}
+					val = parseInt(self.get_text());
+					ImageEditorDocument.SetOption("Ctx_PolygonSides",val);
+				}
+				]]>
+			</initialize>
+		</textbox>
+		<label dock="left" width="10" horizontal_align="center" text="|" text_color="gray"></label>
+		<panel dock="left" jsml-base="subitemfilltype"></panel>
+		<label dock="left" width="10" horizontal_align="center" text="|" text_color="gray"></label>
+		<panel dock="left" jsml-base="subitempattern" width="150" vertical_align="middle"></panel>
+		<label dock="left" width="10" horizontal_align="center" text="|" text_color="gray"></label>
+		<panel dock="left" jsml-base="subitemcompositeoperation" width="300"></panel>
+	</panel>
+	
+	<panel jsml-class="submenustar" dock="fill" vertical_align="middle">
+		<label dock="left" width="10" overflow="visible" text="@Tool_Star_Points" vertical_align="middle"></label>
+		<textbox dock="left" width="30" text="5">
+			<initialize>
+				<![CDATA[
+				self.set_text(ImageEditorDocument.GetOption("Ctx_StarPoints"));
+				self._input.onkeyup = function()
+				{
+					var val = self.get_text();
+					var invalidChars = /[^0-9]/gi;
+					if(invalidChars.test(val)) {
+						self.set_text(val.replace(invalidChars,""));
+					}				  
+				}
+				self._input.onblur = function()
+				{
+					var val = self.get_text();
+					if(!val || parseInt(val)<3)
+					{
+						self.set_text("3");						
+					}
+					val = parseInt(self.get_text());
+					ImageEditorDocument.SetOption("Ctx_StarPoints",val);
+				}
+				]]>
+			</initialize>
+		</textbox>
+		<label dock="left" width="10" overflow="visible" text="@Tool_Star_Ratio" vertical_align="middle" margin="0,0,0,5"></label>
+		<panel jsml-local="scrollbarselect" jsml-base="scrollbarbase" dock="left" width="90" min="0" max="1" default="0.4">
+			<initialize>
+				<![CDATA[
+				self.set_default(ImageEditorDocument.GetOption("Ctx_StarRatio")+"");
+				self.CalcScrollbarPos();
+				function SizeChanged(size)
+				{
+					if(size.toString().length>4)
+						size = parseFloat(size).toFixed(2);
+					instance.UpdateRatio(size);
+					ImageEditorDocument.SetOption("Ctx_StarRatio", parseFloat(size));
+				}
+				self.set_action(SizeChanged);
+				]]>
+			</initialize>
+		</panel>
+		<label jsml-local="labelratio" dock="left" width="30" overflow="visible" horizontal_align="left" margin="0,0,0,3" vertical_align="middle">
+			<initialize>
+				instance.UpdateRatio(ImageEditorDocument.GetOption("Ctx_StarRatio")+"");
+			</initialize>
+		</label>
+		<label dock="left" width="10" horizontal_align="center" text="|" text_color="gray"></label>
+		<panel dock="left" jsml-base="subitemfilltype"></panel>
+		<label dock="left" width="10" horizontal_align="center" text="|" text_color="gray"></label>
+		<panel dock="left" jsml-base="subitempattern" width="150" vertical_align="middle"></panel>
+		<label dock="left" width="10" horizontal_align="center" text="|" text_color="gray"></label>
+		<panel dock="left" jsml-base="subitemcompositeoperation" width="300"></panel>
+		<method name="UpdateRatio" arguments="val">
+			labelratio.set_text(val);
+		</method>
+	</panel>
+
+	<panel jsml-class="submenustamp" dock="fill" vertical_align="middle">
+		<label dock="left" width="10" overflow="visible" text="@Tool_Erase_Diameter" vertical_align="middle"></label>
+		<panel jsml-local="scrollbarselect" jsml-base="scrollbarbase" dock="left" width="120" min="1" max="200" default="20">
+			<initialize>
+				<![CDATA[
+				self.set_default(ImageEditorDocument.GetOption("Ctx_StampDiameter"));
+				self.CalcScrollbarPos();
+				function SizeChanged(size)
+				{
+					instance.UpdateDiameter(size);
+				}
+				function SizeRelease(size)
+				{
+					ImageEditorDocument.SetOption("Ctx_StampDiameter", parseInt(size));
+				}
+				self.set_action(SizeChanged);
+				self.set_release(SizeRelease);
+				]]>
+			</initialize>
+		</panel>
+		<label jsml-local="labeldiameter" dock="left" width="40" overflow="visible" margin="0,0,0,5" horizontal_align="left" vertical_align="middle">
+			<initialize>
+				instance.UpdateDiameter(ImageEditorDocument.GetOption("Ctx_StampDiameter"));
+			</initialize>
+		</label>
+		<label dock="left" width="10" overflow="visible" text="@Tool_Stamp_Hardness" margin="0,0,0,10" vertical_align="middle"></label>
+		<panel jsml-local="scrollbarhardness" jsml-base="scrollbarbase" dock="left" width="110" min="0" max="100" default="100">
+			<initialize>
+				<![CDATA[
+				self.set_default(ImageEditorDocument.GetOption("Ctx_StampHardness"));
+				self.CalcScrollbarPos();
+				function SizeChanged(size)
+				{
+					instance.UpdateHardness(size);
+				}
+				function SizeRelease(size)
+				{
+					ImageEditorDocument.SetOption("Ctx_StampHardness", parseInt(size));
+				}
+				self.set_action(SizeChanged);
+				self.set_release(SizeRelease);
+				]]>
+			</initialize>
+		</panel>
+		<label jsml-local="labelhardness" dock="left" width="35" overflow="visible" margin="0,0,0,5" horizontal_align="left" vertical_align="middle">
+			<initialize>
+				instance.UpdateHardness(ImageEditorDocument.GetOption("Ctx_StampHardness"));
+			</initialize>
+		</label>
+		<label dock="left" width="10" overflow="visible" text="@Tool_Stamp_Alpha" margin="0,0,0,10" vertical_align="middle"></label>
+		<panel jsml-local="scrollbaralpha" jsml-base="scrollbarbase" dock="left" width="110" min="0" max="100" default="100">
+			<initialize>
+				<![CDATA[
+				self.set_default(ImageEditorDocument.GetOption("Ctx_StampAlpha"));
+				self.CalcScrollbarPos();
+				function SizeChanged(size)
+				{
+					instance.UpdateAlpha(size);
+				}
+				function SizeRelease(size)
+				{
+					ImageEditorDocument.SetOption("Ctx_StampAlpha", parseInt(size));
+				}
+				self.set_action(SizeChanged);
+				self.set_release(SizeRelease);
+				]]>
+			</initialize>
+		</panel>
+		<label jsml-local="labelalpha" dock="left" width="35" overflow="visible" margin="0,0,0,5" horizontal_align="left" vertical_align="middle">
+			<initialize>
+				instance.UpdateAlpha(ImageEditorDocument.GetOption("Ctx_StampAlpha"));
+			</initialize>
+		</label>
+		<checkbox dock="left" width="20" margin="0,0,0,5">
+			<initialize>
+				<![CDATA[
+				self.set_checked(ImageEditorDocument.GetOption("Ctx_StampAlignment"));
+				]]>
+			</initialize>
+			<attach name="click">
+				ImageEditorDocument.SetOption("Ctx_StampAlignment",self.get_checked())
+			</attach>
+		</checkbox>
+		<label dock="left" width="10" overflow="visible" vertical_align="middle" text="@Tool_Stamp_Alignment"></label>
+		<method name="UpdateDiameter" arguments="val">
+			labeldiameter.set_text(Math.floor(val) + "px");
+		</method>
+		<method name="UpdateHardness" arguments="val">
+			labelhardness.set_text(Math.floor(val) + "%");
+		</method>
+		<method name="UpdateAlpha" arguments="val">
+			labelalpha.set_text(Math.floor(val) + "%");
+		</method>
+	</panel>
+
+	<panel jsml-class="subitemdropdown" back_color="white" border_color="rgb(238,238,238)" border_width="1">
+		<image dock="right" width="13" src="images/tbdown.gif" horizontal_align="center">
+			<attach name="mousehover">
+				<![CDATA[
+				ImageEditorDocument.$039(self.get_element(),"top", "#eaf6fd","#a9dbf6");
+				]]>
+			</attach>
+			<attach name="mouseleave">
+				<![CDATA[
+				self.get_element().style.background = "";
+				if(jsml.msie) self.get_element().style.filter = "";
+				]]>
+			</attach>
+		</image>
+		<label jsml-local="txt_field" dock="fill" vertical_align="middle" horizontal_align="left" padding="0,2,0,2"></label>
+		<property name="text">
+			<get>return txt_field.get_text();</get>
+			<set>return txt_field.set_text(value);</set>
+		</property>
+	</panel>
+
+	<execute>
+		<![CDATA[
+		plugin.LoadUI = function(ctrl,menuname,callback)
+		{
+			var item = jsml.class_create_instance(menuname);
+			if(callback)
+				callback(ctrl,item);
+		}
+		]]>
+	</execute>
+</jsml>

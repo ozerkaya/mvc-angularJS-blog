@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../core/jsml.xsd">
+
+	<execute>
+		plugin.header_attribute_name="class";
+	</execute>
+
+	<panel jsml-class="elementtoolbar_tag_a" overflow="visible" width="10" height="10" dock ="fill" padding="5,6,7,6">
+    <label dock="left" text="@GOTOLINK" padding="0,2,0,2" overflow_x="visible" height="10" width="10" />
+    <label dock="left" text="http://" text_color="darkblue" vertical_align="middle" padding="0,3,0,3" overflow_x="visible" height="10" width="50">
+      <attach name="loadvalue">
+        <![CDATA[
+				if(!plugin.selectednode)return;
+				var s=plugin.selectednode.GetAttribute("href")||"";
+				if(s.length>77)
+				{
+					self.set_text(s.substring(0,73)+"....");
+					self.set_tooltip(s);
+				}
+				else
+				{
+					self.set_text(s);
+					self.set_tooltip(null);
+				}
+				self.set_cursor("pointer");
+				self._content.style.textDecoration="underline";
+				]]>
+      </attach>
+      <attach name="click">
+        var url=plugin.selectednode.GetAttribute("href");
+        if(url)window.open(url);
+      </attach>
+    </label>
+    <label dock="left" text="-" padding="0,2,0,2" overflow_x="visible" height="10" width="10" />
+    <label dock="left" text="@CHANGE" text_color="darkblue" vertical_align="middle" padding="0,3,0,3" overflow_x="visible" height="10" width="10">
+      <attach name="loadvalue">
+        self.set_cursor("pointer");
+        self._content.style.textDecoration="underline";
+      </attach>
+      <attach name="click">
+        editor.ExecUICommand(null,"InsertLink");
+      </attach>
+    </label>
+    <label dock="left" text="-" padding="0,2,0,2" overflow_x="visible" height="10" width="10" />
+    <label dock="left" text="@REMOVE" text_color="darkblue" vertical_align="middle" padding="0,3,0,3" overflow_x="visible" height="10" width="10">
+      <attach name="loadvalue">
+        self.set_cursor("pointer");
+        self._content.style.textDecoration="underline";
+      </attach>
+      <attach name="click">
+        editor.ExecUICommand(null,"UnLink");
+      </attach>
+    </label>
+
+  </panel>
+
+  <panel jsml-class="elementtoolbar">
+
+    <panel jsml-local="toolbar" overflow="visible" width="10" height="10" back_color="#E1EFFF">
+      <initialize>
+        self._estyle.border="solid 1px #A8CDFC";
+      </initialize>
+		</panel>
+
+		<method name="jsml_append" arguments="panel">
+			panel._dommode='absolute';
+			panel.set_parent(document.body);
+			self.hidepanel(panel,true);
+			if(!self.panels)self.panels=[];
+			self.panels.push(panel);
+		</method>
+		<method name="invoke_recursive" overrideas="panel_invoke_recursive">
+			<![CDATA[
+			self.panel_invoke_recursive();
+			for(var i=0;i<self.panels.length;i++)
+				self.panels[i].invoke_recursive.apply(self.panels[i],arguments);
+			]]>
+		</method>
+
+		<method name="hidepanel" arguments="panel,hidenow">
+			<![CDATA[
+			if(panel.ishided)return;
+			panel.ishided=true;
+			function hideit()
+			{
+				panel.set_visibility("hidden");
+				panel._estyle.left="-1000px";
+				panel._estyle.top="-1000px";
+			}
+			if(hidenow)
+			{
+				hideit();
+				return;
+			}
+			self.setDelegateTimeout(function()
+			{
+				if(!panel.ishided)return;
+				hideit();
+			},5);
+			]]>
+		</method>
+		<method name="showpanel" arguments="panel,pos,mode,edge,xoffset,yoffset">
+			<![CDATA[
+
+			panel.ishided=false;
+			panel.set_visibility("visible");
+			
+			var pew=pos.width;
+			var peh=pos.height;
+			
+			if(edge=="w"||edge=="s")panel.set_width(pew);
+			if(edge=="h"||edge=="s")panel.set_height(peh);
+			
+			var w=panel.get_current_width();
+			var h=panel.get_current_height();
+
+			panel._estyle.zIndex=editor._config.ctrltool_zindex;
+		
+			pos={left:pos.left,top:pos.top}
+			
+			var nomovey,nomovex;
+
+			var fmpair=mode?mode.split('-'):[];
+
+			switch(fmpair[0])
+			{
+				case "t":
+					nomovey=true;
+					pos.top+=-h;
+					break;
+				case "b":
+					nomovey=true;
+					pos.top+=peh;
+					break;
+				case "l":
+					nomovex=true;
+					pos.left+=-w;
+					break;
+				case "r":
+					nomovex=true;
+					pos.left+=pew;
+					break;
+			}
+			
+			switch(fmpair[1])
+			{
+				case "l":
+					if(pew<w)pos.left+=pew-w;
+					break;
+				case "r":
+					if(pew>w)pos.left+=pew-w;
+					break;
+				case "t":
+					if(peh<h)pos.top+=peh-h;
+					break;
+				case "b":
+					if(peh>h)pos.top+=peh-h;
+					break;
+				case "c":
+				case "m":
+					if(fmpair[0]=="t"||fmpair[0]=="b")
+					{
+						pos.left+=Math.floor((pew-w)/2)
+					}
+					else
+					{
+						pos.top+=Math.floor((peh-h)/2)
+					}
+					break;
+			}
+			
+
+			if(xoffset)pos.left+=xoffset;
+			if(yoffset)pos.top+=yoffset;
+			
+			if(pos.left<10)pos.left=10
+
+			panel._estyle.left=pos.left+"px";
+			panel._estyle.top=pos.top+"px";
+			
+			]]>
+		</method>
+
+		<method name="calc_ctrl_pos" arguments="ctrl,autoadjust">
+			<![CDATA[
+			var viewnode=ctrl.GetViewNode();
+
+			var fp=jsml.get_scrollposition(editor._config.skin_frame);			
+			var pos=jsml.get_clientposition(viewnode,editor.GetWindow());
+
+			pos.width=viewnode.offsetWidth;
+			pos.height=viewnode.offsetHeight;
+			
+			var zoom=parseInt(editor.GetWindow().document.body.style.zoom)||100;
+			if(zoom!=100)
+			{
+				pos.top=pos.top*zoom/100;
+				pos.left=pos.left*zoom/100;
+				pos.width=pos.width*zoom/100;
+				pos.height=pos.height*zoom/100;
+			}
+			
+			if(autoadjust)
+			{
+				fp.width=editor._config.skin_frame.offsetWidth-1;
+				fp.height=editor._config.skin_frame.offsetHeight-1;
+			
+				pos.left-=1;
+				pos.top-=1;
+				pos.width+=2;
+				pos.height+=2;
+				
+				if(pos.top<0)
+				{
+					pos.height-=-pos.top;
+					pos.top=0;
+				}
+				if(pos.left<0)
+				{
+					pos.left=0;
+					pos.width-=-pos.left;
+				}
+				
+				if(pos.left+pos.width>fp.width)
+				{
+					var sub=pos.left+pos.width-fp.width;
+					pos.width-=sub;
+				}
+				if(pos.top+pos.height>fp.height)
+				{
+					var sub=pos.top+pos.height-fp.height;
+					pos.height-=sub;
+				}
+				
+			}
+			
+			if(pos.width<0)pos.width=0;
+			if(pos.height<0)pos.height=0;
+			
+			pos.left+=fp.left;
+			pos.top+=fp.top;
+			return pos;
+			]]>
+
+		</method>
+		<method name="startmonitor">
+			<![CDATA[
+			
+			plugin.selectedprovider=editor.CreateControlProvider(plugin.selectednode);
+			
+			self.docversion=null;
+			self.docstop=null;
+			self.lastupdatetime=null;
+			self.lastpos=null;
+			self.updatepos();
+
+			]]>
+		</method>
+		<method name="updatepos">
+			<![CDATA[
+			
+			clearTimeout(self.updateposid);
+			self.updateposid=self.setDelegateTimeout(self.delegate_updatepos,10);
+			
+			var now=new Date().getTime();
+			var ver=editor.GetContentVersion();
+			var doc=editor.GetWindow().document;
+			var sct=Math.max(doc.body.scrollTop,doc.documentElement.scrollTop);
+			if(self.docversion==ver&&self.docstop==sct)
+			{
+				if(now-(self.lastupdatetime||0)<200)
+					return;
+			}
+
+			self.docversion=ver;
+			self.docstop=sct
+			self.lastupdatetime=now;
+
+			var pos;
+			
+			try
+			{
+				pos=self.calc_ctrl_pos(plugin.selectednode,true);
+			}
+			catch(x)
+			{
+				return;
+			}
+			
+			if(self.lastpos&&self.lastpos.top==pos.top&&self.lastpos.left==pos.left
+				&&self.lastpos.width==pos.width&&self.lastpos.height==pos.height)
+			{
+				return;
+			}
+			
+			self.lastpos=pos;
+			
+			if(pos.width<1||pos.height<1)
+			{
+				for(var i=0;i<self.panels.length;i++)
+					self.hidepanel(self.panels[i]);
+				return;
+			}
+			
+			var ctrlpos=pos;
+			
+			var clsname="elementtoolbar_tag_"+plugin.selectednode.GetNameLower();
+			if(jsml.class_exists(clsname))
+			{
+				var keyname="pageinst_"+plugin.selectednode.GetNameLower();
+				self.pageinst=self[keyname];
+				if(!self.pageinst)
+				{
+					self.pageinst=jsml.class_create_instance(clsname);
+					self.pageinst.invoke_recursive("editor_ready",editor);
+					self[keyname]=self.pageinst;
+				}
+				if(self.pageinst.get_parent()==null)
+				{
+					toolbar.append_child(self.pageinst);
+					self.pageinst.invoke_recursive("loadvalue");
+				}
+				self.showpanel(toolbar,pos,"b-c" ,"")
+			}
+			
+			
+
+			]]>
+		</method>
+		<method name="stopmonitor">
+			<![CDATA[
+			clearTimeout(self.updateposid);
+			for(var i=0;i<self.panels.length;i++)
+				self.hidepanel(self.panels[i]);
+			self.lastpos=null;
+			if(self.pageinst)self.pageinst.set_parent(null);
+			]]>
+		</method>
+
+
+		<method name="updatecontrols">
+			<![CDATA[
+			if(!editor.IsTabEdit())
+			{
+				if(plugin.selectednode)
+				{
+					self.stopmonitor();
+					plugin.selectednode=null;
+				}
+				return;
+			}
+
+			var node=null;
+			var control;
+			
+			if(!editor.GetDragControl())
+			{
+				node=editor.GetPointNode();
+				
+				var link=editor.IsIncludedByTag("a");
+				if(editor._config.showlinkbar&&link&&link.GetAttribute("href"))
+				{
+					if(editor.GetSelectionType()!="Control")
+					{
+						control=link;
+					}
+				}
+			}
+			
+			if(plugin.selectednode==control)
+			{
+				return;
+			}
+			
+			jsml.suppend_layout();
+			
+			if(plugin.selectednode)
+			{
+				self.stopmonitor();
+				plugin.selectednode=null;
+			}
+			
+			if(control)
+			{
+				plugin.selectednode=control;
+				toolbar._rtenode=plugin.selectednode;
+				self.startmonitor();
+			}
+			
+			jsml.resume_layout();
+			]]>
+		</method>
+
+		<initialize>
+			<![CDATA[
+			
+			self.delegate_updatepos=self.delegate(self.updatepos);
+			
+			editor.AttachEvent("SelectionChanged",function(editor,e)
+			{
+				self.updatecontrols();
+			});
+			editor.AttachEvent("TabModeChanged",function(editor,e)
+			{
+				self.updatecontrols();
+			});
+			
+			]]>
+		</initialize>
+	</panel>
+
+	<execute>
+		<![CDATA[
+		plugin.Execute=function(element,arg1,arg2)
+		{
+			
+		}
+		plugin.elementtoolbar=jsml.class_create_instance("elementtoolbar");
+		plugin.elementtoolbar.invoke_recursive("editor_ready",editor);
+		]]>
+	</execute>
+
+
+</jsml>

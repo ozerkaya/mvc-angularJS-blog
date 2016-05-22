@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../core/jsml.xsd">
+
+
+	<panel jsml-class="sidebar_insertform" jsml-base="sidebarmenu" dock="fill">
+		<panel jsml-base="sidebarmenuitem" text="Back">
+			<attach name="click">
+				sidebar.back();
+			</attach>
+		</panel>
+
+		<panel jsml-base="sidebarmenuitem" command="InsertForm" text="@INSERTFORM" />
+		<panel jsml-base="sidebarmenuitem" command="InsertTextarea" text="@INSERTTEXTAREA" imagename="textarea" />
+		<panel jsml-base="sidebarmenuitem" command="InsertInpText" text="@INSERTINPTEXT" imagename="textbox" />
+		<panel jsml-base="sidebarmenuitem" command="InsertInpPassword" text="@INSERTINPPASSWORD" imagename="passwordfield" />
+		<panel jsml-base="sidebarmenuitem" command="InsertInpHidden" text="@INSERTINPHIDDEN" imagename="hiddenfield" />
+		<panel jsml-base="sidebarmenuitem" command="InsertInpFile" text="@INSERTINPFILE" imagename="document"/>
+		<panel jsml-base="sidebarmenuitem" command="InsertInpImage" text="@INSERTINPIMAGE" imagename="image" />
+		<panel jsml-base="sidebarmenuitem" command="InsertInpReset" text="@INSERTINPRESET" imagename="reset" />
+		<panel jsml-base="sidebarmenuitem" command="InsertInpSubmit" text="@INSERTINPSUBMIT" imagename="submit" />
+		<panel jsml-base="sidebarmenuitem" command="InsertRadioBox" text="@INSERTRADIOBOX" imagename="optionbutton" />
+		<panel jsml-base="sidebarmenuitem" command="InsertCheckbox" text="@INSERTCHECKBOX" imagename="checkbox" />
+		<panel jsml-base="sidebarmenuitem" command="InsertInpButton" text="@INSERTINPBUTTON" imagename="pushbutton" />
+		<panel jsml-base="sidebarmenuitem" command="InsertButton" text="@INSERTBUTTON" imagename="pushbutton" />
+		<panel jsml-base="sidebarmenuitem" command="InsertDropDown" text="@INSERTDROPDOWN" imagename="dropdownbox" />
+		<panel jsml-base="sidebarmenuitem" command="InsertListbox" text="@INSERTLISTBOX" imagename="listbox" />
+
+	</panel>
+
+	<panel jsml-base="sidebar_insertform" />
+
+
+</jsml>

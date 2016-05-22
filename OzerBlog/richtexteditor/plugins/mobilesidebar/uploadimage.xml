@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../core/jsml.xsd">
+
+	<panel jsml-class="uploadprogresspanel" dock="fill" padding="12">
+
+		<panel dock="fill">
+			<panel dock="bottom" overflow="visible">
+				<panel dock="top" height="30">
+					<panel dock="left" width="300" border_color="gray" border_width="1" margin="5">
+						<panel jsml-local="progressblock" dock="left" background="url({folder}dialogs/uploadprogress/continuous.gif) repeat-x" width="0" />
+					</panel>
+				</panel>
+				<panel dock="top" overflow="visible" height="10" padding="0,3,0,3">
+					<label dock="top" jsml-local="progresslabel1" height="16" margin="2"/>
+					<label dock="top" jsml-local="progresslabel2" height="16" margin="2"/>
+				</panel>
+			</panel>
+		</panel>
+
+		<initialize>
+			<![CDATA[
+			self.editoreventid=editor.AttachEvent(self.delegate(self.processeditorevent));
+			]]>
+		</initialize>
+		<attach name="disposing">
+			editor.DetachEvent(self.editoreventid);
+		</attach>
+		<method name="processeditorevent" arguments="editor,e">
+			<![CDATA[
+			switch(e.Name)
+			{
+				case "Uploader_QueueUI":
+					break;
+				case "Uploader_Progress":
+					
+					
+					
+					var uploader=e.Arguments[0];
+					var filename=e.Arguments[2];
+					var begintime=e.Arguments[3];
+					var uploadedsize=e.Arguments[4];
+					var totalsize=e.Arguments[5];
+					
+					var items=uploader.getitems();
+					var queuecount=0;
+					for(var i=0;i<items.length;i++)
+					{
+						if(items[i].Status=="Queue")
+							queuecount++;
+					}
+					var currcount=items.length-queuecount;
+					if(items.length>1)
+					{
+						progresslabel1.set_text("Uploading "+currcount+"/"+items.length+" : "+filename+". ");
+					}
+					else
+					{
+						progresslabel1.set_text("Uploading "+filename+". ");
+					}
+					if(!totalsize)
+					{
+						progressblock.set_width(0);
+						progresslabel2.set_text("");
+					}
+					else
+					{
+						var cw=Math.floor(progressblock.get_parent().get_client_width()*uploadedsize/totalsize);
+						progressblock.set_width(cw);
+						var speed=uploadedsize*1000/Math.max(1000,new Date().getTime()-begintime)
+						var s=(totalsize-uploadedsize)/Math.max(1000,speed);
+
+						var ts="-";
+						if(s>600)	//10 mins	, to be 87 mins
+							ts=Math.floor(s/60)+" minutes";
+						else if(s>120)	//2 mins	, to be 4.8 mins
+							ts=Math.floor(s/6)/10+" minutes";
+						else
+							ts=Math.floor(s)+" seconds";
+						progresslabel2.set_text(jsml.format_size(uploadedsize)+" of "+jsml.format_size(totalsize)+" at "+jsml.format_size(speed)+"/s , "+ts+" remaining");
+					}
+					break;
+				case "Uploader_Stop":
+				case "Uploader_Postback":
+					self.uploadstopped=true;
+					dialog.close();
+					break;
+			}
+			
+			]]>
+		</method>
+
+	</panel>
+
+
+	<panel jsml-class="sidebar_uploadimage" jsml-base="sidebarmenu" dock="fill">
+		<panel jsml-base="sidebarmenuitem" text="@Back">
+			<attach name="click">
+				sidebar.back();
+			</attach>
+		</panel>
+		
+
+		<panel dock="fill" vertical_align="middle" horizontal_align="center">
+
+			<label jsml-local="loadinglabel" text="Loading...."></label>
+		
+			<panel jsml-base="panelbutton" visible="false" disabled="true" css_class="dialogbutton" jsml-local="uploadbtn" height="26" border_color="#CDCDCD" overflow="visible" back_color="#f7f7f7" padding="4,10,4,10" width="120" >
+				<image dock="left" src="{folder}images/upload.gif" width="24" />
+				<panel dock="left" width="15" />
+				<label dock="left" jsml-local="label" text="@LABEL_SELECTFILESTOUPLOAD" width="120" vertical_align="middle" cursor="pointer" />
+			</panel>
+			
+		</panel>
+
+
+		<attach name="click">
+
+		</attach>
+		<initialize>
+			<![CDATA[
+			self._category="Gallery";
+			self._getoption={GetSize:false,GetTime:false,GetDimensions:false,GetThumbnails:false};
+			
+			var storage
+			function onstorages(res)
+			{
+				if(self._jsml_disposed)return;
+				
+				loadinglabel.set_text("storage ready..");
+				
+				if(res.Error)
+				{
+					loadinglabel.set_text(res.Error);
+					return;
+				}
+				
+				var storage=res.ReturnValue[0];
+
+				var exts=storage.Extensions.split('.').join('').split('*').join('').split(',');
+				for(var i=0;i<exts.length;i++)exts[i]="."+exts[i];
+				self._selectedextensions=exts;
+				self._selectedstorage=storage;
+				
+				
+				self.editoreventid=editor.AttachEvent(self.delegate(self.processeditorevent));
+				editor.RegisterUploadButton(uploadbtn._element);
+				
+				var waited=false;
+				
+				function checkuploader()
+				{
+					if(waited)
+						return;
+					var status=0;
+					
+					if(window.RTE_AjaxUploader_Initialize)
+						status++;
+					if(editor.uploaderhidden)
+					{
+						status++;
+						if(editor.uploaderhidden.internalobject)
+							status++;
+					}
+					
+					var msg="wait for uploader..";
+					for(var i=0;i<status;i++)
+						msg+=".";
+					loadinglabel.set_text(msg);
+					
+					self.setDelegateTimeout(checkuploader,100);
+				}
+				
+				checkuploader();
+				
+				editor.WaitForUploader(function(error)
+				{
+					waited=true;
+					if(error)
+					{
+						loadinglabel.set_text(error);
+						return;
+					}
+					
+					loadinglabel.set_text("ready");
+					loadinglabel.set_visible(false);
+					uploadbtn.set_visible(true);
+					
+					self.setDelegateTimeout(function()
+					{
+						uploadbtn.set_disabled(false);
+						editor.FocusUploadButton(uploadbtn._element);
+					},100);
+				});
+			}
+			editor.AsyncGetStoragesWithCache(self._category,onstorages)
+			]]>
+		</initialize>
+		<attach name="disposing">
+			<![CDATA[
+			editor.DetachEvent(self.editoreventid);
+			editor.RemoveUploadButton(uploadbtn._element);
+			]]>
+		</attach>
+		<method name="processeditorevent" arguments="editor,e">
+			<![CDATA[
+			switch(e.Name)
+			{
+				case "Uploader_Browse":
+					var uploader=e.Arguments[0];
+					var filter=self._category+" files|"+self._selectedextensions.join(';').split('.').join("*.");
+					uploader.internalobject.DialogFilter=filter;
+					uploader.internalobject.DialogAccept="image/*";
+					if(!self.uploaderstarted)uploader.reset();
+					if(!self._selectedstorage.AllowUpload)e.ReturnValue=false;
+					break;
+				case "Uploader_Select":
+					var uploader=e.Arguments[0];
+					var tasks=e.Arguments[1];
+					self.processuploaderselect(uploader,tasks);
+					break;
+				case "Uploader_Start":
+					self.processuploaderstart(e.Arguments[0]);
+					break;
+				case "Uploader_Stop":
+					self.processuploaderstop(e.Arguments[0]);
+					break;
+				case "Uploader_Postback":
+					self.processuploaderstop(e.Arguments[0],true);
+					break;
+			}
+			]]>
+		</method>
+		<method name="processuploaderselect" arguments="uploader,tasks">
+			<![CDATA[
+			var files=[];
+				
+			var indexes=[];
+			var usednamemap={};
+			for(var i=0;i<tasks.length;i++)
+			{
+				var task=tasks[i];
+				var filename=task.FileName;
+				var d=new Date();
+				filename=String(d.getFullYear()*100000000+(d.getMonth()+1)*1000000+d.getDate()*10000+d.getHours()*10000+d.getMinutes()*100+d.getSeconds())+"_"+(i+1)+"_"+filename;
+				task.SetClientData(filename);
+			}
+			self.setDelegateTimeout(function(){uploader.startupload()},1);
+			]]>
+		</method>
+		<method name="setisloading">
+		</method>
+		<method name="reportError">
+			alert(value)
+		</method>
+		<method name="processuploaderstart" arguments="uploader">
+			<![CDATA[
+			self.uploaderstarted=true;
+			self.setisloading(true);
+			self.uploaderprogressdialog=jsml.class_create_instance("uploadprogresspanel");
+			self.append_child(self.uploaderprogressdialog);
+			]]>
+		</method>
+		<method name="processuploaderstop" arguments="uploader,postback">
+			<![CDATA[
+			self.uploaderstarted=false;
+			if(postback)
+			{
+				self.setisloading(true);
+				self._uploadertoreset=uploader;
+				var storage={ID:self._selectedstorage.ID,UrlPath:"/",Category:self._category};
+				var namemap=[];
+				
+				var items=uploader.getitems();
+				for(var i=0;i<items.length;i++)
+					namemap.push(items[i].FileGuid+"/"+items[i].GetClientData());
+				editor.CallAjax("AjaxUploadFiles",self.delegate(self.handleuploadfiles),storage,self._getoption,namemap.join("|"));
+			}
+			else
+			{
+				self.setisloading(false);
+			}
+			if(self.uploaderprogressdialog)
+			{
+				self.uploaderprogressdialog.dispose();
+			}
+			]]>
+		</method>
+		<method name="handleuploadfiles" arguments="res">
+			<![CDATA[
+			
+			self._uploadertoreset.reset();
+
+			self.setisloading(false);
+			if(res.Error)
+			{
+				self.reportError(res.Error.message);
+				return true;
+			}
+			
+			var arr=res.ReturnValue;
+			if(!arr||arr.length==0)
+			{
+				//self.change_folder(self._currdir);
+				return;
+			}
+			
+			var errcount=0;
+			for(var i=0;i<arr.length;i++)
+			{
+				if(typeof(arr[i])=="string")
+				{
+					self.reportError(arr[i]);
+					errcount++;
+				}
+			}
+			
+			if(errcount==arr.length)
+				return;
+			
+			for(var i=0;i<arr.length;i++)
+			{
+				if(typeof(arr[i])=="string")
+					continue;
+				var url=self._selectedstorage.UrlPrefix+"/"+arr[i].Name;
+				var html="<div><img alt='' src='"+jsml.html_encode(url)+"' /></div>";
+				editor.AppendHTML(html);
+			}
+			
+			sidebar.collapse();
+
+			]]>
+		</method>
+
+	</panel>
+
+	<panel jsml-base="sidebar_uploadimage" />
+
+
+</jsml>

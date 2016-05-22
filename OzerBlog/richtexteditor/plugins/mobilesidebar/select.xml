@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../core/jsml.xsd">
+
+
+	<panel jsml-class="sidebar_select" jsml-base="sidebarmenu" dock="fill">
+		<panel jsml-base="sidebarmenuitem" text="Back">
+			<attach name="click">
+				sidebar.back();
+			</attach>
+		</panel>
+		
+		<panel jsml-base="sidebarmenuitem" text="Start selecting a range">
+			<attach name="click">
+				editor.ToggleRangeSelect();
+				sidebar.collapse();
+			</attach>
+		</panel>
+
+		<method name="additem" arguments="node">
+			<![CDATA[
+			var item=jsml.class_create_instance("sidebarmenuitem");
+			if(node.nodeType==3)
+			{
+				var text=node.GetText();
+				if(text.length>20)text=text.substring(0,18)+"..."
+				item.set_text("Text: "+text);
+			}
+			else
+			{
+				var text=node.GetInnerText()
+				if(text.length>20)text=text.substring(0,18)+"..."
+				item.set_text("<"+node.GetName()+">: "+text);
+			}
+			
+			self.append_child(item);
+			
+			item.attach_event("click",function()
+			{
+				if(node.IsControl())
+				{
+					editor.SelectControl(node);
+					editor.RangeSyncToDom(true);
+				}
+				else
+				{
+					editor.SelectContent(node);
+					editor.RangeSyncToDom(true);
+				}
+				sidebar.collapse();
+			})
+			]]>
+		</method>
+
+		<initialize>
+			<![CDATA[
+			var pn=editor.GetPointNode();
+			if(!pn)return;
+			for(;pn;pn=pn.GetParent())
+			{
+				self.additem(pn);
+			}
+			]]>
+		</initialize>
+		
+	</panel>
+
+
+	<panel jsml-base="sidebar_select" />
+
+
+</jsml>

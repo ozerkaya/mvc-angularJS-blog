@@ -1,0 +1,376 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="jsml.xsl"?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../core/jsml.xsd">
+	<panel jsml-class="effectapplybutton" dock="top" height="20" margin="5,2,5,3">
+		<button text="@Btn_Apply" dock="right" width="60" margin="0,15,0,5" vertical_align="middle" horizontal_align="center" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+			<attach name="click">
+				<![CDATA[
+				instance._effectbox.$0105(true);
+				instance._mybox.dispose();
+				]]>
+			</attach>
+		</button>
+		<constructor arguments="effectbox,mybox">
+			<![CDATA[
+			self.panel_constructor();
+			self._effectbox = effectbox;
+			self._mybox = mybox;
+			]]>
+		</constructor>
+	</panel>
+	<panel jsml-class="effectbutton" width="70" height="80" margin="3" border_color="#8f8f8f" border_width="0" css_text="border-radius:2px;">
+		<image jsml-local="icon" dock="top" height ="56" margin="3,3,0,3" vertical_align="middle"></image>
+		<label jsml-local="txt" dock="fill" margin="0,3,0,3" vertical_align="middle" horizontal_align="center"></label>
+		<attach name="click">
+			<![CDATA[
+			self.get_parent().Select(self);
+			self.get_parent().get_parent().ShowApply(self);
+			]]>
+		</attach>
+		<attach name="mousehover">
+			<![CDATA[
+			self.set_back_color("#bfd6e6");
+			self.get_parent().get_parent().CloseChild();
+			]]>
+		</attach>
+		<attach name="mouseleave">
+			<![CDATA[
+			if(self.get_selected())
+				return;
+			self.set_back_color("");
+			]]>
+		</attach>
+		<property name="selected">
+			<get>
+				return self._selected;
+			</get>
+			<set>
+				<![CDATA[
+				self._selected=value;
+				]]>
+			</set>
+		</property>
+		<property name="src">
+			<get>
+				return self._src;
+			</get>
+			<set>
+				<![CDATA[
+				self._src=value;
+				icon.set_src(value);
+				]]>
+			</set>
+		</property>
+		<property name="effectname">
+			<get>
+				return self._effectname;
+			</get>
+			<set>
+				<![CDATA[
+				self._effectname=value;
+				icon.set_src("images/effect/sample_"+value+".gif");
+				]]>
+			</set>
+		</property>
+		<property name="title">
+			<get>
+				return self._title;
+			</get>
+			<set>
+				<![CDATA[
+				self._title=value;
+				txt.set_text(value);
+				]]>
+			</set>
+		</property>
+	</panel>
+	<panel jsml-class="effectpanel" width="390" height="205" back_color="white">
+		<panel jsml-local="backpanel" back_color="gray" opacity="30" visible="0" dock="over" vertical_align="middle" horizontal_align="center">
+			<image jsml-local="backimg" src="images/loading.gif" back_color="transparent" vertical_align="middle" horizontal_align="center" width="120" height="120" css_text="z-index:101;"></image>
+			<initialize>
+				<![CDATA[				
+				var style=self._element.style;
+				style.zIndex="100";
+
+				function repos()
+				{
+					if(self._removed || self._jsml_disposed)return;
+					self.setDelegateTimeout(repos,100);
+					
+					self.set_parent(document.body);
+				
+					var rect=jsml.get_body_rect();
+					style.position="absolute";
+					style.top=rect.top+"px";
+					style.left=rect.left+"px";
+					style.width = rect.width + "px";
+					style.height = rect.height + "px";
+					
+					backimg._element.style.top = parseInt((rect.height-120)/2)+"px";
+					backimg._element.style.left = parseInt((rect.width-120)/2)+"px";
+				}
+				//repos();			
+				]]>
+			</initialize>
+			<method name="Remove">
+				//self._removed = true;
+				//document.body.removeChild(self.get_element());
+			</method>
+		</panel>
+		<panel dock="bottom" height="30" border_color="#8f8f8f" border_width="1,0,0,0" padding="0,5,0,5">
+			<button text="@Btn_Cancel" dock="right" width="60" margin="3,0,3,5" vertical_align="middle" horizontal_align="center" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+				<attach name="click">
+					<![CDATA[
+					doc.$0116();
+					backpanel.Remove();
+					instance.dispose();
+					instance.get_box().dispose();
+					]]>
+				</attach>
+			</button>
+			<button text="@Btn_Apply" dock="right" width="60" margin="3,0,3,5" vertical_align="middle" horizontal_align="center" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+				<attach name="click">
+					<![CDATA[
+					if(instance._effect)
+					{
+						instance.$0105();
+					}
+					else
+					{
+						backpanel.Remove();
+						instance.dispose();
+						instance.get_box().dispose();
+					}
+					]]>
+				</attach>
+			</button>
+			<checkbox jsml-local="cbx_all" dock="right" checked="1" vertical_align="middle" margin="4,0,0,0"></checkbox>
+			<label dock="fill" text_align="right" vertical_align="middle" text="@Effect_AllLayer"></label>
+		</panel>
+		<panel dock="fill">
+			<panel dock="flow" jsml-base="effectbutton" title="@Effect_S_Aqua" effectname="aqua"/>
+			<panel dock="flow" jsml-base="effectbutton" title="@Effect_S_Vivid" effectname="vivid"/>
+			<panel dock="flow" jsml-base="effectbutton" title="@Effect_S_Coldblue" effectname="coldblue"/>
+			<panel dock="flow" jsml-base="effectbutton" title="@Effect_S_Fresh" effectname="fresh"/>
+			<panel dock="flow" jsml-base="effectbutton" title="@Effect_S_Concorde" effectname="concorde"/>
+			<panel dock="flow" jsml-base="effectbutton" title="@Effect_S_Elegant" effectname="elegant"/>
+			<panel dock="flow" jsml-base="effectbutton" title="@Effect_S_Indiglow" effectname="indiglow"/>
+			<panel dock="flow" jsml-base="effectbutton" title="@Effect_S_Old" effectname="old"/>
+			<panel dock="flow" jsml-base="effectbutton" title="@Effect_S_Singe" effectname="singe"/>
+			<panel dock="flow" jsml-base="effectbutton" title="@Effect_S_Softfocus" effectname="softfocus"/>
+			<method name="Select" arguments="btn">
+				<![CDATA[
+				var arr = self.get_children();
+				for(var i=0;i<arr.length;i++)
+				{
+					arr[i].set_selected(null);
+					arr[i].set_back_color("");
+				}
+				if(btn)
+				{
+					instance._effect = btn.get_effectname();
+					btn.set_selected(true);
+					btn.set_back_color("#bfd6e6");					
+					instance.Preview();
+				}
+				]]>
+			</method>
+		</panel>
+		<property name="box">
+			<get>
+				return self._box;
+			</get>
+			<set>
+				self._box = value;
+			</set>
+		</property>
+		<method name="CloseChild">
+			<![CDATA[
+			if(self._effectbox)self._effectbox.dispose();
+			self._effectbox=null;
+			]]>
+		</method>
+		<method name="ShowApply" arguments="tag">
+			<![CDATA[
+			var effectbox=jsml.class_create_instance("floatbox");
+			effectbox.set_height(31);
+			effectbox.set_manualclose(true);
+			effectbox.show(tag.get_element(),0,10,{"floatMode":"r-b"});
+			instance._effectbox = effectbox;
+			var bluroption = jsml.class_create_instance("effectapplybutton",[instance,effectbox]);
+			effectbox.append_child(bluroption);
+			]]>
+		</method>
+		<method name="$0105" arguments="keepopen">
+			<![CDATA[
+			if(self._effect)
+			{
+				doc.$0105(DrawEffect);
+			}
+			function DrawEffect()
+			{
+				self.Preview(true,keepopen);
+			}
+			]]>
+		</method>
+		<method name="Preview" arguments="isapply,keepopen">
+			<![CDATA[
+			if(!self._effect) return;
+			
+			backpanel.set_visible(1);
+			var effect = jsml.class_create_instance("$034");
+			var method = self._effect;
+			
+			self.setDelegateTimeout(Func,100);
+			
+			function Func(){
+				var isall = cbx_all.get_checked();
+				var rs = doc.GetOption("CanvasRealSize");
+				doc._canvas.width = rs.width;
+				doc._canvas.height = rs.height;
+				doc._2d.clearRect(0,0, doc._canvas.width, doc._canvas.height);			
+			
+				try{doc._canvas.calcpos();}catch(x){}			
+				var layers = doc._history._layers;
+				var currlayer = doc.get_layer();
+				var sel = doc.get_selection();
+			
+				for(var i=0;i<layers.length;i++)
+				{
+					var layer = layers[i];
+					if(doc._history.$037(layer, "Hidden"))
+						continue;
+					var sx = layer._canvas_x;
+					var sy = layer._canvas_y;
+					var dx = layer._canvas.width;
+					var dy = layer._canvas.height;
+					if(isall || currlayer._layerid==layer._layerid)
+					{
+						var tcanvas = document.createElement("canvas");
+						tcanvas.width = dx;
+						tcanvas.height = dy;
+						var t2d = tcanvas.getContext("2d");
+						t2d.drawImage(layer._canvas,0,0);
+						DoEffect(method,tcanvas);
+					
+						if(sel)
+						{
+							t2d.save();
+							t2d.globalCompositeOperation = "destination-out";
+							t2d.drawImage(sel, -layer._canvas_x, -layer._canvas_y, sel.width, sel.height);
+							t2d.restore();
+						
+							if (layer._canvas_x < 0)
+								t2d.clearRect(0, 0, -layer._canvas_x, layer._canvas.height);
+							if (layer._canvas_y < 0)
+								t2d.clearRect(0, 0, layer._canvas.width, -layer._canvas_y);
+
+							var wextra = layer._canvas_x + layer._canvas.width - rs.width;
+							if (wextra > 0)
+								t2d.clearRect(-layer._canvas_x + rs.width, 0, wextra, layer._canvas.height);
+
+							var hextra = layer._canvas_y + layer._canvas.height - rs.height;
+							if (hextra > 0)
+								t2d.clearRect(0, -layer._canvas_y + rs.height, layer._canvas.width, hextra);
+						
+							t2d.save();
+							t2d.globalCompositeOperation = "destination-over";
+							t2d.drawImage(layer._canvas,0,0);
+							t2d.restore();
+						}
+						if(isapply)
+							layer._canvas = tcanvas;
+						doc._2d.drawImage(tcanvas, sx, sy, dx, dy);
+					}
+					else
+						doc._2d.drawImage(layer._canvas, sx, sy, dx, dy);
+				}
+				if(sel)
+				  doc.$055(sel, "noanimation");
+				//if(isapply && sel)
+				//	doc.set_selection(null);
+			
+				backpanel.set_visible(0);
+				if(isapply)
+					self._effect = null;
+				if(isapply && !keepopen)
+				{
+					backpanel.Remove();
+					self.dispose();
+					self.get_box().dispose();
+				}
+			}
+			
+			function DoEffect(m,canvas)
+			{
+				switch(m)
+				{
+					case "aqua":
+						effect.$077(canvas,0,48,0);
+						break;
+					case "vivid":
+						effect.$0122(canvas,1.36);
+						break;
+					case "coldblue":
+						effect.$077(canvas,0,30,70);
+						break;
+					case "fresh":
+						effect.$077(canvas,10,0,4);
+						break;
+					case "concorde":
+						effect.$0106(canvas,80);
+						effect.$097(canvas);
+						break;
+					case "elegant":
+						effect.$077(canvas,20,6,0);
+						break;
+					case "indiglow":
+						effect.$0122(canvas,0.88);
+						effect.$0106(canvas,80);
+						effect.$0129(canvas,0,40,0);
+						break;
+					case "old":
+						effect.$077(canvas,55,0,-55);
+						effect.$0122(canvas,0.8);
+						break;
+					case "singe":
+						effect.$077(canvas,36,0,-50);
+						break;
+					case "softfocus":
+						effect.$0125(canvas,3);
+						effect.$0129(canvas,0,0,6);
+						break;
+				}
+			}
+			]]>
+		</method>
+		<attach name="attach_dom">
+			<![CDATA[
+			if(self._eventattached)return;
+			self._eventattached=true;
+			self._handleClosing=function()
+			{
+				doc.$0116();
+			}
+			self.get_box().attach_event("closing",self._handleClosing);
+			]]>
+		</attach>
+		<attach name="detach_dom">
+			<![CDATA[
+			self._eventattached=false;
+			self.get_box().detach_event("closing",self._handleClosing);
+			]]>
+		</attach>
+	</panel>
+	<execute>
+		<![CDATA[
+		plugin.LoadUI = function(ctrl)
+		{
+			var pl = jsml.class_create_instance("effectpanel");
+			pl.set_box(ctrl);
+			ctrl.append_child(pl);
+		}
+		]]>
+	</execute>
+</jsml>

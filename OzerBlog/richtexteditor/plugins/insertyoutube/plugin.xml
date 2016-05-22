@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../core/jsml.xsd">
+
+	
+
+	<execute>
+		<![CDATA[
+		
+		plugin.Execute=function(element,arg1,arg2)
+		{
+			var option={width:540,height:350}
+			option.plugin=plugin;
+			editor.ShowXmlDialog("{folder}plugins/{plugin}/youtube.xml?{timems}",option);
+		}
+		
+		plugin.FindMovie=function(url)
+		{
+			url=url.replace(/(^\s+|\s+$)/g,"");
+			url=url.split('#')[0];
+			if(!url)return;
+			var qp=url.split('#')[0].split('?');
+			var qs=(qp[1]||'').split('&');
+			for(var i=0;i<qs.length;i++)
+				if(qs[i].substring(0,2)=="v=")
+					return qs[i].substring(2);
+			url=qp[0];
+			var prefixs=["youtu.be/","youtube.com/embed/"];
+			for(var i=0;i<prefixs.length;i++)
+			{
+				var pos=url.indexOf(prefixs[i]);
+				if(pos!=-1)return url.substring(pos+prefixs[i].length);
+			}
+		}
+		
+		editor.AttachEvent("CreateControlProvider",function(editor,e)
+		{
+			var provider=e.Arguments[0];
+			var control=provider.Control;
+			var nl=control.GetNameLower();
+			if(nl!="iframe")return;
+			var src=control.GetAttribute("src");
+			if(!src)
+				return;
+			var movie=plugin.FindMovie(src);
+			if(!movie)
+				return;
+			provider.GetTitle=function()
+			{
+				return "Youtube";
+			}
+			provider.ShowPropertiesDialog=function()
+			{
+				var newoption={width:560,height:360}
+				newoption.plugin=plugin;
+				newoption.currenturl=control.GetAttribute("src");
+				newoption.currentwidth=control.GetStyle("width");
+				newoption.currentheight=control.GetStyle("height");
+				editor.ShowXmlDialog("{folder}plugins/{plugin}/youtube.xml?{timems}",newoption);
+			}
+			provider.FillDesignView=function(element)
+			{
+				element.innerHTML="Youtube movie:"+src+"<hr/><img src='"+jsml.html_encode("http://img.youtube.com/vi/"+movie+"/hqdefault.jpg")+"'/>";
+			}
+		});
+		
+		
+		]]>
+		</execute>
+
+
+	</jsml>
+	

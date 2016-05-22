@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../core/jsml.xsd">
+
+
+	<panel jsml-class="sidebar_format" jsml-base="sidebarmenu" dock="fill">
+		<panel jsml-base="sidebarmenuitem" text="Back">
+			<attach name="click">
+				sidebar.back();
+			</attach>
+		</panel>
+
+		<panel jsml-base="sidebarmenuitem" text="@TEXTCOLOR" imagename="forecolor">
+			<attach name="click">
+				<![CDATA[
+				var cmd = "ForeColor";
+				var option = { command: cmd, preview: true }
+				option.setcolor = this.delegate(function (val) {
+					editor.ExecCommand(cmd, val);
+				});
+				editor.ExecShowXmlDialog(self.get_element(), "colorpicker.xml", option);
+				]]>
+			</attach>
+		</panel>
+		<panel jsml-base="sidebarmenuitem" text="@BACKCOLOR" imagename="backcolor">
+			<attach name="click">
+				<![CDATA[
+				var cmd = "BackColor";
+				var option = { command: cmd, preview: true }
+				option.setcolor = this.delegate(function (val) {
+					editor.ExecCommand(cmd, val);
+				});
+				editor.ExecShowXmlDialog(self.get_element(), "colorpicker.xml", option);
+				]]>
+			</attach>
+		</panel>
+
+		<panel jsml-base="sidebarmenuitem" arrow="true" text="@FontName" imagename="m_font">
+			<attach name="click">
+				sidebar.loadpanel("fontname.xml");
+			</attach>
+		</panel>
+		<panel jsml-base="sidebarmenuitem" arrow="true" text="@FontSize" imagename="m_fontsize">
+			<attach name="click">
+				sidebar.loadpanel("fontsize.xml");
+			</attach>
+		</panel>
+
+		<panel jsml-base="sidebarmenuitem" text="@BOLD" command="BOLD" />
+
+		<panel jsml-base="sidebarmenuitem" text="@ITALIC" command="ITALIC" />
+
+		<panel jsml-base="sidebarmenuitem" text="@UNDERLINE" command="UNDERLINE" imagename="under" />
+
+		<panel jsml-base="sidebarmenuitem" command="Linethrough" text="@LINETHROUGH" imagename="strike"  />
+
+		<panel jsml-base="sidebarmenuitem" command="Overline" text="@OVERLINE"  />
+
+		<panel jsml-base="sidebarmenuitem" command="Superscript" text="@SUPERSCRIPT" />
+
+		<panel jsml-base="sidebarmenuitem" command="Subscript" text="@SUBSCRIPT" />
+
+		<panel jsml-base="sidebarmenuitem" text="@REMOVEFORMAT" command="REMOVEFORMAT" imagename="unformat" />
+
+	</panel>
+
+	<panel jsml-base="sidebar_format" />
+
+
+</jsml>

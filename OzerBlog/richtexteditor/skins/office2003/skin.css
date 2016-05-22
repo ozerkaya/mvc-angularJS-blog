@@ -1,0 +1,403 @@
+﻿/*silver*/
+.rteskin_silver
+{
+	border-width:1px;
+	border-style:solid;
+	border-color:#d9d9d9;
+	background-color:#efefef;
+}
+.ribbon_silver
+{
+	background-image:url(../../styles/images/rbribbon_silver.png);
+	background-position:left bottom;
+	background-repeat:no-repeat;
+}
+.ribbon_silver:first-child
+{
+	background-image:none;
+}
+.tbgroup_silver
+{
+	border-left:1px solid #bbbbbb;
+}
+.dropdown_silver
+{
+	border:1px solid #d3d5dc;
+	background-color:white;
+}
+.dropdown_silver .dropdownsplit
+{
+	border-left-style:solid;
+	border-left-width:1px;
+}
+.slitbtn_silver .splitbtnsplit
+{
+	border-left-style:solid;
+	border-left-width:1px;
+}
+.tbcontrol_silver, .splitbtn_silver
+{
+    border:1px solid transparent;
+}
+.splitbtn_silver
+{
+    border:1px solid transparent;
+	background-color:transparent;
+}
+.rbimage_silver{
+	background-image:url(../../styles/images/tbribbon_silver2003.png);
+	background-repeat:repeat-x;
+}
+.dropdown_silver_hovered
+{
+	border-color:#abc1de;
+	background-color:white;
+}
+.dropdown_silver_hovered .dropdownsplit
+{
+	border-color:#cccccc;
+	background-color:#eeeeee;
+}
+.splitbtn_silver_hovered .splitbtnsplit
+{
+	border-color:#D6D9E2;
+}
+.tbcontrol_silver_hovered,.splitbtn_silver_hovered
+{
+    border-color:#808080;
+	background-color:transparent;
+	background-image:url(../../styles/images/tbcontrol_hovered.png);
+	background-repeat:repeat-x;
+}
+.rbimage_silver_hovered
+{
+	background-image:url(../../styles/images/rbimage_hovered.png);
+}
+.dropdown_silver_clicked
+{
+	border-color:#abc1de;
+	background-color:#ffd700;
+}
+.dropdown_silver_clicked .dropdownsplit
+{
+	border-color:#abc1de;
+}
+.tbcontrol_silver_clicked,.splitbtn_silver_clicked
+{
+    border-color:#808080;
+	background-color:transparent;
+	background-image:url(../../styles/images/tbcontrol_clicked.png);
+	background-repeat:repeat-x;
+}
+.rbimage_silver_clicked
+{
+	background-image:url(../../styles/images/rbimage_clicked.png);
+}
+.rteskin_silver .rtelayouttop
+{
+	border-bottom-color:#d9d9d9!important;
+}
+.rteskin_silver .rtelayoutbottom
+{
+	border-top-color:#d9d9d9!important;
+}
+/*blue*/
+.rteskin_blue
+{
+	border-width:1px;
+	border-style:solid;
+	border-color:#99a9bf;
+	background-color:#cad9ec;
+}
+.ribbon_blue
+{
+	background-image:url(../../styles/images/rbribbon_blue.png);
+	background-position:left center;
+	background-repeat:no-repeat;
+}
+.ribbon_blue:first-child
+{
+	background-image:none;
+}
+.tbgroup_blue
+{
+	border-left:1px solid #D6DAE3;
+}
+.dropdown_blue
+{
+	border:1px solid #d3d5dc;
+	background-color:white;
+}
+.dropdown_blue .dropdownsplit
+{
+	border-left-style:solid;
+	border-left-width:1px;
+}
+.slitbtn_blue .splitbtnsplit
+{
+	border-left-style:solid;
+	border-left-width:1px;
+}
+.tbcontrol_blue, .splitbtn_blue
+{
+    border:1px solid transparent;
+}
+.splitbtn_blue
+{
+    border:1px solid transparent;
+	background-color:transparent;
+}
+.rbimage_blue{}
+.dropdown_blue_hovered
+{
+	border-color:#abc1de;
+	background-color:white;
+}
+.dropdown_blue_hovered .dropdownsplit
+{
+	border-color:#cccccc;
+	background-color:#dee8f5;
+}
+.splitbtn_blue_hovered .splitbtnsplit
+{
+	border-color:#D6D9E2;
+}
+
+.tbcontrol_blue_hovered,.splitbtn_blue_hovered
+{
+    border-color:#c8c8c8;
+	background-color:transparent;
+	background-image:url(../../styles/images/tbcontrol_hovered.png);
+	background-repeat:repeat-x;
+}
+.rbimage_blue_hovered
+{
+	background-image:url(../../styles/images/rbimage_hovered.png);
+}
+
+.dropdown_blue_clicked
+{
+	border-color:#abc1de;
+	background-color:#ffd700;
+}
+.dropdown_blue_clicked .dropdownsplit
+{
+	border-color:#abc1de;
+}
+.tbcontrol_blue_clicked,.splitbtn_blue_clicked
+{
+    border-color:#808080;
+	background-color:transparent;
+	background-image:url(../../styles/images/tbcontrol_clicked.png);
+	background-repeat:repeat-x;
+}
+.rbimage_blue_clicked
+{
+	background-image:url(../../styles/images/rbimage_clicked.png);
+}
+.rteskin_blue .rtelayouttop
+{
+	border-bottom-color:#99a9bf!important;
+}
+.rteskin_blue .rtelayoutbottom
+{
+	border-top-color:#99a9bf!important;
+}
+/*silver2*/
+.rteskin_silver2
+{
+	border-width:1px;
+	border-style:solid;
+	border-color:#838383;
+	background-color:#d8d7d7;
+}
+.tbtoolbar_silver2
+{
+    background-color:#b7b7b5;
+	background-image:url(../../styles/images/tbtoolbar_silver20032.png);
+	background-position:left bottom;
+	background-repeat:repeat-x;
+}
+.tbgroup_silver2
+{
+	border-left:1px solid #bbbbbb;
+	background-color:#c8c8c8;
+}
+.dropdown_silver2
+{
+	border:1px solid #f9f9f9;
+	background-color:white;	
+}
+.dropdown_silver2 .dropdownsplit
+{
+	border-left-style:solid;
+	border-left-width:1px;
+	background-image:url(../../styles/images/tbgroup_silver20032.png);
+	background-position:left center;
+	background-repeat:repeat-x;
+}
+.slitbtn_silver2 .splitbtnsplit
+{
+	border-left-style:solid;
+	border-left-width:1px;
+}
+.tbcontrol_silver2, .splitbtn_silver2
+{
+    border:0px solid transparent;
+    background-color:transparent;
+    top:0px!important;
+	height:24px!important;
+    border-left:1px solid #c8c8c8!important;
+}
+.tbcontrol_silver2:first-child,.splitbtn_silver2:first-child
+{
+    border-left-width:0px!important;
+}
+.tbcontrol_silver2 img
+{
+	margin-top:2px!important;
+}
+.splitbtn_silver2 img
+{
+	margin-top:2px!important;	
+}
+.splitbtn_silver2
+{
+    border:0px solid transparent;
+	background-color:transparent;
+}
+.ribbon_silver2:first-child
+{
+	background-image:none;
+}
+.rbimage_silver2
+{
+	background-image:url(../../styles/images/rbribbon_silver2003.png);
+	background-repeat:repeat-x;
+	width:52px!important;
+	border-width:0px!important;
+	left:0px!important;
+	top:2px!important;
+}
+.rbimage_silver2 img
+{
+	margin-left:2px;
+}
+.dropdown_silver2_hovered
+{
+	border-color:#dedede;
+	background-color:white;
+}
+.dropdown_silver2_hovered .dropdownsplit
+{
+	border-color:#cccccc;
+	background-color:#eeeeee;
+}
+.splitbtn_silver2_hovered .splitbtnsplit
+{
+	border-color:#D6D9E2;
+}
+.tbcontrol_silver2_hovered,.splitbtn_silver2_hovered
+{
+    border-color:#808080;
+	background-color:transparent;
+	background-image:url(../../styles/images/tbcontrol_silver2_hovered.png);
+	background-repeat:repeat-x;
+}
+.rbimage_silver2_hovered
+{
+	background-image:url(../../styles/images/rbimage_silver2003_hovered.png);
+	background-repeat:repeat-x;
+}
+.dropdown_silver2_clicked
+{
+	border-color:#abc1de;
+	background-color:#ffd700;
+}
+.dropdown_silver2_clicked .dropdownsplit
+{
+	border-color:#abc1de;
+}
+.tbcontrol_silver2_clicked,.splitbtn_silver2_clicked
+{
+    border-color:#808080;
+	background-color:transparent;
+	background-image:url(../../styles/images/tbcontrol_silver2_clicked.png);
+	background-repeat:repeat-x;
+}
+.rbimage_silver2_clicked
+{
+	background-image:url(../../styles/images/rbimage_silver2003_clicked.png);
+}
+.rteskin_silver2 .rtelayouttop
+{
+	border-bottom-color:#838383!important;
+}
+.rteskin_silver2 .rtelayoutbottom
+{
+	border-top-color:#838383!important;
+}
+.rteskin_silver2 .rtelayoutbottom .tbgroup_silver2
+{
+	height:22px!important;
+}
+/*office2003*/
+
+.tbgroup_office2003_silver
+{
+    border: #d8d8d8 1px solid; 
+	background-image:url(../../styles/images/tbgroup_silver2007.png);
+	background-repeat:repeat-x;
+}
+.tbgroup_office2003_silver2
+{
+    border: #838383 1px solid; 
+    -webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+    border-radius:2px;
+	background-image:url(../../styles/images/tbgroup_silver20032.png);
+	background-position:left top;
+	background-repeat:repeat-x;
+}
+.tbgroup_office2003_blue
+{
+    border-right: #a9bfd3 1px solid; 
+    border-top: #f0f5fa 1px solid; 
+    border-left: #f0f5fa  1px solid; 
+    border-bottom: #a9bfd3 1px solid; 
+	background-image:url(../../styles/images/tbgroup_darkblue.png);
+	background-repeat:repeat-x;
+}
+.splitbtn_office2003_blue
+{
+    border:1px solid transparent;
+	background-color:transparent;
+}
+.splitbtn_office2003_blue_hovered
+{
+    border-color:#c8c8c8;
+}
+
+/*checked*/
+.tbcontrol_silver_checked,.splitbtn_silver_checked
+{
+    border-color:#808080;
+    border-width:1px;
+	background-color:transparent;
+	background-image:url(../../styles/images/tbcontrol_checked.png);
+	background-repeat:repeat-x;
+}
+.tbcontrol_blue_checked,.splitbtn_blue_checked
+{
+    border-color:#808080;
+    border-width:1px;
+	background-color:transparent;
+	background-image:url(../../styles/images/tbcontrol_checked.png);
+	background-repeat:repeat-x;
+}
+.tbcontrol_silver2_checked,.splitbtn_silver2_checked
+{
+    border-color:#808080;
+	background-image:url(../../styles/images/tbcontrol_silver2_checked.png);
+	background-repeat:repeat-x;
+}

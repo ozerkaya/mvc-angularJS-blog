@@ -1,0 +1,501 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="jsml.xsl"?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../JSML/jsml.xsd">
+	<panel jsml-class="propertypanel" width="520" height="360" border_width="1" border_color="Gray" css_text="display:none;">
+		<panel jsml-local="backpanel" back_color="gray" opacity="20">
+			<initialize>
+				<![CDATA[
+				var style=self._element.style;
+				style.zIndex="987653";
+
+				function repos()
+				{
+					if(self._removed || self._jsml_disposed)return;
+					self.setDelegateTimeout(repos,100);
+					
+					self.set_parent(document.body);
+				
+					var rect=jsml.get_body_rect();
+					style.position="absolute";
+					style.top=rect.top+"px";
+					style.left=rect.left+"px";
+					style.width = rect.width + "px";
+					style.height = rect.height + "px";
+				}
+				repos();
+			
+				]]>
+			</initialize>
+			<method name="Remove">
+				self._removed = true;
+				document.body.removeChild(self.get_element());
+			</method>
+		</panel>
+		<panel dock="top" height="30" back_color="#cccccc" vertical_align="middle">
+			<label jsml-local="label_layername" dock="fill" css_text="font-weight:bold;" margin="5" text="@Property_Header" vertical_align="middle" width="150"></label>
+			<attach name="mousedown" arguments="jevent,devent">
+				instance.start_move_offset(devent);
+			</attach>
+		</panel>
+		<panel dock="left" width="120" back_color="#eeeeee">
+			<panel dock="fill" margin="5" border_width="1" border_color="Gray">
+				<label dock="top" height="20" css_text="font-weight:bold;" margin="5" text="@Property_GroupTitle" vertical_align="middle" width="10" overflow="visible"></label>
+				<panel dock="fill" border_width="1,0,0,0" border_color="Gray" padding="5">
+					<panel jsml-local="shadowtab" height="25" dock="top" border_width="0,0,1,0" border_color="white" vertical_align="middle">
+						<htmlcontrol width="20" dock="left" vertical_align="middle">
+							<xmldata>
+								<input id="cbx_shadow" type="checkbox">
+								</input>
+							</xmldata>
+							<attach name="click">
+								instance.Preview("ShadowEnabled",self.find_element("cbx_shadow").checked);
+							</attach>
+						</htmlcontrol>
+						<label left="25" text="@Property_GroupShadow" vertical_align="middle" width="10" overflow="visible">
+							<attach name="click">
+								instance.ShowContainer(shadowcontainer,shadowtab);
+								instance.find_element("cbx_shadow").checked = true;
+								instance.Preview("ShadowEnabled", true);
+							</attach>
+						</label>
+					</panel>
+					<panel jsml-local="glowouttab" height="25" dock="top" border_width="0,0,1,0" border_color="white" vertical_align="middle">
+						<htmlcontrol width="20" dock="left" vertical_align="middle">
+							<xmldata>
+								<input id="cbx_glowout" type="checkbox">
+								</input>
+							</xmldata>
+							<attach name="click">
+								instance.Preview("GlowOutEnabled",self.find_element("cbx_glowout").checked);
+							</attach>
+						</htmlcontrol>
+						<label left="25" text="@Property_GroupOutGlow" vertical_align="middle" width="10" overflow="visible">
+							<attach name="click">
+								instance.ShowContainer(glowoutcontainer,glowouttab);
+								instance.find_element("cbx_glowout").checked = true;
+								instance.Preview("GlowOutEnabled", true);
+							</attach>
+						</label>
+					</panel>
+					<panel jsml-local="glowintab" height="25" dock="top" border_width="0,0,1,0" border_color="white" vertical_align="middle">
+						<htmlcontrol width="20" dock="left" vertical_align="middle">
+							<xmldata>
+								<input id="cbx_glowin" type="checkbox">
+								</input>
+							</xmldata>
+							<attach name="click">
+								instance.Preview("GlowInEnabled",self.find_element("cbx_glowin").checked);
+							</attach>
+						</htmlcontrol>
+						<label left="25" text="@Property_GroupInGlow" vertical_align="middle" width="10" overflow="visible">
+							<attach name="click">
+								instance.ShowContainer(glowincontainer,glowintab);
+								instance.find_element("cbx_glowin").checked = true;
+								instance.Preview("GlowInEnabled", true);
+							</attach>
+						</label>
+					</panel>
+				</panel>
+			</panel>
+		</panel>
+		<panel jsml-local="optioncontainer" dock="fill" back_color="white" padding="5">
+			<panel dock="bottom" height="30">
+				<button text="@Btn_Save" left="40" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+					<attach name="click">
+						<![CDATA[
+						var his=ImageEditorDocument.get_history()
+						var lay=instance.get_layer();
+						lay.$012();
+						ImageEditorDocument.$0116();
+
+						document.body.removeChild(instance.get_element());
+						backpanel.Remove();
+						]]>
+					</attach>
+				</button>
+				<button text="@Btn_Cancel" left="130" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+					<attach name="click">
+						<![CDATA[
+						var his=ImageEditorDocument.get_history()
+						var lay=instance.get_layer();
+						for(var p in instance._propbackup)
+							his.$041(lay,p,instance._propbackup[p]);
+						if(lay.$012())
+							ImageEditorDocument.$0116();
+						document.body.removeChild(instance.get_element());
+						backpanel.Remove();
+						]]>
+					</attach>
+				</button>
+			</panel>
+			<panel jsml-local="shadowcontainer" dock="fill" visible="1">
+				<panel dock="top" height="30">
+					<panel dock="left" vertical_align="middle">
+						<label width="50" text="@Property_Blur"></label>
+					</panel>
+					<panel dock="fill" vertical_align="middle">
+						<textbox text="0" jsml-local="tb_shadowblur">
+							<initialize>
+								<![CDATA[
+								ImageEditorDocument.$087(self._input);
+								self._input.onblur=function()
+								{
+									instance.Preview("ShadowBlur",self.get_text());
+								}
+								]]>
+							</initialize>
+
+						</textbox>
+					</panel>
+				</panel>
+				<panel dock="top" height="30">
+					<panel dock="left" vertical_align="middle">
+						<label width="55" text="@Property_OffsetX"></label>
+					</panel>
+					<panel dock="fill" vertical_align="middle">
+						<textbox text="0" jsml-local="tb_shadowx">
+							<initialize>
+								<![CDATA[
+								ImageEditorDocument.$087(self._input);
+								self._input.onblur=function()
+								{
+									instance.Preview("ShadowX",self.get_text());
+								}
+								]]>
+							</initialize>
+						</textbox>
+					</panel>
+				</panel>
+				<panel dock="top" height="30">
+					<panel dock="left" vertical_align="middle">
+						<label width="55" text="@Property_OffsetY"></label>
+					</panel>
+					<panel dock="fill" vertical_align="middle">
+						<textbox text="0" jsml-local="tb_shadowy">
+							<initialize>
+								<![CDATA[
+								ImageEditorDocument.$087(self._input);
+								self._input.onblur=function()
+								{
+									instance.Preview("ShadowY",self.get_text());
+								}
+								]]>
+							</initialize>
+						</textbox>
+					</panel>
+				</panel>
+				<panel dock="top" height="30">
+					<panel dock="left" vertical_align="middle">
+						<label width="50" text="@Property_Color"></label>
+					</panel>
+					<panel dock="fill" vertical_align="middle">
+						<panel jsml-local="tb_shadowcolor" width="20" height="20" border_color="#cccccc" border_width="1">
+							<attach name="click" arguments="sender,evt">
+								<![CDATA[
+								//shadowcolorpicker.set_target(self);
+								var cp = ImageEditorDocument.$051();						
+								cp.set_target(self);
+								cp.set_visible(1);
+								//var style = cp._element.style;
+								function AdjustPos()
+								{			
+									var target = self.get_element();
+									var y = 0;
+									var x = 0;
+									var iy = 0;
+									while(target != document.body)
+									{
+										if(target == instance.get_element())
+											iy = y;
+										x += parseInt(target.offsetLeft)||0;
+										y += parseInt(target.offsetTop)||0;
+										target = target.parentNode;
+									}
+									var left = x + self.get_current_width() + 5;
+									var top = y;
+									if(top<0) top =0;
+									cp.set_offset_x(left + 28);
+									cp.set_offset_y(top - iy + 2);
+								}
+								AdjustPos();
+								ImageEditorDocument.CancelBubble(evt);
+								return false;
+								]]>
+							</attach>
+							<method name="SaveColor" arguments="color">
+								self.set_back_color(color);
+								//instance.$041("ShadowColor",color);
+								instance.Preview("ShadowColor",color);
+							</method>
+						</panel>
+					</panel>
+				</panel>
+			</panel>
+			<panel jsml-local="glowoutcontainer" dock="fill" visible="0">
+				<panel dock="top" height="30">
+					<panel dock="left" vertical_align="middle">
+						<label width="50" text="@Property_GlowWidth"></label>
+					</panel>
+					<panel dock="fill" vertical_align="middle">
+						<textbox text="3" jsml-local="tb_glowoutwidth">
+							<initialize>
+								<![CDATA[
+								ImageEditorDocument.$087(self._input);
+								self._input.onblur=function()
+								{
+									var val = self.get_text();
+									if(val!=null && val.length>0 && isNaN(val))
+									{
+										alert(ImageEditorDocument.Text["NumberValid"]);
+										return;
+									}
+									if(parseInt(val)<0)
+									{
+										alert(ImageEditorDocument.Text["NumberValidZero"]);
+										return;
+									}
+									instance.Preview("GlowOutWidth", val);
+								}
+								]]>
+							</initialize>
+						</textbox>
+					</panel>
+				</panel>
+				<panel dock="top" height="30">
+					<panel dock="left" vertical_align="middle">
+						<label width="50" text="@Property_Color"></label>
+					</panel>
+					<panel dock="fill" vertical_align="middle">
+						<panel jsml-local="tb_glowoutcolor" width="20" height="20" border_color="#cccccc" border_width="1">
+							<attach name="click" arguments="sender,evt">
+								<![CDATA[
+								//glowoutcolorpicker.set_target(self);
+								var cp = ImageEditorDocument.$051();						
+								cp.set_target(self);
+								cp.set_visible(1);
+								//var style = cp._element.style;
+								function AdjustPos()
+								{			
+									var target = self.get_element();
+									var y = 0;
+									var x = 0;
+									var iy = 0;
+									while(target != document.body)
+									{
+										if(target == instance.get_element())
+											iy = y;
+										x += parseInt(target.offsetLeft)||0;
+										y += parseInt(target.offsetTop)||0;
+										target = target.parentNode;
+									}
+									var left = x + self.get_current_width() + 5;
+									var top = y;
+									if(top<0) top =0;
+									cp.set_offset_x(left + 28);
+									cp.set_offset_y(top - iy + 2);
+								}
+								AdjustPos();
+								ImageEditorDocument.CancelBubble(evt);
+								return false;
+								]]>
+							</attach>
+							<method name="SaveColor" arguments="color">
+								self.set_back_color(color);
+								instance.Preview("GlowOutColor",color);
+							</method>
+						</panel>
+					</panel>
+				</panel>
+			</panel>
+			<panel jsml-local="glowincontainer" dock="fill" visible="0">
+				<panel dock="top" height="30">
+					<panel dock="left" vertical_align="middle">
+						<label width="50" text="@Property_GlowWidth"></label>
+					</panel>
+					<panel dock="fill" vertical_align="middle">
+						<textbox text="3" jsml-local="tb_glowinwidth">
+							<initialize>
+								<![CDATA[
+								ImageEditorDocument.$087(self._input);
+								self._input.onblur=function()
+								{
+									var val = self.get_text();
+									if(val!=null && val.length>0 && isNaN(val))
+									{
+										alert(ImageEditorDocument.Text["NumberValid"]);
+										return;
+									}
+									if(parseInt(val)<0)
+									{
+										alert(ImageEditorDocument.Text["NumberValidZero"]);
+										return;
+									}
+									instance.Preview("GlowInWidth", val);
+								}
+								]]>
+							</initialize>
+						</textbox>
+					</panel>
+				</panel>
+				<panel dock="top" height="30">
+					<panel dock="left" vertical_align="middle">
+						<label width="50" text="@Property_Color"></label>
+					</panel>
+					<panel dock="fill" vertical_align="middle">
+						<panel jsml-local="tb_glowincolor" width="20" height="20" border_color="#cccccc" border_width="1">
+							<attach name="click" arguments="sender,evt">
+								<![CDATA[
+								//glowincolorpicker.set_target(self);
+								var cp = ImageEditorDocument.$051();						
+								cp.set_target(self);
+								cp.set_visible(1);
+								//var style = cp._element.style;
+								function AdjustPos()
+								{			
+									var target = self.get_element();
+									var y = 0;
+									var x = 0;
+									var iy = 0;
+									while(target != document.body)
+									{
+										if(target == instance.get_element())
+											iy = y;
+										x += parseInt(target.offsetLeft)||0;
+										y += parseInt(target.offsetTop)||0;
+										target = target.parentNode;
+									}
+									var left = x + self.get_current_width() + 5;
+									var top = y;
+									if(top<0) top =0;
+									cp.set_offset_x(left + 28);
+									cp.set_offset_y(top - iy + 2);
+								}
+								AdjustPos();
+								ImageEditorDocument.CancelBubble(evt);
+								return false;
+								]]>
+							</attach>
+							<method name="SaveColor" arguments="color">
+								self.set_back_color(color);
+								instance.Preview("GlowInColor",color);
+							</method>
+						</panel>
+					</panel>
+				</panel>
+			</panel>
+		</panel>
+		<method name="Preview" arguments="name,val">
+			<![CDATA[
+			var his=ImageEditorDocument.get_history();
+			var lay=instance.get_layer();
+			if(!self._propsaved[name] )
+			{
+				self._propbackup[name]=his.$037(lay,name);
+				self._propsaved[name]=true;
+			}
+			his.$041(lay,name,val);
+			lay.$012()
+			ImageEditorDocument.$0116();
+			]]>
+		</method>
+		<method name="ShowContainer" arguments="ctn,tab">
+			<![CDATA[
+			var ctnarr = [shadowcontainer,glowoutcontainer,glowincontainer];
+			var tabarr = [shadowtab,glowouttab,glowintab];
+			for(var i=0;i<ctnarr.length;i++)
+			{
+				ctnarr[i].set_visible(0);
+				tabarr[i].set_back_color("");
+			}
+			
+			ctn.set_visible(1);
+			tab.set_back_color("#e5eff3");
+			]]>
+		</method>
+		<method name="$037" arguments="name">
+			<![CDATA[
+			var his=ImageEditorDocument.get_history()
+			var lay=self.get_layer();
+			return his.$037(lay,name);
+			]]>
+		</method>
+		<method name="$041" arguments="name,val">
+			<![CDATA[
+			var his=ImageEditorDocument.get_history()
+			var lay=self.get_layer();
+			return his.$041(lay,name,val);
+			]]>
+		</method>
+		<property name="layer">
+			<get>
+				var layeritem = self.get_layeritem();
+				if(!layeritem) return null;
+				return layeritem.get_layer();
+			</get>
+		</property>
+		<property name="layeritem">
+			<get>
+				return self._layeritem;
+			</get>
+			<set>
+				self._layeritem = value;
+				//label_layername.set_text(self.get_layer().get_name());
+				//set attributes
+				//Shadow
+				instance.find_element("cbx_shadow").checked = self.$037("ShadowEnabled") || false;
+				tb_shadowx.set_text(self.$037("ShadowX")||"5");
+				tb_shadowy.set_text(self.$037("ShadowY")||"5");
+				tb_shadowblur.set_text(self.$037("ShadowBlur")||"0");
+				tb_shadowcolor.set_back_color(self.$037("ShadowColor")||"rgba(0,0,0,1)");
+
+				instance.find_element("cbx_glowout").checked = self.$037("GlowOutEnabled") || false;
+				tb_glowoutwidth.set_text(self.$037("GlowOutWidth")||"5");
+				tb_glowoutcolor.set_back_color(self.$037("GlowOutColor")||"rgba(255,255,255,0.5)");
+
+				instance.find_element("cbx_glowin").checked = self.$037("GlowInEnabled") || false;
+				tb_glowinwidth.set_text(self.$037("GlowInWidth")||"5");
+				tb_glowincolor.set_back_color(self.$037("GlowInColor")||"rgba(255,255,255,0.5)");
+			</set>
+		</property>
+		<attach name="click">
+			<![CDATA[
+			]]>
+		</attach>
+		<initialize>
+			<![CDATA[
+				self._propsaved = {};
+				self._propbackup = {};
+				
+				var style=self._element.style;
+				style.zIndex="987654";
+				
+				var myself = self;
+				function AdjustPos()
+				{
+					var x = (document.body.offsetWidth - myself.get_width())/2;
+					var y = (document.body.offsetHeight - myself.get_height())/2;
+					
+					myself.set_offset_x(x);
+					myself.set_offset_y(y);
+					style.position="absolute";
+					//myself.set_visible(1);
+					style.display = "";
+				}
+				
+				self.setDelegateTimeout(AdjustPos, 50);
+			]]>
+		</initialize>
+	</panel>
+	
+	<execute>
+		<![CDATA[
+		plugin.LoadUI = function(layer)
+		{
+			var propertypanel = jsml.class_create_instance("propertypanel");
+			propertypanel.set_parent(document.body);				
+			propertypanel.set_layeritem(layer);
+		}
+		]]>
+	</execute>
+</jsml>

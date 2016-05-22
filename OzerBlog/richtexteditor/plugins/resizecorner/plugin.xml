@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../core/jsml.xsd">
+
+	<image jsml-class="rte_plugin_resizecorner" dock="fill" margin="0,0,0,3" width="1" height="1" overflow="visible" src="{folder}plugins/{plugin}/resizecorner.gif" vertical_align="bottom">
+		<attach name="mousedown" arguments="jevent,devent">
+			if(editor.IsCommandActive("FullScreen"))return devent.cancel();
+			editor._config.skin_control.start_resize(devent,0,self.fr,self.fb,0,180);
+		</attach>
+	</image>
+
+	<execute>
+		<![CDATA[
+		
+		var skindiv=editor._config.skin_div;
+		var skinctrl=editor._config.skin_control;
+		var srcheight=skinctrl.get_current_height();
+		var resizetimerid=0;
+		skinctrl.attach_event("resize",function()
+		{
+			clearTimeout(resizetimerid);
+			resizetimerid=setTimeout(function()
+			{
+				if(skinctrl._jsml_disposed)
+					return;
+				if(editor.IsCommandActive("FullScreen"))
+					return;
+				skindiv.style.width=skinctrl.get_current_width()+"px";
+				skindiv.style.height=skinctrl.get_current_height()+"px";
+			},1);
+		});
+		
+		plugin.Execute=function(element,arg1,arg2)
+		{
+			
+		}
+		plugin.LoadUI=function(ctrl,arg0)
+		{
+			var mode=editor._config.resize_mode;
+			if(mode=="disabled")
+				return;
+			if(mode=="autoadjustheight")
+				return StartAutoAdjustHeight();
+
+			var corner=jsml.class_create_instance("rte_plugin_resizecorner");
+			
+			if(mode=="resizewidth")
+			{
+				corner.fr=1;
+				corner.set_cursor("w-resize");
+			}
+			else if(mode=="resizeheight")
+			{
+				corner.fb=1;
+				corner.set_cursor("n-resize");
+			}
+			else
+			{
+				corner.fr=corner.fb=1;
+				corner.set_cursor("nw-resize");
+			}
+
+			ctrl.append_child(corner);
+		}
+		function AutoAdjustHeight()
+		{
+			if(editor.IsCommandActive("FullScreen"))
+				return;
+
+			var bodyheight=editor.GetContentHeight();
+			if(bodyheight<80)bodyheight=80;
+			var currheight=skinctrl.get_current_height();
+			var missheight=bodyheight-editor._config.skin_container.get_current_height();
+			var nextheight=currheight+missheight+32;
+			if(nextheight<srcheight)nextheight=srcheight;
+			skinctrl.set_height(nextheight);
+		}
+		function StartAutoAdjustHeight()
+		{
+			setTimeout(AutoAdjustHeight,200);
+			editor.AttachEvent("TextChanged",function()
+			{
+				setTimeout(AutoAdjustHeight,200);
+			});
+			editor.AttachEvent("TabModeChanged",function()
+			{
+				setTimeout(AutoAdjustHeight,200);
+			});
+			editor.AttachEvent("FullScreenChanged",function()
+			{
+				setTimeout(AutoAdjustHeight,200);
+			});
+		}
+		]]>
+		</execute>
+
+
+</jsml>

@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "Users";
+}
+
+<style>
+    table {
+        width: 100%;
+    }
+
+    input {
+        width: 95%;
+        margin: 5px;
+    }
+
+    td {
+        vertical-align: top;
+    }
+</style>
+
+<h2>Kullanıcılar</h2>
+@using (Html.BeginForm("AdminMenu", "Admin", FormMethod.Post))
+{
+
+    <table>
+        <tr>
+            <td style="width:20%">
+                @Html.Partial("~/Views/Admin/_Menu.cshtml")
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="submit" value="Kaydet" style="width:150px;" />
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+}

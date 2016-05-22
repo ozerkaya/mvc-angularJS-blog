@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../core/jsml.xsd">
+
+
+	<panel jsml-class="sidebar_common" jsml-base="sidebarmenu" dock="fill">
+		<panel jsml-base="sidebarmenuitem" text="Back">
+			<attach name="click">
+				sidebar.back();
+			</attach>
+		</panel>
+		
+		<panel jsml-base="sidebarmenuitem" command="new" text="New document" />
+
+		<panel jsml-base="sidebarmenuitem" command="CleanCode" text="@CLEANCODE" imagename="cleanup" />
+		
+		<panel jsml-base="sidebarmenuitem" command="ExecPlugin" arguments="pageproperties" text="@PAGEPROPERTIES" imagename="properties" />
+
+		<panel jsml-base="sidebarmenuitem" command="ExecPlugin" arguments="syntaxhighlighter" text="@SYNTAXHIGHLIGHTER" imagename="code" />
+		
+		<panel jsml-base="sidebarmenuitem" arrow="true" text="Debug">
+			<attach name="click">
+				sidebar.loadpanel("debug.xml");
+			</attach>
+		</panel>
+	</panel>
+
+
+	<panel jsml-base="sidebar_common" />
+
+
+</jsml>

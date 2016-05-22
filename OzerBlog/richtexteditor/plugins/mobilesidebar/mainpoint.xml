@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../core/jsml.xsd">
+
+
+	<panel jsml-class="sidebar_mainpoint" jsml-base="sidebarmenu" dock="fill">
+		<panel jsml-base="sidebarmenuitem" text="Back">
+			<attach name="click">
+				sidebar.back();
+			</attach>
+		</panel>
+		
+		<panel jsml-base="sidebarmenuitem" text="Paste" imagename="m_paste">
+			<attach name="click">
+				<![CDATA[
+				if(!editor._mobileclipboard)
+					return sidebar.collapse();;
+				var html=editor.FilterByPasteCommand(editor._mobileclipboard,"paste");
+				sidebar.loadpanel("insertwhere.xml",{wherefrom:"typetext",wherecallback:function(){
+					sidebar.collapse();
+					editor.InsertHTML(html);
+				}});
+				]]>
+			</attach>
+		</panel>
+
+		<panel jsml-base="sidebarmenuitem" text="Type text" imagename="m_edit">
+			<attach name="click">
+				sidebar.loadpanel("typetext.xml");
+			</attach>
+		</panel>
+
+		<panel jsml-base="sidebarmenuitem" text="Upload image" imagename="m_upload">
+			<attach name="click">
+				sidebar.loadpanel("uploadimage.xml");
+			</attach>
+		</panel>
+
+		<panel jsml-base="sidebarmenuitem" arrow="true" text="Insert">
+			<attach name="click">
+				sidebar.loadpanel("insert.xml");
+			</attach>
+		</panel>
+		
+		<panel jsml-base="sidebarmenuitem" arrow="true" text="Common">
+			<attach name="click">
+				sidebar.loadpanel("common.xml");
+			</attach>
+		</panel>
+		<panel jsml-base="sidebarmenuitem" arrow="true" text="Paragraph">
+			<attach name="click">
+				sidebar.loadpanel("paragraph.xml");
+			</attach>
+		</panel>
+		<panel jsml-base="sidebarmenuitem" arrow="true" text="Tag List">
+			<attach name="click">
+				sidebar.loadpanel("taglist.xml");
+			</attach>
+		</panel>
+
+		<!--
+		
+		<panel jsml-base="sidebarmenuitem" text="Insert &lt;p&gt;">
+			<attach name="click">
+				editor.ExecCommand("insertparagraph");
+			</attach>
+		</panel>
+		<panel jsml-base="sidebarmenuitem" text="Insert &lt;hr&gt;">
+			<attach name="click">
+				editor.ExecCommand("inserthorizontalrule");
+			</attach>
+		</panel>
+		<panel jsml-base="sidebarmenuitem" text="Insert &lt;br&gt;">
+			<attach name="click">
+				editor.ExecCommand("insertbreak");
+			</attach>
+		</panel>
+		-->
+		
+	</panel>
+
+	<panel jsml-base="sidebar_mainpoint" />
+
+
+</jsml>

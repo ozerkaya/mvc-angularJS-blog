@@ -1,0 +1,1063 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="jsml.xsl"?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../core/jsml.xsd">
+	<panel jsml-class="adjustapplybutton" dock="top" height="20" margin="5,2,5,3">
+		<button text="@Btn_Apply" dock="right" width="60" margin="0,15,0,5" vertical_align="middle" horizontal_align="center" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+			<attach name="click">
+				<![CDATA[
+				instance._effectbox.$0105(true);
+				instance._mybox.dispose();
+				]]>
+			</attach>
+		</button>
+		<constructor arguments="effectbox,mybox">
+			<![CDATA[
+			self.panel_constructor();
+			self._effectbox = effectbox;
+			self._mybox = mybox;
+			]]>
+		</constructor>
+	</panel>
+	<panel jsml-class="adjustscroll_blur" width="160" height="45" margin="10,2,10,3">
+		<panel dock="top" height="20">
+		<label dock="left" width="30" vertical_align="middle" text_align="left" text="@Effect_Radius"></label>
+		<label jsml-local="txt_val" dock="right" width="20" vertical_align="middle" text_align="left" text="3"></label>
+
+		<panel jsml-base="scrollbarbase" dock="left" width="90" min="2" max="18" default="3" margin="0,5,0,5">
+			<initialize>
+				<![CDATA[
+				self.CalcScrollbarPos();
+				function SizeChanged(size)
+				{
+					var val = parseInt(size);
+					instance._effectbox.Preview(val);
+				}
+				function SizeShow(size)
+				{
+					var val = parseInt(size);
+					txt_val.set_text(val);
+				}
+				self.set_release(SizeChanged);
+				self.set_action(SizeShow);
+				]]>
+			</initialize>
+		</panel>
+		</panel>
+		<panel dock="top" height="20" margin="5,0,0,0">
+			<button text="@Btn_Apply" dock="right" width="60" margin="0,15,0,5" vertical_align="middle" horizontal_align="center" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+				<attach name="click">
+					<![CDATA[
+					instance._effectbox.$0105(true);
+					instance._mybox.dispose();
+					]]>
+				</attach>
+			</button>
+		</panel>
+		<constructor arguments="effectbox,mybox">
+			<![CDATA[
+			self.panel_constructor();
+			self._effectbox = effectbox;
+			self._mybox = mybox;
+			]]>
+		</constructor>
+	</panel>
+	<panel jsml-class="adjustscroll_contrast" width="200" height="75" margin="5,2,5,3">
+		<panel dock="top" height="20">
+			<label dock="left" width="50" vertical_align="middle" text_align="left" text="@Effect_Bright"></label>
+			<label jsml-local="txt_val" dock="right" width="20" vertical_align="middle" text_align="left" text="1"></label>
+			<panel jsml-base="scrollbarbase" dock="left" width="110" min="0" max="2" default="1" margin="0,5,0,5">
+				<initialize>
+					<![CDATA[
+					self.CalcScrollbarPos();
+					function SizeChanged(size)
+					{
+						instance.Apply();
+					}
+					function SizeShow(size)
+					{
+						if(!size)
+							size = "0";
+						if(size.toString().length>4)
+							size = parseFloat(size).toFixed(2);
+						txt_val.set_text(size);
+					}
+					self.set_release(SizeChanged);
+					self.set_action(SizeShow);
+					]]>
+				</initialize>
+			</panel>
+		</panel>
+		<panel dock="top" height="20" margin="5,0,0,0">
+			<label dock="left" width="50" vertical_align="middle" text_align="left" text="@Effect_Contrast2"></label>
+			<label jsml-local="txt_val2" dock="right" width="20" vertical_align="middle" text_align="left" text="0"></label>
+			<panel jsml-base="scrollbarbase" dock="left" width="110" min="-100" max="100" default="0" margin="0,5,0,5">
+				<initialize>
+					<![CDATA[
+					self.CalcScrollbarPos();
+					function SizeChanged(size)
+					{
+						instance.Apply();
+					}
+					function SizeShow(size)
+					{
+						if(!size) 
+							size = "0";
+						var val = parseInt(size);
+						txt_val2.set_text(val+"");
+					}
+					self.set_release(SizeChanged);
+					self.set_action(SizeShow);
+					]]>
+				</initialize>
+			</panel>
+		</panel>
+		<panel dock="top" height="20" margin="5,0,0,0">
+			<button text="@Btn_Apply" dock="right" width="60" margin="0,15,0,5" vertical_align="middle" horizontal_align="center" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+				<attach name="click">
+					<![CDATA[
+					instance._effectbox.$0105(true);
+					instance._mybox.dispose();
+					]]>
+				</attach>
+			</button>
+		</panel>
+		<method name="Apply">
+			<![CDATA[			
+			var val1 = parseFloat(txt_val.get_text()||"0");
+			if(val1.toString().length>4) val1 = val1.toFixed(2);
+			var val2 = parseInt(txt_val2.get_text()||"0");
+			instance._effectbox.Preview(val1,val2);
+			]]>
+		</method>
+		<constructor arguments="effectbox,mybox">
+			<![CDATA[
+			self.panel_constructor();
+			self._effectbox = effectbox;
+			self._mybox = mybox;
+			]]>
+		</constructor>
+	</panel>
+	<panel jsml-class="adjustscroll_hsl" width="200" height="95" margin="5,2,5,3">
+		<panel dock="top" height="20">
+			<label dock="left" width="50" vertical_align="middle" text_align="left" text="@Effect_Hue"></label>
+			<label jsml-local="txt_val" dock="right" width="20" vertical_align="middle" text_align="left" text="0"></label>
+			<panel jsml-base="scrollbarbase" dock="left" width="110" min="-360" max="360" default="0" margin="0,5,0,5">
+				<initialize>
+					<![CDATA[
+					self.CalcScrollbarPos();
+					function SizeChanged(size)
+					{
+						instance.Apply();
+					}
+					function SizeShow(size)
+					{
+						if(!size) 
+							size = "0";
+						var val = parseInt(size);
+						txt_val.set_text(val+"");
+					}
+					self.set_release(SizeChanged);
+					self.set_action(SizeShow);
+					]]>
+				</initialize>
+			</panel>
+		</panel>
+		<panel dock="top" height="20" margin="5,0,0,0">
+			<label dock="left" width="50" vertical_align="middle" text_align="left" text="@Effect_Saturation"></label>
+			<label jsml-local="txt_val2" dock="right" width="20" vertical_align="middle" text_align="left" text="0"></label>
+			<panel jsml-base="scrollbarbase" dock="left" width="110" min="-100" max="100" default="0" margin="0,5,0,5">
+				<initialize>
+					<![CDATA[
+					self.CalcScrollbarPos();
+					function SizeChanged(size)
+					{
+						instance.Apply();
+					}
+					function SizeShow(size)
+					{
+						if(!size) 
+							size = "0";
+						var val = parseInt(size);
+						txt_val2.set_text(val+"");
+					}
+					self.set_release(SizeChanged);
+					self.set_action(SizeShow);
+					]]>
+				</initialize>
+			</panel>
+		</panel>
+		<panel dock="top" height="20" margin="5,0,0,0">
+			<label dock="left" width="50" vertical_align="middle" text_align="left" text="@Effect_Lightness"></label>
+			<label jsml-local="txt_val3" dock="right" width="20" vertical_align="middle" text_align="left" text="0"></label>
+			<panel jsml-base="scrollbarbase" dock="left" width="110" min="-100" max="100" default="0" margin="0,5,0,5">
+				<initialize>
+					<![CDATA[
+					self.CalcScrollbarPos();
+					function SizeChanged(size)
+					{
+						instance.Apply();
+					}
+					function SizeShow(size)
+					{
+						if(!size) 
+							size = "0";
+						var val = parseInt(size);
+						txt_val3.set_text(val+"");
+					}
+					self.set_release(SizeChanged);
+					self.set_action(SizeShow);
+					]]>
+				</initialize>
+			</panel>
+		</panel>
+		<panel dock="top" height="20" margin="5,0,0,0">
+			<button text="@Btn_Apply" dock="right" width="60" margin="0,15,0,5" vertical_align="middle" horizontal_align="center" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+				<attach name="click">
+					<![CDATA[
+					instance._effectbox.$0105(true);
+					instance._mybox.dispose();
+					]]>
+				</attach>
+			</button>
+		</panel>
+		<method name="Apply">
+			<![CDATA[			
+			var val1 = parseInt(txt_val.get_text()||"0");
+			var val2 = parseInt(txt_val2.get_text()||"0");
+			var val3 = parseInt(txt_val3.get_text()||"0");
+			instance._effectbox.Preview(val1,val2,val3);
+			]]>
+		</method>
+		<constructor arguments="effectbox,mybox">
+			<![CDATA[
+			self.panel_constructor();
+			self._effectbox = effectbox;
+			self._mybox = mybox;
+			]]>
+		</constructor>
+	</panel>
+	<panel jsml-class="adjustscroll_rgb" width="350" height="120" margin="5,2,5,3">
+		<panel dock="top" height="20">
+			<label dock="left" width="50" vertical_align="middle" text_align="left" text="@Effect_Red"></label>
+			<label jsml-local="txt_val" dock="right" width="20" vertical_align="middle" text_align="left" text="0"></label>
+			<panel jsml-base="scrollbarbase" dock="left" width="260" min="-255" max="255" default="0" margin="0,5,0,5">
+				<initialize>
+					<![CDATA[
+					self.CalcScrollbarPos();
+					function SizeChanged(size)
+					{
+						instance.Apply();
+					}
+					function SizeShow(size)
+					{
+						if(!size) 
+							size = "0";
+						var val = parseInt(size);
+						txt_val.set_text(val+"");
+					}
+					self.set_release(SizeChanged);
+					self.set_action(SizeShow);
+					]]>
+				</initialize>
+			</panel>
+		</panel>
+		<panel dock="top" height="20" margin="5,0,0,0">
+			<label dock="left" width="50" vertical_align="middle" text_align="left" text="@Effect_Green"></label>
+			<label jsml-local="txt_val2" dock="right" width="20" vertical_align="middle" text_align="left" text="0"></label>
+			<panel jsml-base="scrollbarbase" dock="left" width="260" min="-255" max="255" default="0" margin="0,5,0,5">
+				<initialize>
+					<![CDATA[
+					self.CalcScrollbarPos();
+					function SizeChanged(size)
+					{
+						instance.Apply();
+					}
+					function SizeShow(size)
+					{
+						if(!size) 
+							size = "0";
+						var val = parseInt(size);
+						txt_val2.set_text(val+"");
+					}
+					self.set_release(SizeChanged);
+					self.set_action(SizeShow);
+					]]>
+				</initialize>
+			</panel>
+		</panel>
+		<panel dock="top" height="20" margin="5,0,0,0">
+			<label dock="left" width="50" vertical_align="middle" text_align="left" text="@Effect_Blue"></label>
+			<label jsml-local="txt_val3" dock="right" width="20" vertical_align="middle" text_align="left" text="0"></label>
+			<panel jsml-base="scrollbarbase" dock="left" width="260" min="-255" max="255" default="0" margin="0,5,0,5">
+				<initialize>
+					<![CDATA[
+					self.CalcScrollbarPos();
+					function SizeChanged(size)
+					{
+						instance.Apply();
+					}
+					function SizeShow(size)
+					{
+						if(!size) 
+							size = "0";
+						var val = parseInt(size);
+						txt_val3.set_text(val+"");
+					}
+					self.set_release(SizeChanged);
+					self.set_action(SizeShow);
+					]]>
+				</initialize>
+			</panel>
+		</panel>
+		<panel dock="top" height="20" margin="5,0,0,0">
+			<label dock="left" width="50" vertical_align="middle" text_align="left" text="@Effect_Alpha"></label>
+			<label jsml-local="txt_val4" dock="right" width="20" vertical_align="middle" text_align="left" text="0"></label>
+			<panel jsml-base="scrollbarbase" dock="left" width="260" min="-255" max="255" default="0" margin="0,5,0,5">
+				<initialize>
+					<![CDATA[
+					self.CalcScrollbarPos();
+					function SizeChanged(size)
+					{
+						instance.Apply();
+					}
+					function SizeShow(size)
+					{
+						if(!size) 
+							size = "0";
+						var val = parseInt(size);
+						txt_val4.set_text(val+"");
+					}
+					self.set_release(SizeChanged);
+					self.set_action(SizeShow);
+					]]>
+				</initialize>
+			</panel>
+		</panel>
+		<panel dock="top" height="20" margin="5,0,0,0">
+			<button text="@Btn_Apply" dock="right" width="60" margin="0,15,0,5" vertical_align="middle" horizontal_align="center" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+				<attach name="click">
+					<![CDATA[
+					instance._effectbox.$0105(true);
+					instance._mybox.dispose();
+					]]>
+				</attach>
+			</button>
+		</panel>
+		<method name="Apply">
+			<![CDATA[			
+			var val1 = parseInt(txt_val.get_text()||"0");
+			var val2 = parseInt(txt_val2.get_text()||"0");
+			var val3 = parseInt(txt_val3.get_text()||"0");
+			var val4 = parseInt(txt_val4.get_text()||"0");
+			instance._effectbox.Preview(val1,val2,val3,val4);
+			]]>
+		</method>
+		<constructor arguments="effectbox,mybox">
+			<![CDATA[
+			self.panel_constructor();
+			self._effectbox = effectbox;
+			self._mybox = mybox;
+			]]>
+		</constructor>
+	</panel>
+	<panel jsml-class="adjustscroll_fog" width="160" height="45" margin="10,2,10,3">
+		<panel dock="top" height="20">
+			<label dock="left" width="30" vertical_align="middle" text_align="left" text="@Effect_Radius"></label>
+			<label jsml-local="txt_val" dock="right" width="20" vertical_align="middle" text_align="left" text="5"></label>
+
+			<panel jsml-base="scrollbarbase" dock="left" width="90" min="2" max="15" default="5" margin="0,5,0,5">
+				<initialize>
+					<![CDATA[
+				self.CalcScrollbarPos();
+				function SizeChanged(size)
+				{
+					var val = parseInt(size);
+					instance._effectbox.Preview(val);
+				}
+				function SizeShow(size)
+				{
+					var val = parseInt(size);
+					txt_val.set_text(val);
+				}
+				self.set_release(SizeChanged);
+				self.set_action(SizeShow);
+				]]>
+				</initialize>
+			</panel>
+		</panel>
+		<panel dock="top" height="20" margin="5,0,0,0">
+			<button text="@Btn_Apply" dock="right" width="60" margin="0,15,0,5" vertical_align="middle" horizontal_align="center" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+				<attach name="click">
+					<![CDATA[
+					instance._effectbox.$0105(true);
+					instance._mybox.dispose();
+					]]>
+				</attach>
+			</button>
+		</panel>
+		<constructor arguments="effectbox,mybox">
+			<![CDATA[
+			self.panel_constructor();
+			self._effectbox = effectbox;
+			self._mybox = mybox;
+			]]>
+		</constructor>
+	</panel>
+	<panel jsml-class="adjustscroll_unsharp" width="160" height="45" margin="10,2,10,3">
+		<panel dock="top" height="20">
+		<label dock="left" width="30" vertical_align="middle" text_align="left" text="@Effect_Radius"></label>
+		<label jsml-local="txt_val" dock="right" width="20" vertical_align="middle" text_align="left" text="0"></label>
+
+		<panel jsml-base="scrollbarbase" dock="left" width="90" min="0" max="1" default="0" margin="0,5,0,5">
+			<initialize>
+				<![CDATA[
+				self.CalcScrollbarPos();
+				function SizeChanged(size)
+				{
+					if(!size)
+						size = "0";
+					if(size.toString().length>4)
+						size = parseFloat(size).toFixed(2);
+					var val = parseFloat(size);
+					instance._effectbox.Preview(val);
+				}
+				function SizeShow(size)
+				{
+					if(!size)
+						size = "0";
+					if(size.toString().length>4)
+						size = parseFloat(size).toFixed(2);
+					txt_val.set_text(size);
+				}
+				self.set_release(SizeChanged);
+				self.set_action(SizeShow);
+				]]>
+			</initialize>
+		</panel>
+		</panel>
+		<panel dock="top" height="20" margin="5,0,0,0">
+			<button text="@Btn_Apply" dock="right" width="60" margin="0,15,0,5" vertical_align="middle" horizontal_align="center" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+				<attach name="click">
+					<![CDATA[
+					instance._effectbox.$0105(true);
+					instance._mybox.dispose();
+					]]>
+				</attach>
+			</button>
+		</panel>
+		<constructor arguments="effectbox,mybox">
+			<![CDATA[
+			self.panel_constructor();
+			self._effectbox = effectbox;
+			self._mybox = mybox;
+			]]>
+		</constructor>
+	</panel>
+	<panel jsml-class="adjustscroll_pencil" width="160" height="45" margin="10,2,10,3">
+		<panel dock="top" height="20">
+			<label dock="left" width="30" vertical_align="middle" text_align="left" text="@Effect_Radius"></label>
+			<label jsml-local="txt_val" dock="right" width="20" vertical_align="middle" text_align="left" text="1.5"></label>
+
+			<panel jsml-base="scrollbarbase" dock="left" width="90" min="0.3" max="3" default="1.5" margin="0,5,0,5">
+				<initialize>
+				<![CDATA[
+				self.CalcScrollbarPos();
+				function SizeChanged(size)
+				{
+					if(!size)
+						size = "0";
+					if(size.toString().length>4)
+						size = parseFloat(size).toFixed(2);
+					var val = parseFloat(size);
+					instance._effectbox.Preview(val);
+				}
+				function SizeShow(size)
+				{
+					if(!size)
+						size = "0";
+					if(size.toString().length>4)
+						size = parseFloat(size).toFixed(2);
+					txt_val.set_text(size);
+				}
+				self.set_release(SizeChanged);
+				self.set_action(SizeShow);
+				]]>
+				</initialize>
+			</panel>
+		</panel>
+		<panel dock="top" height="20" margin="5,0,0,0">
+			<button text="@Btn_Apply" dock="right" width="60" margin="0,15,0,5" vertical_align="middle" horizontal_align="center" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+				<attach name="click">
+					<![CDATA[
+					instance._effectbox.$0105(true);
+					instance._mybox.dispose();
+					]]>
+				</attach>
+			</button>
+		</panel>
+		<constructor arguments="effectbox,mybox">
+			<![CDATA[
+			self.panel_constructor();
+			self._effectbox = effectbox;
+			self._mybox = mybox;
+			]]>
+		</constructor>
+	</panel>
+	<panel jsml-class="adjustbutton" width="120" height="32" margin="4" border_color="#8f8f8f" border_width="1" css_text="border-radius:2px;">
+		<image jsml-local="icon" dock="left" width="30" vertical_align="middle"></image>
+		<label jsml-local="txt" dock="fill" margin="0,0,0,5" vertical_align="middle"></label>
+		<attach name="click">
+			<![CDATA[
+			self.get_parent().Select(self);
+			]]>
+		</attach>
+		<attach name="mousehover">
+			<![CDATA[
+			self.set_back_color("#bfd6e6");
+			self.get_parent().get_parent().CloseChild();
+			]]>
+		</attach>
+		<attach name="mouseleave">
+			<![CDATA[
+			if(self.get_selected())
+				return;
+			self.set_back_color("");
+			]]>
+		</attach>
+		<property name="selected">
+			<get>
+				return self._selected;
+			</get>
+			<set>
+				<![CDATA[
+				self._selected=value;
+				]]>
+			</set>
+		</property>
+		<property name="src">
+			<get>
+				return self._src;
+			</get>
+			<set>
+				<![CDATA[
+				self._src=value;
+				icon.set_src(value);
+				]]>
+			</set>
+		</property>
+		<property name="effectname">
+			<get>
+				return self._effectname;
+			</get>
+			<set>
+				<![CDATA[
+				self._effectname=value;
+				]]>
+			</set>
+		</property>
+		<property name="title">
+			<get>
+				return self._title;
+			</get>
+			<set>
+				<![CDATA[
+				self._title=value;
+				txt.set_text(value);
+				]]>
+			</set>
+		</property>
+	</panel>
+	<panel jsml-class="adjustpanel" width="385" height="230" back_color="white">
+		<panel jsml-local="backpanel" back_color="gray" opacity="30" visible="0" dock="over" vertical_align="middle" horizontal_align="center">
+			<image jsml-local="backimg" src="images/loading.gif" back_color="transparent" width="120" height="120" vertical_align="middle" horizontal_align="center" css_text="z-index:101;"></image>
+			<initialize>
+				<![CDATA[				
+				var style=self._element.style;
+				style.zIndex="100";
+
+				function repos()
+				{
+					if(self._removed || self._jsml_disposed)return;
+					self.setDelegateTimeout(repos,100);
+					
+					self.set_parent(document.body);
+				
+					var rect=jsml.get_body_rect();
+					style.position="absolute";
+					style.top=rect.top+"px";
+					style.left=rect.left+"px";
+					style.width = rect.width + "px";
+					style.height = rect.height + "px";
+					
+					backimg._element.style.top = parseInt((rect.height-120)/2)+"px";
+					backimg._element.style.left = parseInt((rect.width-120)/2)+"px";
+				}
+				//repos();			
+				]]>
+			</initialize>
+			<method name="Remove">
+				//self._removed = true;
+				//document.body.removeChild(self.get_element());
+			</method>
+		</panel>
+		<panel dock="bottom" height="30" border_color="#8f8f8f" border_width="1,0,0,0" padding="0,5,0,5">
+			<button text="@Btn_Cancel" dock="right" width="60" margin="3,0,3,5" vertical_align="middle" horizontal_align="center" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+				<attach name="click">
+					<![CDATA[
+					doc.$0116();
+					backpanel.Remove();
+					instance.dispose();
+					instance.get_box().dispose();
+					]]>
+				</attach>
+			</button>
+			<button text="@Btn_Apply" dock="right" width="60" margin="3,0,3,5" vertical_align="middle" horizontal_align="center" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+				<attach name="click">
+					<![CDATA[
+					if(instance._arguments)
+					{
+						instance.$0105();
+					}
+					else
+					{
+						backpanel.Remove();
+						instance.dispose();
+						instance.get_box().dispose();
+					}
+					]]>
+				</attach>
+			</button>
+			<checkbox jsml-local="cbx_all" dock="right" checked="1" vertical_align="middle" margin="4,0,0,0"></checkbox>
+			<label dock="fill" text_align="right" vertical_align="middle" text="@Effect_AllLayer"></label>
+		</panel>
+		<panel dock="fill">
+			<panel dock="flow" jsml-base="adjustbutton" title="@Effect_Rgb" effectname="rgb" src="images/effect/hsl.gif">
+				<attach name="click">
+					<![CDATA[
+					var effectbox=jsml.class_create_instance("floatbox");
+					effectbox.set_height(41);
+					effectbox.set_manualclose(true);
+					effectbox.show(self.get_element(),-20,0,{"floatMode":"b-l"});
+					instance._effectbox = effectbox;
+					var bluroption = jsml.class_create_instance("adjustscroll_rgb",[instance,effectbox]);
+					effectbox.append_child(bluroption);
+					]]>
+				</attach>
+			</panel>
+			<panel dock="flow" jsml-base="adjustbutton" title="@Effect_Contrast" effectname="contrast" src="images/effect/bright.gif">
+				<attach name="click">
+					<![CDATA[
+					var effectbox=jsml.class_create_instance("floatbox");
+					effectbox.set_height(41);
+					effectbox.set_manualclose(true);
+					effectbox.show(self.get_element(),-20,0,{"floatMode":"b-l"});
+					instance._effectbox = effectbox;
+					var bluroption = jsml.class_create_instance("adjustscroll_contrast",[instance,effectbox]);
+					effectbox.append_child(bluroption);
+					]]>
+				</attach>
+			</panel>
+			<panel dock="flow" jsml-base="adjustbutton" title="@Effect_Hsl" effectname="hue" src="images/effect/hsl.gif">
+				<attach name="click">
+					<![CDATA[
+					var effectbox=jsml.class_create_instance("floatbox");
+					effectbox.set_height(41);
+					effectbox.set_manualclose(true);
+					effectbox.show(self.get_element(),-20,0,{"floatMode":"b-l"});
+					instance._effectbox = effectbox;
+					var bluroption = jsml.class_create_instance("adjustscroll_hsl",[instance,effectbox]);
+					effectbox.append_child(bluroption);
+					]]>
+				</attach>
+			</panel>
+			<panel dock="flow" jsml-base="adjustbutton" title="@Effect_Invert" effectname="invert" src="images/effect/invert.gif">
+				<attach name="click">
+					instance.ShowApply(self);
+				</attach>
+			</panel>
+			<panel dock="flow" jsml-base="adjustbutton" title="@Effect_Fog" effectname="fog" src="images/effect/fog.gif">
+				<attach name="click">
+					<![CDATA[
+					var effectbox=jsml.class_create_instance("floatbox");
+					effectbox.set_height(41);
+					effectbox.set_manualclose(true);
+					effectbox.show(self.get_element(),-20,0,{"floatMode":"b-l"});
+					instance._effectbox = effectbox;
+					var bluroption = jsml.class_create_instance("adjustscroll_fog",[instance,effectbox]);
+					effectbox.append_child(bluroption);
+					]]>
+				</attach>
+			</panel>
+			<panel dock="flow" jsml-base="adjustbutton" title="@Effect_Neon" effectname="neon" src="images/effect/neon.gif">
+				<attach name="click">
+					instance.ShowApply(self);
+				</attach>
+			</panel>
+			<panel dock="flow" jsml-base="adjustbutton" title="@Effect_Relief" effectname="relief" src="images/effect/relief.gif">
+				<attach name="click">
+					instance.ShowApply(self);
+				</attach>
+			</panel>
+			<panel dock="flow" jsml-base="adjustbutton" title="@Effect_Mosaic" effectname="mosaic" src="images/effect/mosaic.gif">
+				<attach name="click">
+					<![CDATA[
+					var effectbox=jsml.class_create_instance("floatbox");
+					effectbox.set_height(41);
+					effectbox.set_manualclose(true);
+					effectbox.show(self.get_element(),-20,0,{"floatMode":"b-l"});
+					instance._effectbox = effectbox;
+					var bluroption = jsml.class_create_instance("adjustscroll_fog",[instance,effectbox]);
+					effectbox.append_child(bluroption);
+					]]>
+				</attach>
+			</panel>
+			<panel dock="flow" jsml-base="adjustbutton" title="@Effect_Grayscale" effectname="grayscale" src="images/effect/grayscale.gif">
+				<attach name="click">
+					instance.ShowApply(self);
+				</attach>
+			</panel>
+			<panel dock="flow" jsml-base="adjustbutton" title="@Effect_Twovalue" effectname="twovalue" src="images/effect/twovalue.gif">
+				<attach name="click">
+					instance.ShowApply(self);
+				</attach>
+			</panel>
+			<panel dock="flow" jsml-base="adjustbutton" title="@Effect_Unsharp" effectname="unsharp" src="images/effect/unsharp.gif">
+				<attach name="click">
+					<![CDATA[
+					var effectbox=jsml.class_create_instance("floatbox");
+					effectbox.set_height(41);
+					effectbox.set_manualclose(true);
+					effectbox.show(self.get_element(),-20,0,{"floatMode":"b-l"});
+					instance._effectbox = effectbox;
+					var bluroption = jsml.class_create_instance("adjustscroll_unsharp",[instance,effectbox]);
+					effectbox.append_child(bluroption);
+					]]>
+				</attach>
+			</panel>
+			<panel dock="flow" jsml-base="adjustbutton" title="@Effect_Blur" effectname="blur" src="images/effect/blur.gif">
+				<attach name="click">
+					<![CDATA[
+					var effectbox=jsml.class_create_instance("floatbox");
+					effectbox.set_height(41);
+					effectbox.set_manualclose(true);
+					effectbox.show(self.get_element(),-20,0,{"floatMode":"b-l"});
+					instance._effectbox = effectbox;
+					var bluroption = jsml.class_create_instance("adjustscroll_blur",[instance,effectbox]);
+					effectbox.append_child(bluroption);
+					]]>
+				</attach>
+			</panel>
+			<panel dock="flow" jsml-base="adjustbutton" title="@Effect_Pencil" effectname="pencil" src="images/effect/pencil.gif">
+				<attach name="click">
+					<![CDATA[
+					var effectbox=jsml.class_create_instance("floatbox");
+					effectbox.set_height(41);
+					effectbox.set_manualclose(true);
+					effectbox.show(self.get_element(),-20,0,{"floatMode":"b-l"});
+					instance._effectbox = effectbox;
+					var bluroption = jsml.class_create_instance("adjustscroll_pencil",[instance,effectbox]);
+					effectbox.append_child(bluroption);
+					]]>
+				</attach>
+			</panel>
+			<panel dock="flow" jsml-base="adjustbutton" title="@Effect_Sunshine" effectname="sunshine" src="images/effect/sunshine.gif">
+				<attach name="click">
+					instance.ShowApply(self);
+				</attach>
+			</panel>
+			<method name="Select" arguments="btn">
+				<![CDATA[
+				var arr = self.get_children();
+				for(var i=0;i<arr.length;i++)
+				{
+					arr[i].set_selected(null);
+					arr[i].set_back_color("");
+				}
+				if(btn)
+				{
+					instance._effect = btn.get_effectname();
+					btn.set_selected(true);
+					btn.set_back_color("#bfd6e6");
+					//if float scrollbar options, get default values
+					var arg1,arg2,arg3,arg4;
+					var _ef = instance._effect;
+					if(_ef=="blur")
+						arg1 = 3;
+					if(_ef=="fog")
+						arg1 = 5;
+					if(_ef=="pencil")
+						arg1 = 1.5;
+					if(_ef=="contrast" || _ef=="hue" || _ef=="unsharp" || _ef=="rgb")
+					{
+						return;
+					}
+					instance.Preview(arg1,arg2,arg3,arg4);
+				}
+				]]>
+			</method>
+		</panel>
+		<property name="box">
+			<get>
+				return self._box;
+			</get>
+			<set>
+				self._box = value;
+			</set>
+		</property>
+		<method name="CloseChild">
+			<![CDATA[
+			if(self._effectbox)self._effectbox.dispose();
+			self._effectbox=null;
+			]]>
+		</method>
+		<method name="ShowApply" arguments="tag">
+			<![CDATA[
+			var effectbox=jsml.class_create_instance("floatbox");
+			effectbox.set_height(31);
+			effectbox.set_manualclose(true);
+			effectbox.show(tag.get_element(),0,0,{"floatMode":"r-b"});
+			instance._effectbox = effectbox;
+			var bluroption = jsml.class_create_instance("adjustapplybutton",[instance,effectbox]);
+			effectbox.append_child(bluroption);
+			]]>
+		</method>
+		<method name="$0105" arguments="keepopen">
+			<![CDATA[
+			if(self._arguments)
+			{
+				doc.$0105(DrawEffect);
+			}
+			function DrawEffect()
+			{
+				var _args = self._arguments;
+				self.Preview(_args[0],_args[1],_args[2],_args[3],true,keepopen);
+			}
+			]]>
+		</method>
+		<method name="Preview" arguments="arg1,arg2,arg3,arg4,isapply,keepopen">
+			<![CDATA[
+			self._arguments = [arg1,arg2,arg3,arg4];
+			if(!self._effect) return;
+			
+			backpanel.set_visible(1);
+			var effect = jsml.class_create_instance("$034");
+			var method = self._effect;
+			if(method=="sunshine")
+			{
+				if(isapply)
+				{
+					var layer = jsml.class_create_instance("$042", [doc]);
+					layer.set_name(doc.Text["Layer_Effect"]);
+					SunShineDraw(layer._canvas, true);
+					doc._history._layers.push(layer);
+					doc._history._selectLayer = layer;
+					doc.invoke_event("HistorySelected");
+				}
+				else
+				{
+					doc.$0116();
+					SunShineDraw(doc._canvas);
+					backpanel.set_visible(0);
+				}
+			}
+			else
+			{
+				self.setDelegateTimeout(Func,100);
+			}
+			
+			function Func(){
+				var isall = cbx_all.get_checked();
+				var rs = doc.GetOption("CanvasRealSize");
+				doc._canvas.width = rs.width;
+				doc._canvas.height = rs.height;
+				doc._2d.clearRect(0,0, doc._canvas.width, doc._canvas.height);			
+			
+				try{doc._canvas.calcpos();}catch(x){}			
+				var layers = doc._history._layers;
+				var currlayer = doc.get_layer();
+				var sel = doc.get_selection();
+			
+				for(var i=0;i<layers.length;i++)
+				{
+					var layer = layers[i];
+					if(doc._history.$037(layer, "Hidden"))
+						continue;
+					var sx = layer._canvas_x;
+					var sy = layer._canvas_y;
+					var dx = layer._canvas.width;
+					var dy = layer._canvas.height;
+					if(isall || currlayer._layerid==layer._layerid)
+					{
+						var tcanvas = document.createElement("canvas");
+						tcanvas.width = dx;
+						tcanvas.height = dy;
+						var t2d = tcanvas.getContext("2d");
+						t2d.drawImage(layer._canvas,0,0);
+						DoEffect(method,tcanvas);
+					
+						if(sel)
+						{
+							t2d.save();
+							t2d.globalCompositeOperation = "destination-out";
+							t2d.drawImage(sel, -layer._canvas_x, -layer._canvas_y, sel.width, sel.height);
+							t2d.restore();
+						
+							if (layer._canvas_x < 0)
+								t2d.clearRect(0, 0, -layer._canvas_x, layer._canvas.height);
+							if (layer._canvas_y < 0)
+								t2d.clearRect(0, 0, layer._canvas.width, -layer._canvas_y);
+
+							var wextra = layer._canvas_x + layer._canvas.width - rs.width;
+							if (wextra > 0)
+								t2d.clearRect(-layer._canvas_x + rs.width, 0, wextra, layer._canvas.height);
+
+							var hextra = layer._canvas_y + layer._canvas.height - rs.height;
+							if (hextra > 0)
+								t2d.clearRect(0, -layer._canvas_y + rs.height, layer._canvas.width, hextra);
+						
+							t2d.save();
+							t2d.globalCompositeOperation = "destination-over";
+							if(!arg4)
+								t2d.drawImage(layer._canvas,0,0);
+							else
+							{
+								 var pcanvas = document.createElement("canvas");
+								 pcanvas.width = dx;
+								 pcanvas.height = dy;
+								 var p2d = pcanvas.getContext("2d");
+								 p2d.fillStyle="black";
+								 p2d.fillRect(0,0,dx,dy);
+								 p2d.save();
+								 p2d.globalCompositeOperation = "destination-out";
+								 p2d.drawImage(sel,0,0);
+								 p2d.restore();
+								 p2d.save();
+								 p2d.globalCompositeOperation = "xor";
+								 p2d.drawImage(layer._canvas,0,0);
+								 p2d.restore();
+								 t2d.drawImage(pcanvas,0,0);
+							}
+							t2d.restore();
+						}
+						if(isapply)
+							layer._canvas = tcanvas;
+						doc._2d.drawImage(tcanvas, sx, sy, dx, dy);
+					}
+					else
+						doc._2d.drawImage(layer._canvas, sx, sy, dx, dy);
+				}
+				if(sel)
+					doc.$055(sel, "noanimation");
+				//if(isapply && sel)
+				//	doc.set_selection(null);
+			
+				backpanel.set_visible(0);
+				if(isapply)
+					self._arguments = null;
+				if(isapply && !keepopen)
+				{
+					backpanel.Remove();
+					self.dispose();
+					self.get_box().dispose();
+				}
+			}
+			
+			function SunShineDraw(canvas, apply)
+			{
+				var img = new Image();
+				img.onload = function () {
+					var w = canvas.width;
+					var h = canvas.height;
+					var scale = w/img.width;
+					var oh = h/scale;
+					if (h > oh) h = oh;
+					var ctx = canvas.getContext("2d");
+					ctx.save();
+					ctx.scale(scale, scale);
+					ctx.drawImage(img, 0, 0);
+					
+					if(apply)
+						self.setDelegateTimeout(Func,100);
+				}
+				img.src = "images/effect/sunshine.png";
+			}
+			
+			function DoEffect(m,canvas)
+			{
+				switch(m)
+				{
+					case "blur":
+						effect.$0125(canvas,arg1);
+						break;
+					case "contrast":
+						effect.$0122(canvas,arg1);
+						effect.$0106(canvas,arg2);
+						break;
+					case "hue":
+						effect.$0129(canvas,arg1,arg2,arg3);
+						break;
+					case "invert":
+						effect.$0118(canvas);
+						//effect.$046(canvas,3);
+						break;
+					case "fog":
+						effect.$0128(canvas,arg1);
+						break;
+					case "neon":
+						effect.$0126(canvas);
+						break;
+					case "relief":
+						effect.$0119(canvas);
+						break;
+					case "mosaic":
+						effect.$0123(canvas,arg1);
+						break;
+					case "grayscale":
+						effect.$097(canvas);
+						break;
+					case "twovalue":
+						effect.$0107(canvas);
+						break;
+					case "unsharp":
+						effect.$083(canvas,arg1);
+						break;
+					case "rgb":
+						effect.$077(canvas,arg1,arg2,arg3,arg4);
+						break;
+					case "pencil":
+						effect.$0121(canvas,arg1);
+						break;
+				}
+			}
+			]]>
+		</method>
+		<attach name="attach_dom">
+			<![CDATA[
+			if(self._eventattached)return;
+			self._eventattached=true;
+			self._handleClosing=function()
+			{
+				doc.$0116();
+			}
+			self.get_box().attach_event("closing",self._handleClosing);
+			]]>
+		</attach>
+		<attach name="detach_dom">
+			<![CDATA[
+			self._eventattached=false;
+			self.get_box().detach_event("closing",self._handleClosing);
+			]]>
+		</attach>
+	</panel>
+	<execute>
+		<![CDATA[
+		plugin.LoadUI = function(ctrl)
+		{
+			var pl = jsml.class_create_instance("adjustpanel");
+			pl.set_box(ctrl);
+			ctrl.append_child(pl);
+		}
+		]]>
+	</execute>
+</jsml>

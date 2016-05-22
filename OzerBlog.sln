@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OzerBlog", "OzerBlog\OzerBlog.csproj", "{EE58F7B8-2163-4AAF-A166-474D2865A4A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogDAL", "BlogDAL\BlogDAL.csproj", "{1B6ED316-65BE-425E-8359-56D668B34A2A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EE58F7B8-2163-4AAF-A166-474D2865A4A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE58F7B8-2163-4AAF-A166-474D2865A4A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE58F7B8-2163-4AAF-A166-474D2865A4A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE58F7B8-2163-4AAF-A166-474D2865A4A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B6ED316-65BE-425E-8359-56D668B34A2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B6ED316-65BE-425E-8359-56D668B34A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B6ED316-65BE-425E-8359-56D668B34A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B6ED316-65BE-425E-8359-56D668B34A2A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

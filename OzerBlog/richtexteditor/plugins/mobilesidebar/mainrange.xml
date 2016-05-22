@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../core/jsml.xsd">
+
+
+	<panel jsml-class="sidebar_mainrange" jsml-base="sidebarmenu" dock="fill">
+		<panel jsml-base="sidebarmenuitem" text="Back">
+			<attach name="click">
+				sidebar.back();
+			</attach>
+		</panel>
+
+		<panel jsml-base="sidebarmenuitem" text="Cut" imagename="cut">
+			<attach name="click">
+				editor._mobileclipboard=editor.ExtractRangeHTML(true);
+				sidebar.collapse();
+			</attach>
+		</panel>
+		<panel jsml-base="sidebarmenuitem" text="Copy" imagename="copy">
+			<attach name="click">
+				editor._mobileclipboard=editor.ExtractRangeHTML(false);
+				sidebar.collapse();
+			</attach>
+		</panel>
+		
+		<panel jsml-base="sidebarmenuitem" text="Replace text">
+			<attach name="click">
+				sidebar.loadpanel("typetext.xml");
+			</attach>
+		</panel>
+		<panel jsml-base="sidebarmenuitem" arrow="true" text="Format">
+			<attach name="click">
+				sidebar.loadpanel("format.xml");
+			</attach>
+		</panel>
+		<panel jsml-base="sidebarmenuitem" arrow="true" text="Common">
+			<attach name="click">
+				sidebar.loadpanel("common.xml");
+			</attach>
+		</panel>
+		<panel jsml-base="sidebarmenuitem" arrow="true" text="Paragraph">
+			<attach name="click">
+				sidebar.loadpanel("paragraph.xml");
+			</attach>
+		</panel>
+		
+	</panel>
+
+	<panel jsml-base="sidebar_mainrange" />
+
+
+</jsml>

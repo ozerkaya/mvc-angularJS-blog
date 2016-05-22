@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../core/jsml.xsd">
+
+
+	<panel jsml-class="sidebar_taglist" jsml-base="sidebarmenu" dock="fill">
+		<panel jsml-base="sidebarmenuitem" text="Back">
+			<attach name="click">
+				sidebar.back();
+			</attach>
+		</panel>
+
+
+		<method name="additem" arguments="node">
+			<![CDATA[
+			if(node.nodeType==3)
+				return;
+			if(node.GetNameLower()=="body")
+				return;
+			
+			var item=jsml.class_create_instance("sidebarmenuitem");
+			item.set_text("<"+node.GetName()+">");
+			self.append_child(item);
+			item.attach_event("click",function()
+			{
+				sidebar.loadpanel("tagitem.xml",{node:node});
+			})
+			]]>
+		</method>
+
+		<initialize>
+			<![CDATA[
+			var pn=editor.GetPointNode();
+			if(!pn)return;
+			for(;pn;pn=pn.GetParent())
+			{
+				self.additem(pn);
+			}
+			]]>
+		</initialize>
+		
+	</panel>
+
+
+	<panel jsml-base="sidebar_taglist" />
+
+
+</jsml>

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../core/jsml.xsd">
+
+	<execute>
+		dialog.set_title(editor.GetLangText("insertyoutube"));
+	</execute>
+
+	<panel jsml-class="insertyoutube_dialog" dock="fill" overflow="visible" back_color="#f9f9f9">
+
+		<panel dock="top" margin="12">
+			<label dock="left" text="@youtubeurl" width="1" overflow="visible" vertical_align="middle" />
+
+			<textbox dock="fill" jsml-local="urlbox" margin="1,103,1,3" border_color="#ABADB3">
+				<initialize>
+					self.setDelegateTimeout(function(){self.focus();},300);
+				</initialize>
+				<attach name="change,enterkey,keyup">
+					self.setDelegateTimeout(function(){instance.ParseUrl()},100);
+				</attach>
+			</textbox>
+
+			<button right="10" text="@Preview">
+				<attach name="click">
+					instance.DoPreview();
+				</attach>
+			</button>
+		</panel>
+
+		<panel dock="bottom" margin="12" overflow="visible">
+			<panel  right="0" overflow="visible">
+				<button dock="left" height="24" margin="2" text="@OK">
+					<attach name="click">
+						instance.DoInsert();
+					</attach>
+				</button>
+				<button dock="left" height="24" margin="2" text="@Cancel">
+					<attach name="click">
+						dialog.close();
+					</attach>
+				</button>
+			</panel>
+		</panel>
+
+		<panel dock="left" width="170" padding="6,0,0,6" >
+			<panel dock="top">
+				<label dock="left" text="@usehttps|:" width="70" text_align="right"/>
+				<panel dock="left" width="2" />
+				<checkbox jsml-local="cbhttps" dock="left"/>
+			</panel>
+			<panel dock="top">
+				<label dock="left" text="@autoplay|:" width="70" text_align="right"/>
+				<panel dock="left" width="2" />
+				<checkbox jsml-local="cbautoplay" dock="left"/>
+			</panel>
+			<panel dock="top">
+				<label dock="left" text="@loop|:" width="70" text_align="right"/>
+				<panel dock="left" width="2" />
+				<checkbox jsml-local="cbloop" dock="left"/>
+			</panel>
+			<panel dock="top">
+				<label dock="left" text="@hideinfo|:" width="70" text_align="right"/>
+				<panel dock="left" width="2" />
+				<checkbox jsml-local="cbnoinfo" dock="left"/>
+			</panel>
+			<panel dock="top">
+				<label dock="left" text="@hidetoolbar|:" width="70" text_align="right"/>
+				<panel dock="left" width="2" />
+				<checkbox jsml-local="cbnoctrl" dock="left"/>
+			</panel>
+			<panel dock="top">
+				<label dock="left" text="@lighttheme|:" width="70" text_align="right"/>
+				<panel dock="left" width="2" />
+				<checkbox jsml-local="cblight" dock="left"/>
+			</panel>
+			<panel dock="top">
+				<label dock="left" text="@DIMENSIONS|:" width="70" text_align="right" vertical_align="middle"/>
+				<panel dock="left" width="6" />
+				<dropdown jsml-local="ddsize" dock="left" border_color="#ABADB3" width="70">
+					<attach name="change">
+						<![CDATA[
+						var sizes=ddsize.get_text().split('x').join(',').split(',');
+						tbwidth.set_text(sizes[0]);
+						tbheight.set_text(sizes[1]);
+						]]>
+					</attach>
+					<listitem value="640x480" text="640x480"/>
+					<listitem value="640x400" text="640x400"/>
+					<listitem value="480x360" text="480x360"/>
+					<listitem value="480x300" text="480x300"/>
+					<listitem value="360x240" text="360x240"/>
+					<listitem value="320x240" text="320x240"/>
+				</dropdown>
+			</panel>
+			<panel dock="top" overflow="visible">
+				<panel dock="right" width="25" vertical_align="middle" margin="7,0,0,1">
+					<image src="{folder}images/locked.gif" cursor="pointer">
+						<attach name="click">
+							instance._dimunlocked=!instance._dimunlocked;
+							self.set_src(instance._dimunlocked?"{folder}images/unlocked.gif":"{folder}images/locked.gif");
+						</attach>
+					</image>
+				</panel>
+				<panel dock="top" margin="2,0,0,0">
+					<label dock="left" text="@WIDTH|:" text_align="right" width="70" vertical_align="middle"/>
+					<panel jsml-base="rtepropunitbox" jsml-local="tbwidth" width="60" margin="4,0,0,6" dock="left" propname="style:width" border_width="1" border_color="#cccccc">
+						<attach name="change">
+							instance.onwidthchange();
+						</attach>
+					</panel>
+				</panel>
+				<panel dock="top" margin="2,0,0,0">
+					<label dock="left" text="@HEIGHT|:" text_align="right" width="70" vertical_align="middle"/>
+					<panel jsml-base="rtepropunitbox" jsml-local="tbheight" width="60" margin="4,0,0,6" dock="left" propname="style:height" border_width="1" border_color="#cccccc">
+						<attach name="change">
+							instance.onheightchange();
+						</attach>
+					</panel>
+				</panel>
+			</panel>
+
+		</panel>
+
+		<panel dock="right" width="360" margin="0,5,0,0">
+			<panel dock="fill" horizontal_align="center" vertical_align="middle">
+				<image jsml-local="previewimage" width="320" height="240" overflow="none" zoom="both" border_width="1" border_color="#999999"  back_color="white"/>
+			</panel>
+			<panel jsml-local="previewintro" dock="fill" horizontal_align="center" vertical_align="middle" back_color="white" border_width="1" border_color="#999999">
+				<label text="@youtubepreview" word_wrap="true" width="280" height="48" overflow="none"/>
+			</panel>
+		</panel>
+
+		<initialize>
+			<![CDATA[
+			
+			self._rtenode=new $rte.ContainerElement("div");
+			
+			var url=option.currenturl;
+			if(!url)return;
+			var movie=option.plugin.FindMovie(url);
+			if(!movie)return;
+			if(url.substring(0,8)=="https://")
+				cbhttps.set_checked(true);
+			var pairs=(url.split('#')[0].split('?')[1]||"").split('&');
+			for(var i=0;i<pairs.length;i++)
+			{
+				var pair=pairs[i];
+				switch(pair)
+				{
+					case "autoplay=1":
+						cbautoplay.set_checked(true);
+						break;
+					case "loop=1":
+						cbloop.set_checked(true);
+						break;
+					case "showinfo=0":
+						cbnoinfo.set_checked(true);
+						break;
+					case "controls=0":
+						cbnoctrl.set_checked(true);
+						break;
+					case "theme=light":
+						cblight.set_checked(true);
+						break;
+				}
+			}
+			
+			if(option.currentwidth)
+			{
+				self._rtenode.SetStyle("width",option.currentwidth);
+				tbwidth.set_text(option.currentwidth);
+			}
+			if(option.currentheight)
+			{
+				self._rtenode.SetStyle("height",option.currentheight);
+				tbheight.set_text(option.currentheight);
+			}
+
+			if(option.currentwidth&&option.currentwidth)
+				ddsize.set_text(parseInt(option.currentwidth)+"x"+parseInt(option.currentwidth));
+				
+			urlbox.set_text("http://www.youtube.com/watch?v="+movie);
+			self.ParseUrl();
+			
+			
+			]]>
+		</initialize>
+
+
+		<method name="onwidthchange">
+			<![CDATA[
+			if(instance._dimunlocked)return;
+			var w=parseInt(tbwidth.get_text());
+			if(!w)
+			{
+				tbheight.set_text("");
+				return;
+			}
+			var sizes=ddsize.get_text().split('x').join(',').split(',')
+			var h=Math.floor(w*sizes[1]/sizes[0]);
+			tbheight.set_text(h);
+			]]>
+		</method>
+		<method name="onheightchange">
+			<![CDATA[
+			if(instance._dimunlocked)return;
+			var h=parseInt(tbheight.get_text());
+			if(!h)
+			{
+				tbwidth.set_text("");
+				return;
+			}
+			var w=Math.floor(h*sizes[0]/sizes[1]);
+			tbwidth.set_text(w);
+			]]>
+		</method>
+
+
+		<method name="GenerateHTML">
+			<![CDATA[
+			if(!self.currentmovie)return;
+			
+			var url=(cbhttps.get_checked()?"https":"http")+"://www.youtube.com/embed/"+self.currentmovie;
+			if(cbautoplay.get_checked())url+=(url.indexOf("?")==-1?"?":"&")+"autoplay=1";
+			if(cbloop.get_checked())url+=(url.indexOf("?")==-1?"?":"&")+"loop=1";
+			if(cbnoinfo.get_checked())url+=(url.indexOf("?")==-1?"?":"&")+"showinfo=0";
+			if(cbnoctrl.get_checked())url+=(url.indexOf("?")==-1?"?":"&")+"controls=0";
+			if(cblight.get_checked())url+=(url.indexOf("?")==-1?"?":"&")+"theme=light";
+			
+			var sizes=ddsize.get_text().split('x').join(',').split(',');
+			var width=parseInt(tbwidth.get_text())||parseInt(sizes[0]);
+			var height=parseInt(tbheight.get_text())||parseInt(sizes[1]);
+			
+			self.lastwidth=width;
+			self.lastheight=height;
+			
+			return "<iframe frameborder='0' style='width:"+width+"px;height:"+height+"px;' src='"+jsml.html_encode(url)+"' ></iframe>";
+			]]>
+		</method>
+		<method name="DoPreview">
+			var html=self.GenerateHTML();
+			if(!html)return;
+			var newoption={};
+			newoption.width=self.lastwidth;
+			newoption.height=self.lastheight;
+			newoption.htmlcode=html;
+			editor.ShowXmlDialog(editor.BuildDialogUrl("htmlpreview.xml"),newoption);
+		</method>
+		<method name="DoInsert">
+			<![CDATA[
+			var html=self.GenerateHTML();
+			if(!html)return;
+			var nodes=editor.InsertHTML(html,true);
+			dialog.close();
+			]]>
+		</method>
+
+		<method name="ParseUrl">
+			<![CDATA[
+			var url=urlbox.get_text();
+			var movie=option.plugin.FindMovie(url);
+			if(!movie)
+			{
+				urlbox.set_text_color("red");
+				return;
+			}
+			movie=movie.split('"')[0].split("'")[0].split('#')[0].split('?')[0].split("&")[0];
+			urlbox.set_text_color("");
+			if(self.currentmovie==movie)return;
+			self.currentmovie=movie;
+			previewimage.set_src("http://img.youtube.com/vi/"+movie+"/hqdefault.jpg");
+			previewintro.set_visible(false);
+			]]>
+		</method>
+
+	</panel>
+
+	<panel jsml-base="insertyoutube_dialog" />
+
+</jsml>

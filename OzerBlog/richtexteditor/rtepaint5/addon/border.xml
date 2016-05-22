@@ -1,0 +1,478 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="jsml.xsl"?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../JSML/jsml.xsd">
+	<panel jsml-class="border_item" height="94" width="140" border_color="#cccccc" border_width="1">
+		<property name="framepadding">
+			<get>
+				return self._framepadding || [0,0,0,0];
+			</get>
+			<set arguments="val">
+				<![CDATA[
+				var arr = val.split(",");
+				if(arr.length==1) {
+					var ret = IntSure(arr[0]);
+					self._framepadding = [ret,ret,ret,ret];
+					return;
+				}
+				self._framepadding = [0,0,0,0];
+				for(var i=0;i<4;i++) {
+					if(arr.length>i) {
+						var ret = IntSure(arr[i]);
+						self._framepadding[i] = ret;
+					}
+				}
+				
+				function IntSure(v)
+				{
+					if(typeof(v)=="undefined" || v==null || v=="" || isNaN(v))
+						return 0;
+					return parseInt(v);
+				}
+				]]>
+			</set>
+		</property>
+		<property name="framename">
+			<get>
+				return self._framename;
+			</get>
+			<set>
+				self._framename = value;
+			</set>
+		</property>
+		<property name="emptycorner">
+			<get>
+				if(!self._emptycorner) return ",";
+				return "," + self._emptycorner + ",";
+			</get>
+			<set>
+				<![CDATA[
+				self._emptycorner = value;
+				]]>
+			</set>
+		</property>
+		<property name="emptyborder">
+			<get>
+				if(!self._emptyborder) return ",";
+				return "," + self._emptyborder + ",";
+			</get>
+			<set>
+				<![CDATA[
+				self._emptyborder = value;
+				]]>
+			</set>
+		</property>
+		<property name="cornersize">
+			<get>
+				<![CDATA[
+				//four corners, [width,height]
+				return self._cornersize || [[0,0],[0,0],[0,0],[0,0]];
+				]]>
+			</get>
+			<set>
+				<![CDATA[
+				 if(!value) return;
+				 var val = eval("("+value+")");
+				 if(val.length == 0)
+					return;
+				 if(val.length==1)
+				 {
+					self._cornersize = [val[0],val[0],val[0],val[0]];
+					return;
+				 }
+				 self._cornersize = [[0,0],[0,0],[0,0],[0,0]];
+				 for(var i=0;i<4;i++)
+				 {
+					if(val.length<=i) continue;
+					self._cornersize[i] = val[i];
+				 }
+				]]>
+			</set>
+		</property>
+		<property name="mode">
+			<get>
+				return self._mode || "tile";
+			</get>
+			<set>
+				<![CDATA[
+				if(value=="single") self._mode = "single";
+				else if(value=="corner") self._mode = "corner";
+				else self._mode = "tile";
+				]]>
+			</set>
+		</property>
+		<panel jsml-local="btn_use" dock="bottom" margin="2" height="24" visible="0">
+			<panel dock="right" width="60" margin="2" css_text="text-shadow: 2px 2px 5px #99999;border:solid #d1decd 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+				<image dock="left" margin="0,0,0,2" src="images/accept.png" vertical_align="middle" horizontal_align="center" width="16" cursor="default"></image>
+				<label dock="fill" text="@Btn_Apply" margin="0,0,0,3" css_text="font-weight:bold;" vertical_align="middle" horizontal_align="left"></label>
+				<attach name="click">
+					<![CDATA[ 
+					ImageEditorDocument.set_selection(null);
+					var pd = instance.get_framepadding();
+					var pdo = pd;
+					var es = ImageEditorDocument.GetOption("Ctx_FrameExpandSize");
+					if(!es) pd = [0,0,0,0];
+					var mode = instance.get_mode(); 
+					ImageEditorDocument.$0104(pd,DrawBorder);			
+					function DrawBorder(layer)
+					{
+						if(mode=="tile" || mode=="single")
+						{
+							instance.PreviewTile(pdo, layer);
+						}
+						if(mode=="corner")
+						{
+							instance.PreviewCorner(pdo, layer);
+						}
+					}
+					instance.get_parent().get_parent().Remove();			
+					]]>
+				</attach>
+				<initialize>
+					<![CDATA[
+					ImageEditorDocument.$039(self.get_element(),"top","#fce877","#dfb642");
+					]]>
+				</initialize>
+				<attach name="mousehover">
+					<![CDATA[
+					ImageEditorDocument.$039(self.get_element(),"top","#f1f6fa","#b0bce2");
+					]]>
+				</attach>
+				<attach name="mouseleave">
+					<![CDATA[
+					ImageEditorDocument.$039(self.get_element(),"top","#fce877","#dfb642");
+					return;
+					self.get_element().style.background = "";
+					if(jsml.msie) self.get_element().style.filter = "";
+					]]>
+				</attach>
+			</panel>
+		</panel>
+		<panel jsml-local="backpanel" dock="fill" vertical_align="middle" horizontal_align="center"></panel>
+		<panel jsml-local="fillpanel" dock="fill"></panel>
+		<attach name="click">
+			<![CDATA[
+			self.Preview();
+			self.get_parent().SelectFrame(self);
+			return;
+			]]>
+		</attach>
+		<method name="Preview">
+			<![CDATA[			
+			var pd = self.get_framepadding();
+			var pdo = pd;
+			var es = ImageEditorDocument.GetOption("Ctx_FrameExpandSize");
+			if(!es) pd = [0,0,0,0];
+			var rs = ImageEditorDocument.GetOption("CanvasRealSize");
+			ImageEditorDocument._canvas.width = rs.width+pd[1]+pd[3];
+			ImageEditorDocument._canvas.height = rs.height+pd[0]+pd[2];
+			ImageEditorDocument._2d.clearRect(0,0, ImageEditorDocument._canvas.width, ImageEditorDocument._canvas.height);			
+			
+			try{ImageEditorDocument._canvas.calcpos();}catch(x){}
+			
+			var layers = ImageEditorDocument._history._layers;
+			for(var i=0;i<layers.length;i++)
+			{
+				var layer = layers[i];
+				if(ImageEditorDocument._history.$037(layer, "Hidden"))
+					continue;
+				var sx = layer._canvas_x + pd[3];
+				var sy = layer._canvas_y + pd[0];
+				var dx = layer._canvas.width;
+				var dy = layer._canvas.height;
+				ImageEditorDocument._2d.drawImage(layer._cacheCanvas || layer._canvas, sx, sy, dx, dy);
+			}
+			
+			var mode = self.get_mode();
+			if(mode=="tile" || mode=="single")
+			{
+				self.PreviewTile(pdo);
+				return;
+			}
+			if(mode=="corner")
+			{
+				self.PreviewCorner(pdo);
+				return;
+			}
+			]]>
+		</method>
+		<method name="PreviewCorner" arguments="pdo,layer">
+			<![CDATA[
+			var ec = self.get_emptycorner();
+			var eb = self.get_emptyborder();
+			var cs = self.get_cornersize();
+			var _doc = ImageEditorDocument;
+			var drawobj = _doc;
+			if(layer) drawobj=layer;
+			var canvas = document.createElement("canvas");
+			canvas.width  = drawobj._canvas.width;
+			canvas.height = drawobj._canvas.height;
+			var ctx = canvas.getContext("2d");
+			var count = 0;
+			for(var i=1;i<=4;i++)
+			{
+				if(ec.indexOf(","+i+",")!=-1)
+				{
+					calctime();
+					continue;
+				}
+				var img = new Image();
+				img.ix = i;
+				img.onload = function()
+				{
+					var x = 0;
+					var y = 0;
+					if(this.ix==2 || this.ix==3) x = drawobj._canvas.width-this.width;
+					if(this.ix==4 || this.ix==3) y = drawobj._canvas.height-this.height;
+					drawobj._2d.drawImage(this, x, y,this.width,this.height);
+					calctime();
+				}
+				img.src = "images/frame/" + self.get_framename() + "_"+i+".png";				
+			}
+			var icanvas = document.createElement("canvas");
+			var i2d = icanvas.getContext("2d");
+			for(var i=1;i<=4;i++)
+			{
+				if(eb.indexOf(","+i+",")!=-1)
+				{
+					calctime();
+					continue;
+				}
+				var img = new Image();
+				img.ix = i;
+				img.onload = function()
+				{
+					var ix = this.ix;
+					var c_prev = cs[ix-1];
+					var c_next = ix==4?cs[0]:cs[ix];
+					var h = this.height;
+					var w = this.width;
+					var x = 0;
+					var y = 0;
+					var patt = null
+					if(ix==1)
+					{
+						x = c_prev[0];
+						w = drawobj._canvas.width - c_prev[0] - c_next[0];
+						patt = i2d.createPattern(this,"repeat-x");
+					}
+					if(ix==2)
+					{						
+						x = drawobj._canvas.width - this.width;
+						y = c_prev[1];
+						h = drawobj._canvas.height - c_prev[1] - c_next[1];
+						patt = i2d.createPattern(this,"repeat-y");
+					}
+					if(ix==3)
+					{
+						x = c_next[0];
+						y = drawobj._canvas.height - this.height;
+						w = drawobj._canvas.width - c_prev[0] - c_next[0];
+						patt = i2d.createPattern(this,"repeat-x");
+					}
+					if(ix == 4)
+					{
+						y = c_next[1];
+						h = drawobj._canvas.height - c_prev[1] - c_next[1];
+						patt = i2d.createPattern(this,"repeat-y");
+					}
+					icanvas.width = w;
+					icanvas.height = h;
+					i2d.fillStyle = patt;
+					i2d.fillRect(0,0,w,h);
+					
+					drawobj._2d.drawImage(icanvas,x,y,w,h);
+					calctime();
+				}
+				img.src = "images/frame/" + self.get_framename() + "_"+i+"0.png";
+			}
+			function calctime()
+			{
+				count++;
+				if(count>=8 && layer) _doc.$0116();
+			}
+			]]>
+		</method>
+		<method name="PreviewTile" arguments="pdo,layer">
+			<![CDATA[			
+			var _doc = ImageEditorDocument;
+			var drawobj = _doc;
+			if(layer) drawobj = layer;
+			var img = new Image();
+			img.onload = function()
+			{
+				if(self.get_mode()=="tile")
+				{
+					var canvas = document.createElement("canvas");
+					canvas.width = drawobj._canvas.width;
+					canvas.height = drawobj._canvas.height;
+					var ctx = canvas.getContext("2d");
+					var pattern = ctx.createPattern(img,"repeat");
+					ctx.fillStyle = pattern;
+					ctx.fillRect(0,0,canvas.width,canvas.height);
+					ctx.clearRect(pdo[0],pdo[3],canvas.width-pdo[1]-pdo[3],canvas.height-pdo[0]-pdo[2]);						  
+					
+					drawobj._2d.drawImage(canvas,0,0);
+				}
+				else
+				{					
+					var scalex = drawobj._canvas.width/img.width;
+					var scaley = drawobj._canvas.height/img.height;
+					
+					var canvas = document.createElement("canvas");
+					canvas.width = drawobj._canvas.width;
+					canvas.height = drawobj._canvas.height;
+					var ctx = canvas.getContext("2d");
+					ctx.scale(scalex,scaley);
+					ctx.drawImage(img,0,0);
+					drawobj._2d.drawImage(canvas,0,0);
+				}
+				if(layer) _doc.$0116();
+			}
+			img.src = "images/frame/" + self.get_framename() + ".png";
+			]]>
+		</method>
+		<method name="SetButtonEnable" arguments="val">
+			<![CDATA[
+			if(val==true)
+			{
+				btn_use.set_visible(1);
+				self.set_height(114);
+			}
+			else
+			{
+				btn_use.set_visible(0);
+				self.set_height(90);
+			}
+			]]>
+		</method>		
+		<initialize>
+			<![CDATA[			
+			var div = backpanel.get_element();
+			self.setDelegateTimeout(function(){
+				var w = self.get_current_width();
+				var pd = self.get_framepadding();
+				fillpanel.set_margin(pd);
+				if(self.get_mode()=="tile")
+				{
+					backpanel.set_background("url(images/frame/" + self.get_framename() + ".png)");
+					fillpanel.set_back_color("gray");
+					return;
+				}
+				var img = new Image();
+				img.onload = function()
+				{
+					if(img.width>w || img.height>90)
+					{
+						if(img.width/img.height<w/90)
+						{
+							img.style.height = "90px";
+							img.style.width = parseInt(img.width*90/img.height+"") + "px";
+							img.style.marginLeft = parseInt((w-img.width*90/img.height)/2 + "") + "px";
+						}
+						else
+						{
+							img.style.width = w + "px";
+							img.style.height = parseInt(img.height*w/img.width+"") + "px";
+							img.style.marginTop = parseInt((90-img.height*w/img.width)/2 + "") + "px";
+						}
+					}
+					else
+					{
+						img.style.marginLeft = parseInt((w-img.width)/2 + "") + "px";
+						img.style.marginTop = parseInt((90-img.height)/2 + "") + "px";
+					}
+					div.appendChild(img);
+				}
+				img.src = "images/frame/" + self.get_framename() + ".png";
+			},100);
+			]]>
+		</initialize>
+	</panel>
+	<panel jsml-class="borderlist" right="0" width="150" border_width="0,1,1,1" back_color="#eeeeee" border_color="#cccccc">
+		<panel dock="top" height="24" css_text="background:#bcc3c6 url(images/back/group.gif) repeat-x;">
+			<image dock="right" src="images/close.gif" tooltip="@Title_Close" vertical_align="middle" width="16" cursor="default">
+				<attach name="click">
+					if(instance._selectedframe)
+					{
+						instance._selectedframe = null;
+						ImageEditorDocument.$0116();
+					}
+					instance.Remove();
+				</attach>
+			</image>
+			<label dock="fill" width="10" overflow="visible" text="@Tool_Frame_Head" vertical_align="middle" text_color="#545454" css_text="font-weight:bold;" margin="0,0,0,3"></label>
+		</panel>
+		<panel dock="bottom" height="22">
+			<checkbox dock="left" width="20" vertical_align="middle" margin="0,0,2,0">
+				<initialize>
+					<![CDATA[
+					self.set_checked(ImageEditorDocument.GetOption("Ctx_FrameExpandSize"));
+					]]>
+				</initialize>
+				<attach name="click">
+					<![CDATA[
+					ImageEditorDocument.SetOption("Ctx_FrameExpandSize",self.get_checked());
+					]]>
+				</attach>
+			</checkbox>
+			<label dock="fill" vertical_align="middle" horizontal_align="left" text="@Tool_Frame_Expand"></label>
+		</panel>
+		<panel dock="fill" overflow_y="scroll">
+			<panel jsml-base="border_item" dock="top" framepadding="10" framename="greenflower" mode="tile" margin="3"></panel>
+			<panel jsml-base="border_item" dock="top" framepadding="40,45,40,45" framename="rope" mode="single" margin="3"></panel>
+			<panel jsml-base="border_item" dock="top" framepadding="80" framename="leaf" mode="single" margin="3"></panel>
+			<panel jsml-base="border_item" dock="top" framepadding="35" framename="fallleaf" mode="corner" emptycorner="2,4" emptyborder="1,2,3,4" margin="3"></panel>
+			<panel jsml-base="border_item" dock="top" framepadding="30" framename="redline" mode="corner" cornersize="[[138,122]]" emptycorner="" emptyborder="" margin="3"></panel>
+			<panel jsml-base="border_item" dock="top" framepadding="19,19,21,18" framename="brooch" mode="corner" cornersize="[[47,42],[23,24],[39,45],[22,25]]" margin="3"></panel>
+			<method name="SelectFrame" arguments="frame">
+				<![CDATA[
+				var arr = self.get_children();
+				for(var i=0;i<arr.length;i++)
+				{
+					arr[i].set_border_color("#cccccc");
+					arr[i].SetButtonEnable(false);
+				}
+				if(frame)
+				{
+					frame.set_border_color("red");
+					frame.SetButtonEnable(true);
+					instance._selectedframe = frame;
+				}
+				]]>
+			</method>
+		</panel>
+		<initialize>
+			<![CDATA[
+			ImageEditorDocument._framelist = self;
+			setInterval(function(){
+				self.AdjustHight();
+			},100);
+			self.AdjustHight();
+			]]>
+		</initialize>
+		<method name="AdjustHight">
+			<![CDATA[
+			var rect=jsml.get_body_rect();
+			self.set_left(rect.width-150);
+			if(rect.height==self.get_height())
+				return;
+			self.set_height(rect.height);
+			]]>
+		</method>
+		<method name="Remove">
+			<![CDATA[
+			ImageEditorDocument._framelist = null;
+			self.dispose();
+			]]>
+		</method>
+	</panel>
+	<execute>
+		<![CDATA[
+		plugin.LoadUI = function(ctrl)
+		{
+			ctrl.append_child(jsml.class_create_instance("borderlist"));
+		}
+		]]>
+	</execute>
+</jsml>

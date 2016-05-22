@@ -1,0 +1,657 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../core/jsml.xsd">
+
+	<panel jsml-class="sidebarmenu" css_class="sidebarmenu"  padding="3,3,35,2" overflow="scroll">
+
+		<jsml-ref name="rteborderstyle"/>
+
+		<initialize>
+			self._element.oncontextmenu=jsml.cancel_event_function;
+		</initialize>
+
+	</panel>
+
+	<panel jsml-class="sidebarmenuitem" css_class="menuitem" dock="top" height="36" padding="2,32,2,0" overflow_x="visible" cursor="pointer" unselectable="true">
+		<image jsml-member="image" css_class="menuitemimage" dock="left" width="32" overflow="none" zoom="both"></image>
+		<image jsml-member="arrow" css_class="menuitemarrow" dock="right" width="18" vertical_align="middle" overflow="none" src="{folder}images/arrow_r.gif" visible="false" />
+		<label jsml-member="label" css_class="menuitemlabel" dock="fill" font_size="18px" overflow_x="visible" margin="0,0,0,6" vertical_align="middle" cursor="pointer"/>
+
+		<jsml-ref name="rtebuttoncontrol" />
+		<jsml-ref name="rtetoolbarcontrol" />
+
+		<attach name="touchstart" arguments="jevent,devent">
+			self._isclicked=true;
+			self.invoke_event("tooglecssclass","clicked",self._isclicked);
+		</attach>
+		<attach name="touchend,touchcancel">
+			self._isclicked=false;
+			self.invoke_event("tooglecssclass","clicked",self._isclicked);
+		</attach>
+
+
+		<initialize>
+			self._dontuseindex=true;
+		</initialize>
+
+		<attach name="tooglecssclass" arguments="jevent,name,mode">
+			self.toggle_css_class("menuitem_"+name,mode);
+		</attach>
+
+		<property name="src">
+			<get>return self.image.get_src();</get>
+			<set>self.image.set_src(value);</set>
+		</property>
+		<property name="text">
+			<get>return self.label.get_text();</get>
+			<set>self.label.set_text(value);</set>
+		</property>
+		<property name="htmlcode">
+			<get>return self.label._content.innerHTML;</get>
+			<set>self.label._content.innerHTML=value;self.label.invoke_notify_content();</set>
+		</property>
+		<property name="arrow">
+			<get>
+				return self.arrow.get_visible();
+			</get>
+			<set>
+				self.arrow.set_visible(value);
+			</set>
+		</property>
+	</panel>
+
+	<image jsml-class="sidebarbutton" width="28" height="28" zoom="both">
+		<jsml-ref name="rtebuttoncontrol" />
+		<attach name="tooglecssclass" arguments="jevent,name,mode">
+			self.toggle_css_class("menuitem_"+name,mode);
+		</attach>
+	</image>
+
+	<panel jsml-class="rte_plugin_msbcursoricon" visible="false" width="20" height="20">
+		<image dock="fill" src="{folder}images/slider-handle-up.png" />
+		<attach name="touchstart" arguments="je,devent">
+			<![CDATA[
+			devent.cancel_default();
+			
+			var _x=devent.touches[0].clientX;
+			var _y=devent.touches[0].clientY;
+			var ox=this.get_offset_x();
+			var oy=this.get_offset_y();
+
+			function update_position(moveevent)
+			{
+				var x=moveevent.touches[0].clientX;
+				var y=moveevent.touches[0].clientY;
+
+				jsml.suppend_layout();
+				self.set_offset_x(ox+x-_x);
+				self.set_offset_y(oy+y-_y);
+				jsml.resume_layout();
+				
+				editor.SelectForPoint(self.get_left()+self.get_offset_x()+10,self.get_top()+self.get_offset_y()-20);
+			}
+			function releasehandler()
+			{
+				self.moving=false;
+				self.AdjustPosition();
+			}
+			
+			self.moving=true;
+			jsml.startcapture(update_position,releasehandler,null,devent);
+			
+			]]>
+		</attach>
+		<method name="AdjustPosition">
+			<![CDATA[
+			
+			if(self.moving)return;
+			
+			var editor=self.editor;
+			var seltype=editor.GetSelectionType();
+			
+			function GetRangeRects()
+			{
+				if(seltype!="Point"&&seltype!="Range")
+					return;
+				if(seltype=="Range"&&!editor.IsCommandActive("RangeSelect"))
+					return;
+				if(!editor.GetWindow())
+					return;
+				var sel=editor.GetWindow().getSelection();	
+				if(sel.rangeCount==0)
+					return;
+				var rects=editor.GetRangeRects(sel.getRangeAt(0));
+				if(!rects.length)
+					return;
+				return rects;
+			}
+			
+			var rects=GetRangeRects();
+			if(!rects)
+				return self.set_visible(false);
+			
+			var start=true;
+			if(seltype=="Range")
+			{
+				var sn=editor.GetRangeSelectNode();
+				var so=editor.GetRangeSelectOffset();
+				var rn=editor.GetRangeNode();
+				var ro=editor.GetRangeOffset();
+				if(sn==rn&&so==ro)
+					start=true;
+				else
+					start=false;
+			}
+			
+			var l,t;
+			
+			if(start)
+			{
+				var r=rects[0];
+				l=r.left;
+				t=r.top+r.height;
+			}
+			else
+			{
+				var r=rects[rects.length-1];
+				l=r.left+r.width;
+				t=r.top+r.height;
+			}
+			
+			t+=8;
+			l-=10;
+			
+			jsml.suppend_layout();
+			self.set_offset_x(0);
+			self.set_offset_y(0);
+			self.set_left(l);
+			self.set_top(t);
+			self.set_visible(l>0);
+			jsml.resume_layout();
+			]]>
+		</method>
+		<attach name="editor_ready" arguments="je,editor">
+			<![CDATA[
+			self.editor=editor;
+			editor.AttachEvent("SelectionChanged",function()
+			{
+				self.AdjustPosition();
+			});
+			editor.AttachEvent("RangeSelectChanged",function()
+			{
+				self.AdjustPosition();
+			});
+			]]>
+		</attach>
+	</panel>
+
+	<panel jsml-class="rte_plugin_msbfloatpanel" visible="false">
+		<panel jsml-member="rightpanel" dock="right" width="36">
+			<image jsml-base="sidebarbutton" src="{folder}plugins/{plugin}/images/arrow-r.png" dock="top" margin="36,4,4,4">
+				<attach name="click">
+					instance.bar.collapse();
+				</attach>
+			</image>
+		</panel>
+		<panel jsml-member="containerpanel" dock="fill" overflow="visible">
+			<attach name="touchmove" arguments="je,de">
+				<![CDATA[
+					//if(de.touches.length==1)return de.cancel();
+					]]>
+			</attach>
+		</panel>
+	</panel>
+
+	<panel jsml-class="rte_plugin_mobilesidebar" visible="false" overflow="visible">
+
+		<panel jsml-member="collapsedpanel" dock="left" width="36">
+
+			<image jsml-base="sidebarbutton" src="{folder}images/external.gif" dock="top" margin="36,4,4,4">
+				<attach name="click">
+					instance.expand();
+				</attach>
+			</image>
+
+			<panel dock="fill" jsml-member="panel_control" visible="false">
+				<image jsml-base="sidebarbutton" src="{folder}images/properties.png" dock="top" margin="4">
+					<attach name="click">
+						editor.ShowPropertiesDialog(editor.GetPointNode())
+					</attach>
+				</image>
+				<image jsml-base="sidebarbutton" src="{folder}images/cut.png" dock="top" margin="4">
+					<attach name="click">
+						editor._mobileclipboard=editor.GetPointNode().GetHtmlCode();
+						editor.GetPointNode().RemoveNode(true);
+					</attach>
+				</image>
+				<image jsml-base="sidebarbutton" src="{folder}images/copy.png" dock="top" margin="4">
+					<attach name="click">
+						editor._mobileclipboard=editor.GetPointNode().GetHtmlCode()
+					</attach>
+				</image>
+				<image jsml-base="sidebarbutton" src="{folder}images/delete.png" dock="top" margin="4">
+					<attach name="click">
+						editor.GetPointNode().RemoveNode(true);
+					</attach>
+				</image>
+			</panel>
+
+			<panel dock="fill" jsml-member="panel_point" visible="false">
+				<image jsml-base="sidebarbutton" src="{folder}images/m_select.png" dock="top" margin="4">
+					<attach name="click">
+						<![CDATA[
+						if(editor.IsCommandActive("RangeSelect"))
+						{
+							editor.ToggleRangeSelect();
+						}
+						else
+						{
+							instance.expand("select.xml");
+						}
+						]]>
+					</attach>
+					<attach name="editor_ready" arguments="je,editor">
+						<![CDATA[
+							editor.AttachEvent("RangeSelectChanged",function()
+							{
+								self.set_checked(editor.IsCommandActive("RangeSelect"));
+							});
+							]]>
+					</attach>
+				</image>
+				<image jsml-base="sidebarbutton" src="{folder}images/m_edit.png" dock="top" margin="4">
+					<attach name="click">
+						instance.expand("typetext.xml");
+					</attach>
+				</image>
+				<image jsml-base="sidebarbutton" src="{folder}images/p.png" dock="top" margin="4">
+					<attach name="click">
+						editor.ExecCommand("insertparagraph");
+					</attach>
+				</image>
+				<image jsml-base="sidebarbutton" src="{folder}images/break.png" dock="top" margin="4">
+					<attach name="click">
+						editor.ExecCommand("insertbreak");
+					</attach>
+				</image>
+				<image jsml-base="sidebarbutton" src="{folder}images/backspace.png" dock="top" margin="4">
+					<attach name="click">
+						editor.DeleteToLeft();
+						editor.RangeSyncToDom();
+					</attach>
+				</image>
+			</panel>
+
+			<panel dock="fill" jsml-member="panel_range" visible="false">
+				<image jsml-base="sidebarbutton" src="{folder}images/m_select.png" dock="top" margin="4">
+					<attach name="click">
+						<![CDATA[
+						if(editor.IsCommandActive("RangeSelect"))
+						{
+							editor.CollapseRangeSelect();
+							editor.ToggleRangeSelect();
+						}
+						else
+						{
+							editor.SetPointInside(editor.GetPointNode(),editor.GetPointOffset());
+							instance.expand("select.xml");
+						}
+						]]>
+						
+					</attach>
+					<attach name="editor_ready" arguments="je,editor">
+						<![CDATA[
+						editor.AttachEvent("RangeSelectChanged",function()
+						{
+							self.set_checked(editor.IsCommandActive("RangeSelect"));
+						});
+						]]>
+					</attach>
+				</image>
+				<image jsml-base="sidebarbutton" src="{folder}images/unformat.png" dock="top" margin="4">
+					<attach name="click">
+						instance.expand("format.xml");
+					</attach>
+				</image>
+				<image jsml-base="sidebarbutton" src="{folder}images/cut.png" dock="top" margin="4">
+					<attach name="click">
+						editor._mobileclipboard=editor.ExtractRangeHTML(true);
+					</attach>
+				</image>
+				<image jsml-base="sidebarbutton" src="{folder}images/copy.png" dock="top" margin="4">
+					<attach name="click">
+						editor._mobileclipboard=editor.ExtractRangeHTML(false);
+					</attach>
+				</image>
+				
+				<image jsml-base="sidebarbutton" src="{folder}images/delete.png" dock="top" margin="4">
+					<attach name="click">
+						editor.DeleteSelection();
+						editor.RangeSyncToDom();
+					</attach>
+				</image>
+			</panel>
+
+		</panel>
+
+
+	</panel>
+
+	<execute>
+		<![CDATA[
+		
+		var skindiv=editor._config.skin_div;
+		var fp=jsml.class_create_instance("rte_plugin_msbfloatpanel")
+		var bar=jsml.class_create_instance("rte_plugin_mobilesidebar");
+		var cursor=jsml.class_create_instance("rte_plugin_msbcursoricon");
+		fp.bar=bar;
+	
+		plugin.bar=bar;
+		plugin.fp=fp;
+		
+		plugin.Execute=function(element,arg1,arg2)
+		{
+			
+		}
+		plugin.LoadUI=function(ctrl,touchpanel)
+		{
+			ctrl.get_parent().append_child(fp);
+			ctrl.append_child(bar);
+			ctrl.append_child(cursor);
+			
+
+			fp.invoke_recursive("editor_ready",editor);
+			bar.invoke_recursive("editor_ready",editor);
+			cursor.invoke_recursive("editor_ready",editor);
+
+			var collapsed=true;
+			var nextpanelfile;
+			var bodyst=0;
+			var bodysl=0;
+			
+			bar.togglecollapse=function(noloadmainpanel)
+			{
+				jsml.suppend_layout();
+				collapsed=!collapsed;
+				
+				fp.set_visible(!collapsed)
+				fp.set_back_color("#eeeeee");
+				bar.set_back_color(collapsed?"":"#eeeeee");
+				
+				try
+				{
+					if(collapsed)
+					{
+						document.body.scrollTop=bodyst;
+						document.body.scrollLeft=bodysl;
+						skindiv.style.zIndex=config.fullscreen_zindex;
+						fp.containerpanel.dispose_children();
+					}
+					else
+					{
+						bodyst=document.body.scrollTop;
+						bodysl=document.body.scrollLeft;
+						skindiv.style.zIndex=editor._config.ctrltool_zindex+33;
+						if(!noloadmainpanel)
+							bar.loadmainpanel();
+					}
+				}
+				finally
+				{
+					bar.UpdatePosCore();
+					jsml.resume_layout();
+				}
+			}
+			
+			
+			bar.collapse=function()
+			{
+				if(!collapsed)bar.togglecollapse();
+			}
+			bar.expand=function(panelfile)
+			{
+				nextpanelfile=panelfile
+				if(collapsed)bar.togglecollapse();
+			}
+			
+			bar.back=function()
+			{
+				var cs=fp.containerpanel.get_children();
+				if(cs.length<2)
+					return bar.collapse();
+				cs[cs.length-2].set_visible(true);
+				cs[cs.length-1].dispose();
+			}
+			
+			bar.loadpanel=function(file,vars,handler,handleinst)
+			{
+				if(!vars)vars={};
+				var cs=fp.containerpanel.get_children();
+				for(var i=0;i<cs.length;i++)
+					cs[i].set_visible(false);
+				function urlhandler(res,err)
+				{
+					if(err)cs[cs.length-1].set_visible(true);
+					if(handler)handler(res,err)
+				}
+				function processinst(ctrl)
+				{
+					fp.containerpanel.append_child(ctrl);
+					ctrl.invoke_recursive("editor_ready",editor);
+					if(handleinst)handleinst(ctrl);
+				}
+				vars.plugin=plugin;
+				vars.sidebar=bar;
+				vars.editor=editor;
+				editor._LoadXmlUrl("{folder}plugins/{plugin}/"+file+"?{timems}",urlhandler,processinst,vars);
+				
+				if(collapsed)bar.togglecollapse(true);
+			}
+			
+			bar.loadmainpanel=function()
+			{
+				function urlhandler(res,err)
+				{
+					if(err)bar.back();
+				}
+				function processinst(ctrl)
+				{
+					fp.containerpanel.append_child(ctrl);
+					ctrl.invoke_recursive("editor_ready",editor);
+				}
+				var vars={};
+				vars.plugin=plugin;
+				vars.sidebar=bar;
+				vars.editor=editor;
+				var file;
+				if(nextpanelfile)
+					file=nextpanelfile
+				else
+					file="main"+editor.GetSelectionType().toLowerCase()+".xml";
+				editor._LoadXmlUrl("{folder}plugins/{plugin}/"+file+"?{timems}",urlhandler,processinst,vars);
+			}
+			
+			
+			editor.AttachEvent("ExecCommand",function()
+			{
+				bar.collapse();
+			});
+			editor.AttachEvent("ExecUICommand",function()
+			{
+				bar.collapse();
+			});
+		
+			bar.UpdatePosCore=function()
+			{
+				if(!bar.get_visible())return;
+				jsml.suppend_layout();
+				
+				var ct=ctrl.get_current_top()+1;
+
+				var w=jsml.get_body_rect().width;
+				var x=Math.max(0,window.pageXOffset)+window.innerWidth-30;
+				var cw=bar.collapsedpanel.get_demand_width();
+
+				var y=Math.max(0,window.pageYOffset);
+				var h=ctrl.get_current_height();
+				var ch=window.innerHeight;
+				
+				if(fp.get_visible())
+				{
+					cw=window.innerWidth;
+					fp.rightpanel.set_padding([ct,0,0,0]);
+					fp.set_padding([y,0,h+ct-ch-y,0]);
+					fp.set_left(x-cw);
+					fp.set_width(cw);
+					fp.set_height(h+ct);
+				}
+				
+				y=y-ct;
+				if(y<0)
+				{
+					ch=ch+y;
+					y=0;
+				}
+
+				bar.set_padding([y,w-cw,h-ch-y,0]);
+				bar.set_left(x-cw);
+				bar.set_width(w);
+				bar.set_height(h);
+				
+				jsml.resume_layout();
+			}
+
+			function ResetLayout()
+			{
+				var isvisible=editor.IsCommandActive("FullScreen");
+				bar.set_visible(isvisible);
+				if(!isvisible)
+				{
+					bar.collapse();
+				}
+				else
+				{
+					bar.UpdatePosCore();
+				}
+			}
+			
+			ResetLayout()
+			
+			editor.AttachEvent("FullScreenChanged",function()
+			{
+				ResetLayout()
+			});
+			//window.addEventListener("resize",ResetLayout,false);
+			//window.addEventListener("scroll",ResetLayout,false);
+			
+			function getscrinfo()
+			{
+				return window.pageXOffset+":"+window.pageYOffset+":"+window.innerWidth+":"+window.innerHeight;
+			}
+			plugin.lastscreeninfo=getscrinfo()
+			window.setInterval(function()
+			{
+				var info=getscrinfo();
+				if(plugin.lastscreeninfo!=info)
+				{
+					plugin.lastscreeninfo=info;
+					clearTimeout(plugin.lsitimer);
+					plugin.lsitimer=self.setDelegateTimeout(ResetLayout,50);
+				}
+			},10);
+			
+			touchpanel.attach_event("touchstart",function()
+			{
+				bar.set_visible(false);
+			});
+			touchpanel.attach_event("touchend",function()
+			{
+				ResetLayout();
+			});
+			
+			function ShowSelectionPanel()
+			{
+				var type=editor.GetSelectionType();
+				bar.panel_point.set_visible(type=="Point");
+				bar.panel_range.set_visible(type=="Range");
+				bar.panel_control.set_visible(type=="Control");
+			}
+			
+			editor.AttachEvent("SelectionChanged",function()
+			{
+				ShowSelectionPanel();
+			});
+			editor.AttachEvent("RangeSelectChanged",function()
+			{
+			});
+			
+			ShowSelectionPanel();
+		}
+		
+		
+		editor.AttachEvent("UICommand",function(editor,e)
+		{
+			if(e.Arguments[0]=="UploadImage")
+			{
+				bar.collapse();
+				bar.expand("uploadimage.xml");
+			}
+		});
+		
+		var currentdialog;
+		editor._LoadDialog_SavedBySidebar = editor._LoadDialog;
+		
+		if(false)
+		editor._LoadDialog=function(option,callback)
+		{
+			if(currentdialog)
+				return editor._LoadDialog_SavedBySidebar(option,callback);
+			
+			var dialog;
+			if(!option)option={}
+
+			var urlhandler=editor.delegate(function(res,err)
+			{
+				if(!res)
+				{
+					if(option.callback)option.callback(res,err);
+					if(err)self.setDelegateTimeout(function(){throw(err)},1);
+					return;
+				}
+				
+				dialog.attach_event("disposing",function()
+				{
+					currentdialog=null;
+				});
+				
+				currentdialog=dialog;
+				
+				if(callback)
+					callback(dialog);
+			});
+			
+			var processinst=editor.delegate(function(inst){
+				dialog=inst.dialog;
+				dialog._rteconfig=editor._config;
+				dialog._rteinstance=editor;
+				
+				if(option.title)
+					dialog.set_title(option.title);
+				if(option.width&&option.height)
+					dialog.resize(option.width,option.height);
+				if(option.ondialoginit)
+					option.ondialoginit(dialog);
+			});
+			
+			var dialogvars={editor:editor}
+			
+			bar.loadpanel("_dialog.xml",dialogvars,urlhandler,processinst);
+
+		}
+		
+		
+		]]>
+	</execute>
+
+
+</jsml>

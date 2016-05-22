@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../core/jsml.xsd">
+
+
+	<panel jsml-class="sidebar_typetext" jsml-base="sidebarmenu" dock="fill">
+		<panel jsml-base="sidebarmenuitem" text="@Back">
+			<attach name="click">
+				sidebar.back();
+			</attach>
+		</panel>
+		<panel jsml-base="sidebarmenuitem" text="@Next" dock="bottom">
+			<attach name="click">
+				<![CDATA[
+				var text=textbox.get_text();
+				var lines=text.split('\r').join('').split('\n');
+				for(var i=0;i<lines.length;i++)
+				{
+					lines[i]=jsml.html_encode(lines[i])||"&nbsp;";
+				}
+				var bv=ddlbreak.get_text();
+				
+				if(bv=="br"||bv=="hr")
+				{
+					html=lines.join("<"+bv+"/>");
+				}
+				else if(bv=="ol"||bv=="ul")
+				{
+					html="<"+bv+"><li>"+lines.join("</li><li>")+"</li></"+bv+">";
+				}
+				else
+				{
+					html="<"+bv+">"+lines.join("</"+bv+"><"+bv+">")+"</"+bv+">";
+				}
+				
+				html=editor.FilterByPasteCommand(html,"paste");
+				sidebar.loadpanel("insertwhere.xml",{wherefrom:"typetext",wherecallback:function(){
+					sidebar.collapse();
+					editor.InsertHTML(html);
+				}});
+				]]>
+			</attach>
+		</panel>
+
+		<dropdown jsml-local="ddlbreak" dock="bottom">
+			<listitem text="line break splitted by &lt;p/&gt;" value="p"></listitem>
+			<listitem text="line break splitted by &lt;br/&gt;" value="br"></listitem>
+			<listitem text="line break splitted by &lt;div/&gt;" value="div"></listitem>
+			<listitem text="line break splitted by &lt;ol/&gt;" value="ol"></listitem>
+			<listitem text="line break splitted by &lt;ul/&gt;" value="ul"></listitem>
+		</dropdown>
+
+		<label dock="top" margin="2" text="Type the text below then click the Next button" word_wrap="true"></label>
+		<textbox jsml-local="textbox" dock="fill" text_mode="multipleline">
+			<attach name="attach_dom">
+				self.setDelegateTimeout(function(){self.focus();},100);
+			</attach>
+		</textbox>
+	</panel>
+
+	<panel jsml-base="sidebar_typetext" />
+
+
+</jsml>

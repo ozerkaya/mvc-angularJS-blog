@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../core/jsml.xsd">
+
+	
+
+	<execute>
+		<![CDATA[
+		plugin.Execute=function(element,arg1,arg2)
+		{
+			var option={width:416,height:310}
+			option.plugin=plugin;
+			editor.ShowXmlDialog("{folder}server/virtualkeyboard.xml?{timems}",option);
+		}
+		
+		]]>
+	</execute>
+
+
+</jsml>

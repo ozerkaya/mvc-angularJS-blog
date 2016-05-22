@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../core/jsml.xsd">
+
+
+	<panel jsml-class="sidebar_dialog" jsml-base="sidebarmenu" dock="fill" overflow="scroll">
+		<panel jsml-base="sidebarmenuitem" text="Back">
+			<attach name="click">
+				<![CDATA[
+				if(dialog.onqueryclose)
+					if(false===dialog.onqueryclose())
+						return;
+				dialog.close();
+				]]>
+			</attach>
+		</panel>
+
+		<panel jsml-member="dialog" jsml-local="dialog" dock="fill">
+			<method name="close">
+				self.invoke_event("closing");
+				sidebar.back();
+			</method>
+			<property name="title">
+				<get>
+					return self.get_text();
+				</get>
+				<set>
+					self.set_text(value);
+				</set>
+			</property>
+			<method name="hidemask">
+
+			</method>
+			<method name="resize" arguments="width,height">
+				if(width)self.set_min_width(width);
+				if(height)self.set_min_height(height);
+			</method>
+			<method name="adjustsize">
+
+			</method>
+			<method name="expandsize" arguments="width,height">
+
+			</method>
+		</panel>
+		
+	</panel>
+
+
+	<panel jsml-base="sidebar_dialog" />
+
+
+</jsml>

@@ -1,0 +1,209 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>map</title>
+
+	<style type="text/css">
+	body,input,textarea,button,select,fieldset,table
+    {
+	    color: windowtext;
+	    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	    font-size:11px;
+    }
+	button
+	{
+		cursor:pointer;
+		height: 20px;
+	}
+	#searchbox
+	{
+		height:18px;
+	}
+	</style>
+</head>
+<body>
+	<div style="margin-bottom: 5px;">
+		<span langtext='1'>Search</span>:
+		<input id="searchbox" type="text" style="width:220px" />
+		<button onclick="TrySearch();return false;">
+			<span langtext='1'>Search</span></button>
+		<span>&nbsp;&nbsp;&nbsp;</span> <span langtext='1'>Size</span>:
+		<select id='selsize'>
+			<option value="640x480">640x480</option>
+			<option value="480x320">480x320</option>
+			<option value="320x240">320x240</option>
+		</select>
+		<button onclick="InsertMapUrl();return false;" style="float:right;width:82px;">
+			<span langtext='1'>Insert</span></button>
+	</div>
+	<div id="mappanel" style="width: 540px; height: 370px; border: solid 1px gray;">
+	</div>
+</body>
+
+<script type="text/javascript">
+var usingssl=(location.href.indexOf("https://")==0);
+var httphead=usingssl?"https":"http";
+document.write('<script type="text/javascript" src="'+httphead+'://maps.google.com/maps/api/js?sensor=false"></scr'+'ipt>');
+</script>
+
+
+
+<script type="text/javascript">
+
+	// https://developers.google.com/maps/documentation/javascript/maptypes#BasicMapTypes
+	var param={mapTypeId:google.maps.MapTypeId.ROADMAP,zoom:4};
+	
+	var mappanel=document.getElementById("mappanel");
+	var mapobject = new google.maps.Map(mappanel,param);
+	var mapmarker = new google.maps.Marker({map:mapobject,draggable:true});
+	
+	mapmarker.setTitle("Mark");
+	
+	function saveposinfo()
+	{
+		var center=mapobject.getCenter().lat()+","+mapobject.getCenter().lng()
+		var mmcenter=mapmarker.getPosition().lat()+","+mapmarker.getPosition().lng()
+		parent.rtegooglemapeditor._googlemapinfo={zoom:mapobject.getZoom(),center:center,marker:mmcenter}
+	}
+	
+	function handlechanged()
+	{
+		mapmarker.setPosition(mapobject.getCenter());
+		saveposinfo()
+	}
+
+	google.maps.event.addListener(mapobject,"center_changed", handlechanged);
+	google.maps.event.addListener(mapmarker,"dragend",saveposinfo);
+
+	function parseLatLng(exp)
+	{
+		var pair=exp.split(',')
+		return new google.maps.LatLng(parseFloat(pair[0]),parseFloat(pair[1]))
+	}
+	
+	
+	var loadcount=0;
+	function LoadFromUrl()
+	{
+		loadcount++;
+		if(loadcount!=1)return;
+		var url=parent.rtegooglemapoption.currenturl
+		if(!url)return;
+
+		var pairs=(url.split('#')[0].split('?')[1]||"").split('&')
+		for(var i=0;i<pairs.length;i++)
+		{
+			var pair=pairs[i].split('=');
+			if(pair.length!=2)
+				continue;
+			var name=pair[0];
+			if(name=="maptype")mapobject.setMapTypeId(pair[1]);
+			if(name=="zoom")mapobject.setZoom(parseInt(pair[1]));
+			if(name=="center")mapobject.setCenter(parseLatLng(pair[1]));
+			if(name=="markers")mapmarker.setPosition(parseLatLng(pair[1]));
+			if(name=="size")document.getElementById("selsize").value=pair[1];
+		}
+
+	}
+	
+	
+	function FindLocation(address,zoom)
+	{
+		if(!address)address="";
+		var geocoder = new google.maps.Geocoder();
+		geocoder.geocode({"address":address},function(results,status)
+		{
+			if (status != google.maps.GeocoderStatus.OK)
+			{
+				alert("Failed to search '"+address+"'");
+				return;
+			}
+			var ll=results[0].geometry.location;
+			if(zoom)mapobject.setZoom(zoom);
+			mapobject.setCenter(ll);
+			mapmarker.setPosition(ll);
+			LoadFromUrl()
+		});
+	}
+	
+	setTimeout(function()
+	{
+		var config=parent.rtegooglemapeditor._config;
+		var lastpos=null;
+		if(config.googlemap_saveinsession)
+			lastpos=parent.rtegooglemapeditor._googlemapinfo;
+		if(!lastpos)
+		{
+			FindLocation(config.googlemap_initialplace,config.googlemap_initialzoom);
+			return;
+		}
+		mapobject.setZoom(lastpos.zoom);
+		mapobject.setCenter(parseLatLng(lastpos.center));
+		mapmarker.setPosition(parseLatLng(lastpos.marker));
+		LoadFromUrl();
+	},100);
+	
+	function InsertMapUrl()
+	{
+		var typeid=mapobject.getMapTypeId();
+		var zoom=mapobject.getZoom();
+		var center=mapobject.getCenter().lat()+","+mapobject.getCenter().lng()
+		var mmcenter=mapmarker.getPosition().lat()+","+mapmarker.getPosition().lng()
+		var size=document.getElementById("selsize").value;
+		
+		var url=httphead+"://maps.google.com/maps/api/staticmap?sensor=false&size="+size
+			+"&maptype="+typeid+"&zoom="+zoom
+			+"&center="+center+"&markers="+mmcenter
+
+		parent.rtegooglemapoption.seturl(url);
+		parent.rtegooglemapdialog.result=true;
+		parent.rtegooglemapdialog.close();
+	}
+	
+	
+	var searchbox=document.getElementById("searchbox");
+	
+	function TrySearch()
+	{
+		var txt=searchbox.value.replace(/(^\s+|\s+$)/g,"");
+		if(!txt)return;
+		FindLocation(txt,6);
+	}
+	
+	searchbox.onkeydown=function(e)
+	{
+		e=window.event||e;
+		if(e.keyCode==13)
+		{
+			TrySearch();
+		}
+	}
+	
+	
+	new function()
+	{
+		var editor=parent.rtegooglemapeditor;
+		var ns=document.getElementsByTagName("*");
+		for(var i=0;i<ns.length;i++)
+		{
+			var n=ns[i];
+			if(n.getAttribute('langtext')!="1")continue;
+			var t=n.innerText||n.textContent||"";
+			if(t)
+			{
+				t=editor.GetLangText(t);
+				n.innerText=t;
+				n.textContent=t;
+			}
+			var t=n.value||"";
+			if(t)
+			{
+				t=editor.GetLangText(t);
+				n.value=t;
+			}
+		}
+	}
+	
+	
+</script>
+
+</html>

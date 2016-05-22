@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="jsml.xsl"?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../JSML/jsml.xsd">
+	<panel jsml-class="boolitem" width="50" height="24" overflow="visible" margin="2" border_color="transparent" border_width="0">
+		<label jsml-local="txt_font" dock="fill" overflow="visible" padding="0,0,0,10" vertical_align="middle" horizontal_align="left"></label>
+		<property name="boolean">
+			<get>
+				return self._boolean;
+			</get>
+			<set>
+				self._boolean = value;
+				txt_font.set_text(value);
+			</set>
+		</property>
+		<attach name="click">
+			<![CDATA[
+			if(selectfunc) 
+				selectfunc(self.get_boolean());			
+			box.dispose();
+			]]>
+		</attach>
+		<attach name="mousehover">
+			<![CDATA[
+			self.set_back_color("#dddddd");
+			self.set_text_color("Blue");
+			]]>
+		</attach>
+		<attach name="mouseleave">
+			<![CDATA[
+			self.set_back_color("");
+			self.set_text_color("");
+			]]>
+		</attach>
+	</panel>
+	<panel jsml-class="boolpanel" width="50" height="30" overflow="visible" back_color="white">
+		<initialize>
+			<![CDATA[
+			var PreInitFonts = [doc.Text["Select_Bool_True"],doc.Text["Select_Bool_False"]];
+			for(var i=0;i<PreInitFonts.length;i++)
+			{
+				var fb = jsml.class_create_instance("boolitem");
+				fb.set_dock("top");
+				fb.set_boolean(PreInitFonts[i]);
+				self.append_child(fb);
+			}
+			]]>
+		</initialize>
+	</panel>
+	<panel jsml-base="boolpanel"></panel>	
+</jsml>

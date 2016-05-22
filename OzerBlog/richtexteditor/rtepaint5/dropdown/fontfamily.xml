@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="jsml.xsl"?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../JSML/jsml.xsd">
+	<panel jsml-class="fontfamilyitem" width="120" height="24" overflow="visible" margin="2" border_color="transparent" border_width="0" css_text="background:url(images/font.gif) 0% 50% no-repeat;">
+		<label jsml-local="txt_font" dock="fill" overflow="visible" margin="0,20,0,20" vertical_align="middle" horizontal_align="left"></label>
+		<property name="fontfamily">
+			<get>
+				return self._fontfamily;
+			</get>
+			<set>
+				self._fontfamily = value;
+				txt_font.set_text(value);
+				txt_font.get_element().style.fontFamily = value;
+			</set>
+		</property>
+		<attach name="click">
+			<![CDATA[
+			if(selectfunc) 
+				selectfunc(self.get_fontfamily());			
+			box.dispose();
+			]]>
+		</attach>
+		<attach name="mousehover">
+			<![CDATA[
+			self.set_back_color("#dddddd");
+			self.set_text_color("Blue");
+			]]>
+		</attach>
+		<attach name="mouseleave">
+			<![CDATA[
+			self.set_back_color("");
+			self.set_text_color("");
+			]]>
+		</attach>
+	</panel>
+	<panel jsml-class="fontfamilypanel" width="120" height="30" overflow="visible" back_color="white">
+		<initialize>
+			<![CDATA[
+			var PreInitFonts = ["Arial","Verdana","Tahoma","Segoe UI","Sans Serif","Lucida Console"];
+			var fonts = doc.GetOption("LoadedFonts");
+			PreInitFonts = PreInitFonts.concat(fonts);
+			for(var i=0;i<PreInitFonts.length;i++)
+			{
+				var fb = jsml.class_create_instance("fontfamilyitem");
+				fb.set_dock("top");
+				fb.set_fontfamily(PreInitFonts[i]);
+				self.append_child(fb);
+			}
+			]]>
+		</initialize>
+	</panel>
+	<panel jsml-base="fontfamilypanel"></panel>	
+</jsml>

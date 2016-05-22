@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../core/jsml.xsd">
+
+
+	<panel jsml-class="sidebar_fontname" jsml-base="sidebarmenu" dock="fill">
+		<panel jsml-base="sidebarmenuitem" text="Back">
+			<attach name="click">
+				sidebar.back();
+			</attach>
+		</panel>
+
+		<panel jsml-base="sidebarmenuitem"  command="FontName" arguments="!" text="Default"  />
+
+		<initialize>
+			<![CDATA[
+			var namelist=editor._config.fontnamelist||'Arial,Verdana,Tahoma,Segoe UI,Sans-Serif,Comic Sans MS,Courier New,Georgia,Impact,Lucida Console,Times New Roman,Trebuchet MS,Monospace';
+			namelist=namelist.split(',');
+			for(var i=0;i<namelist.length;i++)
+			{
+				var item=jsml.class_create_instance("sidebarmenuitem");
+				item.set_command("FontName")
+				item.set_arguments(namelist[i])
+				item.set_text(namelist[i]);
+				item.label._estyle.fontFamily=namelist[i];
+				self.append_child(item);
+			}
+			]]>
+		</initialize>
+		
+
+	</panel>
+
+	<panel jsml-base="sidebar_fontname" />
+
+
+</jsml>

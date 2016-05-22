@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../core/jsml.xsd">
+
+
+	<panel jsml-class="sidebar_tagitem" jsml-base="sidebarmenu" dock="fill">
+		<panel jsml-base="sidebarmenuitem" text="Back">
+			<attach name="click">
+				sidebar.back();
+			</attach>
+		</panel>
+
+		<panel jsml-base="sidebarmenuitem" text="Select" imagename="selectall">
+			<attach name="click">
+				if(node.IsControl()) editor.SelectControl(node);
+				else editor.SelectContent(node);
+				editor.RangeSyncToDom(true);
+				sidebar.collapse();
+			</attach>
+		</panel>
+
+		<panel jsml-base="sidebarmenuitem" text="Cut" imagename="cut">
+			<attach name="click">
+				editor._mobileclipboard=node.GetHtmlCode();
+				node.RemoveNode(true);
+				sidebar.collapse();
+			</attach>
+		</panel>
+		<panel jsml-base="sidebarmenuitem" text="Copy" imagename="copy">
+			<attach name="click">
+				editor._mobileclipboard=node.GetHtmlCode();
+				sidebar.collapse();
+			</attach>
+		</panel>
+		<panel jsml-base="sidebarmenuitem" text="Delete" imagename="delete">
+			<attach name="click">
+				node.RemoveNode(true);
+				sidebar.collapse();
+			</attach>
+		</panel>
+
+		<panel jsml-base="sidebarmenuitem" text="Properties" imagename="properties">
+			<attach name="click">
+				editor.ShowPropertiesDialog(node);
+				sidebar.collapse();
+			</attach>
+		</panel>
+		
+	</panel>
+
+	<panel jsml-base="sidebar_tagitem" />
+
+
+</jsml>

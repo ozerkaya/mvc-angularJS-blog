@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../core/jsml.xsd">
+
+	<panel jsml-class="rte_plugin_zoom" jsml-base="panelbutton" dock="fill" width="30" overflow="visible">
+		<label jsml-local="label" dock="fill" vertical_align="middle" horizontal_align="center" width="30" padding="0,2,0,-2" margin="0,0,0,4" text="100%" cursor="pointer" />
+		<attach name="click">
+			<![CDATA[
+			var option={}
+			option.control=self;
+			option.floatMode='t-l';
+			option.selectzoom=function(val)
+			{
+				plugin.zoomvalue=val;
+				label.set_text(val+"%");
+				var zoom=plugin.zoomvalue==100?"":(plugin.zoomvalue+"%");
+				editor.GetWindow().document.body.style.zoom=zoom;
+			}
+			]]>
+			editor.ShowXmlFloatBox("{folder}plugins/{plugin}/zoomlist.xml",option)
+			</attach>
+		</panel>
+
+		<execute>
+			<![CDATA[
+		plugin.zoomvalue=100;
+		
+		plugin.Execute=function(element,arg1,arg2)
+		{
+			
+		}
+		plugin.LoadUI=function(ctrl,arg0)
+		{
+			ctrl.append_child(jsml.class_create_instance("rte_plugin_zoom"));
+		}
+		
+		editor.AttachEvent("InitEvent",function(editor,e)
+		{
+			var zoom=plugin.zoomvalue==100?"":(plugin.zoomvalue+"%");
+			editor.GetWindow().document.body.style.zoom=zoom;
+		});
+		
+		]]>
+	</execute>
+
+
+</jsml>

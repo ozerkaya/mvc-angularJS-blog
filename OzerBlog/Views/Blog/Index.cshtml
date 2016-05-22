@@ -1,0 +1,25 @@
+﻿@model IEnumerable<BlogDAL.DAL.Posts>
+@{
+    ViewBag.Title = "Index";
+}
+
+@*<h2>Blog</h2>*@
+
+@foreach (var item in Model)
+{
+    <table>
+        <tr>
+            <td>
+                <h2 class="section-heading">@item.title</h2>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    @Html.Raw(item.content)
+                </p>
+            </td>
+        </tr>
+
+    </table>
+}

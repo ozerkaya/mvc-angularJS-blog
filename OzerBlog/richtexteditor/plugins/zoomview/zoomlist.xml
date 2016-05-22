@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../core/jsml.xsd">
+
+	<htmlcontrol jsml-class="zoomlistitem" dock="top" overflow="visible" vertical_align="middle" margin="0" padding="0" border_width="1" border_color="transparent" cursor="pointer" unselectable="true">
+		<initialize>
+			self._estyle.fontFamily='arial';
+		</initialize>
+
+		<attach name="mousehover" arguments="je,e">
+			self.set_border_color('#DCAC6C');
+			self.set_back_color('#FFF5D4');
+			self.set_text_color('blue');
+		</attach>
+		<attach name="mouseleave">
+			self.set_border_color('white');
+			self.set_back_color('');
+			self.set_text_color('');
+		</attach>
+		<attach name="click">
+			option.selectzoom(parseInt(self.get_text())||100);
+			dialog.close();
+		</attach>
+	</htmlcontrol>
+
+	<panel dock="fill" margin="0" padding="0" overflow="visible" width="50">
+		<panel dock="fill" overflow="visible" padding="3">
+			<htmlcontrol jsml-base="zoomlistitem" text="25">
+				<xmldata>
+					<div style="padding:0 10px;font-size:8px;">25%</div>
+				</xmldata>
+			</htmlcontrol>
+			<htmlcontrol jsml-base="zoomlistitem" text="50">
+				<xmldata>
+					<div style="padding:0 10px;font-size:9px;">50%</div>
+				</xmldata>
+			</htmlcontrol>
+			<htmlcontrol jsml-base="zoomlistitem" text="75">
+				<xmldata>
+					<div style="padding:0 10px;font-size:10px;">75%</div>
+				</xmldata>
+			</htmlcontrol>
+			<htmlcontrol jsml-base="zoomlistitem" text="100">
+				<xmldata>
+					<div style="padding:0 10px;font-size:11px;">100%</div>
+				</xmldata>
+			</htmlcontrol>
+			<htmlcontrol jsml-base="zoomlistitem" text="125">
+				<xmldata>
+					<div style="padding:0 10px;font-size:12px;">125%</div>
+				</xmldata>
+			</htmlcontrol>
+			<htmlcontrol jsml-base="zoomlistitem" text="150">
+				<xmldata>
+					<div style="padding:0 10px;font-size:13px;">150%</div>
+				</xmldata>
+			</htmlcontrol>
+			<htmlcontrol jsml-base="zoomlistitem" text="200">
+				<xmldata>
+					<div style="padding:0 10px;font-size:14px;">200%</div>
+				</xmldata>
+			</htmlcontrol>
+			<htmlcontrol jsml-base="zoomlistitem" text="250">
+				<xmldata>
+					<div style="padding:0 10px;font-size:16px;">250%</div>
+				</xmldata>
+			</htmlcontrol>
+			<htmlcontrol jsml-base="zoomlistitem" text="300">
+				<xmldata>
+					<div style="padding:0 10px;font-size:18px;">300%</div>
+				</xmldata>
+			</htmlcontrol>
+			<htmlcontrol jsml-base="zoomlistitem" text="400">
+				<xmldata>
+					<div style="padding:0 10px;font-size:20px;">400%</div>
+				</xmldata>
+			</htmlcontrol>
+		</panel>
+		<attach name="keydown" arguments="je,e">
+			if(e.keyCode==27)dialog.close();
+		</attach>
+	</panel>
+
+
+</jsml>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../core/jsml.xsd">
+
+	<panel jsml-class="rte_plugin_taglist_item" jsml-base="panelbutton" dock="left" overflow="visible" width="20" border_width="1" margin="2,2,2,2" padding="0,2,0,2" font="normal 11px Tahoma" border_color="gray">
+		<label dock="fill" jsml-local="label" width="10" vertical_align="middle" cursor="hand"></label>
+		<method name="bind_item" arguments="node">
+			<![CDATA[
+			self.targetnode=node;
+			var nodename=self.targetnode.GetName();
+			var dispname=editor.CreateControlProvider(self.targetnode).GetTitle();
+			if(nodename.toLowerCase()==dispname.toLowerCase())
+				dispname=nodename;
+			label.set_text("<"+dispname+">");
+			self.set_visible(self.targetnode.GetNameLower()!="body");
+			]]>
+		</method>
+		<method name="unbindandhide">
+			<![CDATA[
+			if(self.targetnode)
+			{
+				self.targetnode.SetRuntimeAttribute("style",null,"taglisthover");
+				self.targetnode=null;
+			}
+			self.set_visible(false);
+			]]>
+		</method>
+		<attach name="mousehover">
+			<![CDATA[
+			var code=self.targetnode.GetAttributeCode();
+			if(code)code=" "+code;
+			code="<"+self.targetnode.GetName()+code+">";
+			self.set_tooltip(code);
+			self.targetnode.SetRuntimeAttribute("style","background-color:#3399CC;color:white;","taglisthover");
+			]]>
+		</attach>
+		<attach name="mouseleave">
+			self.targetnode.SetRuntimeAttribute("style",null,"taglisthover");
+		</attach>
+		<attach name="contextmenu" arguments="je,de">
+			<![CDATA[
+			editor.Focus();
+			if(self.targetnode.IsControl())
+			{
+				editor.SelectControl(self.targetnode);
+			}
+			else
+			{
+				editor.SelectContent(self.targetnode);
+			}
+			de.cancel();
+			]]>
+		</attach>
+		<attach name="click" arguments="je,de">
+			var option={floatboxClass:"floatmenu",control:self,floatMode:'t-r',stopLoadingImage:true};
+			option.node=self.targetnode;
+			editor.ShowXmlFloatBox(editor.BuildDialogUrl("menu_tagitem.xml"),option);
+		</attach>
+	</panel>
+	
+	<panel jsml-class="rte_plugin_taglist" dock="fill" margin="0,2,0,2">
+
+		<initialize>
+			self.panels=[];
+			self.editoreventid=editor.AttachEvent(self.delegate(self.processeditorevent));
+			self.updatetaglist();
+		</initialize>
+		<attach name="disposing">
+			editor.DetachEvent(self.editoreventid);
+		</attach>
+
+		<method name="processeditorevent" arguments="editor,e">
+			<![CDATA[
+			if(e.Name!="SelectionChanged"&&e.Name!="TabModeChanged")
+				return;
+			self.updatetaglist();
+			]]>
+		</method>
+		<method name="updatetaglist">
+			<![CDATA[
+			self.set_visible(editor.IsTabEdit());
+			
+			var node=editor.GetPointNode();
+			var control;
+			var seltype=editor.GetSelectionType();
+			if(seltype=="Control"||seltype=="Point")
+			{
+				control=node;
+			}
+			else if(seltype=="Range")
+			{
+				var endnode=editor.GetRangeNode();
+				var root=node;
+				while(root&&!root.Contains(endnode))
+					root=root.GetParent();
+				control=root;
+			}
+			if(control&&control.nodeType==3)
+			{
+				control=control.GetParent();
+			}
+			
+			var arr=[];
+			for(node=control;node;node=node.GetParent())
+			{
+				if(node.DesignOnly)
+					continue;
+				arr.push(node);
+			}
+			arr.reverse();
+			
+			jsml.suppend_layout();
+			
+			while(self.panels.length<arr.length)
+			{
+				var panel=jsml.class_create_instance("rte_plugin_taglist_item");
+				self.panels.push(panel);
+				self.append_child(panel);
+			}
+			
+			var targetfound=false;
+			for(var i=0;i<arr.length;i++)
+			{
+				var panel=self.panels[i];
+				panel.bind_item(arr[i]);
+				
+				panel.set_checked(panel.targetnode==control);
+				panel.set_opacity(100);
+			}
+			
+			var last=arr[arr.length-1];
+			if(last)
+			{
+				for(var i=arr.length;i<self.panels.length;i++)
+				{
+					var panel=self.panels[i];
+					var tn=panel.targetnode;
+					if(editor._config.plugin_taglist_hidepreviousitems)
+					{
+						panel.unbindandhide();
+					}
+					else if(tn&&tn.GetParent()==last)
+					{
+						last=tn;
+						panel.set_checked(false);
+						panel.set_opacity(30);
+					}
+					else
+					{
+						panel.unbindandhide();
+					}
+				}
+			}
+			
+			jsml.resume_layout();
+			
+			]]>
+		</method>
+
+	</panel>
+
+	<execute>
+		<![CDATA[
+		plugin.Execute=function(element,arg1,arg2)
+		{
+			
+		}
+		plugin.LoadUI=function(ctrl,arg0)
+		{
+			ctrl.append_child(jsml.class_create_instance("rte_plugin_taglist"));
+		}
+		]]>
+	</execute>
+
+
+</jsml>

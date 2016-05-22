@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../core/jsml.xsd">
+
+	
+
+	<execute>
+		<![CDATA[
+		plugin.Execute=function(element,arg1,arg2)
+		{
+			var sp=editor.SaveLogContent();
+			var option={width:470,height:480}
+			option.plugin=plugin;
+			option.targetnode=editor.GetBodyNode();
+			option.callback=function(res,err)
+			{
+				if(!res)
+				{
+					editor.LoadLogIndex(sp);
+					editor.Focus();
+					if(err)editor.Alert(err.message||err);
+					return;
+				}
+			}
+			editor.ShowXmlDialog("{folder}plugins/{plugin}/pageprops.xml?{timems}",option);
+		}
+		
+		]]>
+	</execute>
+
+
+</jsml>

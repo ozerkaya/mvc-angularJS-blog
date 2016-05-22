@@ -1,0 +1,41 @@
+﻿<div class="list-group">
+    @{
+        if (HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString() == "AdminMenu")
+        {
+            <a href="/Admin/AdminMenu/" class="list-group-item active">Tema Ayarları</a>
+        }
+        else
+        {
+            <a href="/Admin/AdminMenu/" class="list-group-item">Tema Ayarları</a>
+        }
+
+        if (HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString() == "Posts")
+        {
+            <a href="/Admin/Posts/" class="list-group-item active">Yazılarım</a>
+        }
+        else
+        {
+            <a href="/Admin/Posts/" class="list-group-item">Yazılarım</a>
+        }
+
+        if (HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString() == "Users")
+        {
+            <a href="/Admin/Users/" class="list-group-item active">Kullanıcılar</a>
+        }
+        else
+        {
+            <a href="/Admin/Users/" class="list-group-item">Kullanıcılar</a>
+        }
+
+        if (HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString() == "Pages")
+        {
+            <a href="/Admin/Pages/" class="list-group-item active">Sayfalar</a>
+        }
+        else
+        {
+            <a href="/Admin/Pages/" class="list-group-item">Sayfalar</a>
+        }
+}
+
+    
+</div>

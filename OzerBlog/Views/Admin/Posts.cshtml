@@ -1,0 +1,69 @@
+﻿@model OzerBlog.Models.PostView
+
+@{
+    ViewBag.Title = "Posts";
+}
+
+
+<style>
+    table {
+        width: 100%;
+    }
+
+    td {
+        vertical-align: top;
+    }
+
+    input {
+        width: 100%;
+    }
+</style>
+
+@using (Html.BeginForm("Posts", "Admin", FormMethod.Post))
+{
+
+    <table style="margin-top:30px">
+        <tr>
+            <td style="width:20%;">
+                @Html.Partial("~/Views/Admin/_Menu.cshtml")
+            </td>
+            <td>
+                <div class="panel panel-primary" style="margin-left:10px">
+                    <div class="list-group">
+                        <a class="list-group-item active">Yazılarım</a>
+                    </div>
+                    <div class="panel-body">
+                        <table>
+                            <tr>
+                                <td>
+                                    <h5>* Yazı Başlığı</h5>
+                                    @Html.TextBoxFor(ok => ok.post.title)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>* Yazı İçeriği</h5>
+                                    @Html.Raw(ViewBag.Editor)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="float:right">
+                                    <input type="submit" value="Kaydet" style="width:150px;margin-top:10px" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="list-group" style="margin-left:10px">
+                    @foreach (var item in Model.postList)
+                    {
+                        <a href="/Admin/Posts/@item.ID" class="list-group-item">@item.title</a>
+                    }
+
+                </div>
+
+            </td>
+        </tr>
+    </table>
+}

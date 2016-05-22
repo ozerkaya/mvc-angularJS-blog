@@ -1,0 +1,75 @@
+﻿@model OzerBlog.Models.Login
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Admin</h2>
+<style>
+    td {
+        padding: 5px;
+    }
+
+    input {
+        width: 100%;
+    }
+</style>
+
+@using (Html.BeginForm("Index", "Admin", FormMethod.Post))
+{
+    {
+    if (Session["Username"] == "ADMIN")
+    {
+        <table align="center">
+            <tr>
+                <td align="center">
+                    @{
+        if (Model == null)
+        {
+
+        }
+        else
+        {
+                    <span class="subheading" style="color:red">@Model.loginMessage</span>
+        }
+                    }
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.TextBoxFor(ok => ok.username, new { @placeholder = "Username" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.PasswordFor(ok => ok.password, new { @placeholder = "Password" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Bağlan" />
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <a href="#">Şifremi Unuttum</a>
+                </td>
+            </tr>
+
+        </table>
+    }
+    else
+    {
+        <table align="center">
+            <tr>
+                <td>
+                    <input type="submit" value="Oturumu Kapat" />
+                </td>
+            </tr>
+        </table>
+    }
+    }
+
+
+}

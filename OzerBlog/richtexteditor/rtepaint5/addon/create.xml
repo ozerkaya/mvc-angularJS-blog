@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="jsml.xsl"?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../JSML/jsml.xsd">
+	<panel jsml-class="createdialog_select" dock="top" back_color="rgba(220,220,220,1)" border_color="rgba(204,204,204,1)" border_width="1">
+		<label jsml-local="label" dock="fill" horizontal_align="left" padding="0,0,0,20" font_size="26px" vertical_align="middle" cursor="pointer">
+		</label>
+		<attach name="mousehover">
+			<![CDATA[
+			self.set_back_color("rgba(172,203,222,1)");
+			self.set_border_color("rgba(158,187,205,1)");
+			]]>
+		</attach>
+		<attach name="mouseleave">
+			<![CDATA[
+			self.set_back_color("rgba(220,220,220,1)");
+			self.set_border_color("rgba(204,204,204,1)");
+			]]>
+		</attach>
+		<property name="label_text">
+			<get>
+				return label.get_text();
+			</get>
+			<set>
+				label.set_text(value);
+			</set>
+		</property>
+	</panel>
+	<panel back_color="rgba(128,128,128,0.4)" dock="over" jsml-class="createdialog" vertical_align="middle" horizontal_align="center">
+		<panel jsml-local="basic" width="400" height="250" back_color="white" padding="0,10,10,10" css_text="border-radius:5px;">
+			<panel dock="top" height="25" vertical_align="middle" margin="5,-5,0,0">
+				<image src="images/close.gif" width="16" cursor="default" dock="right" tooltip="@Title_Close">
+					<attach name="click">
+						instance.dispose();
+					</attach>
+				</image>
+			</panel>
+			<panel dock="top" height="60" jsml-base="createdialog_select" label_text="@Tool_New_Canvas">
+				<attach name="click">
+					basic.set_visible(0);
+					canvastype.set_visible(1);
+				</attach>
+			</panel>
+			<panel dock="top" height="60" jsml-base="createdialog_select" label_text="@Tool_New_FromURL" margin="10,0,0,0">
+				<attach name="click">
+					basic.set_visible(0);
+					urltype.set_visible(1);
+				</attach>
+			</panel>
+			<panel dock="top" height="60" jsml-base="createdialog_select" label_text="@Tool_New_File" margin="10,0,0,0" vertical_align="middle">
+				<initialize>
+					if(typeof(FileReader)=="undefined")
+					{
+						self.set_visible(0);
+					}
+				</initialize>
+				<attach name="click">
+					<![CDATA[
+					var input=document.getElementById("imageeditorloadfile");
+					if(!input.files)
+					{
+						alert(ImageEditorDocument.Text["FileAPI"]);
+						return;
+					}
+					input.onchange=function()
+					{
+						if(!confirm(ImageEditorDocument.Text["ConfirmCreate"]))
+						{
+							input.value = "";
+							return;
+						}
+						var file=input.files[0];
+						ImageEditorDocument.$0110(file,true);
+						input.value = "";
+						instance.dispose();
+					}
+					input.click();
+					]]>
+				</attach>
+			</panel>
+			<initialize>
+				if(typeof(FileReader)=="undefined")
+					self.set_height(180);
+			</initialize>
+		</panel>
+		<panel jsml-local="canvastype" visible="0" width="320" height="190" back_color="#eeeeee" border_color="#cccccc" border_width="1" padding="10,20,10,20">
+			<panel dock="top" height="30" margin="10,0,0,0">
+				<label dock="left" width="110" css_text="font-weight:bold;" vertical_align="middle" text="@Tool_Width"></label>
+				<textbox jsml-local="txt_width" dock="left" width="100">
+					<initialize>
+						<![CDATA[
+						ImageEditorDocument.$087(self._input);
+						]]>
+					</initialize>
+				</textbox>
+			</panel>
+			<panel dock="top" height="30" margin="10,0,0,0">
+				<label dock="left" width="110" css_text="font-weight:bold;" vertical_align="middle" text="@Tool_Height"></label>
+				<textbox jsml-local="txt_height" dock="left" width="100">
+					<initialize>
+						<![CDATA[
+						ImageEditorDocument.$087(self._input);
+						]]>
+					</initialize>
+				</textbox>
+			</panel>
+			<panel dock="top" height="30" margin="10,0,0,0">
+				<label dock="left" width="110" css_text="font-weight:bold;" vertical_align="middle" text="@Tool_New_FillColor"></label>
+				<dropdown jsml-local="ddl_fillcolor" dock="left" width="100">
+					<listitem value="transparent" text="@Select_Color_Transparent"></listitem>
+					<listitem value="backcolor" text="@Select_Color_BackColor"></listitem>
+					<listitem value="forecolor" text="@Select_Color_ForeColor"></listitem>
+				</dropdown>
+			</panel>
+			<panel dock="top" height="30" margin="10,0,0,0">
+				<button text="@Btn_Apply" dock="left" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;" width="60" vertical_align="middle" margin="0,5,0,80">
+					<attach name="click">
+					<![CDATA[
+					var w = txt_width.get_text();
+					var h = txt_height.get_text();
+					if(!w)
+					{
+						txt_width.focus();
+						return;
+					}
+					if(!h)
+					{
+						txt_height.focus();
+						return;
+					}
+					if(isNaN(w) || parseInt(w)<=0)
+					{
+						txt_width.focus();
+						alert(ImageEditorDocument.Text["CreateWidth"]);
+						return;
+					}
+					if(isNaN(h) || parseInt(h)<=0)
+					{
+						txt_height.focus();
+						alert(ImageEditorDocument.Text["CreateHeight"]);
+						return;
+					}
+					if(!confirm(ImageEditorDocument.Text["ConfirmCreate"]))
+						return;
+						
+					var fillcolor = ddl_fillcolor.get_text();
+					var backcolor = ImageEditorDocument.GetOption("Ctx_BackColor");
+					var forecolor = ImageEditorDocument.GetOption("Ctx_ForeColor");
+					
+					ImageEditorDocument.$089();					
+					ImageEditorDocument._canvas.width = parseInt(w);
+					ImageEditorDocument._canvas.height = parseInt(h);
+					ImageEditorDocument.SetOption("CanvasRealSize", {width:parseInt(w),height:parseInt(h)});
+					ImageEditorDocument.$0115();
+					ImageEditorDocument._history = null;
+					ImageEditorDocument._history = jsml.class_create_instance("$027", [ImageEditorDocument]);
+					ImageEditorDocument._history.set_name(ImageEditorDocument.Text["Layer_Background"]);
+					if(fillcolor!="transparent")
+					{
+						var layer = jsml.class_create_instance("$042", [ImageEditorDocument]);
+						layer.set_name(ImageEditorDocument.Text["Layer_Background"]);
+						layer._2d.fillStyle = fillcolor=="backcolor"?backcolor:forecolor;
+						layer._2d.fillRect(0,0,layer._canvas.width,layer._canvas.height);
+						ImageEditorDocument._history._layers[0] = layer;						
+						ImageEditorDocument._history._selectLayer = layer;
+					}
+					ImageEditorDocument.$052([ImageEditorDocument._history]);
+					ImageEditorDocument.set_SelectedTool(null);
+					ImageEditorDocument._canvas.calcpos();
+					instance.dispose();
+					]]>
+					</attach>
+				</button>
+				<button text="@Btn_Cancel" dock="left" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;" width="60" vertical_align="middle">
+					<attach name="click">
+						<![CDATA[
+						canvastype.set_visible(0);
+						basic.set_visible(1);
+						]]>
+					</attach>
+				</button>
+			</panel>
+		</panel>
+		<panel jsml-local="urltype" visible="0" width="480" height="110" back_color="#eeeeee" border_color="#cccccc" border_width="1" padding="10,20,10,20">
+			<panel dock="top" height="30" margin="10,0,0,0">
+				<label dock="left" width="80" css_text="font-weight:bold;" vertical_align="middle" text="@Tool_New_URL"></label>
+				<textbox jsml-local="txt_imageurl" dock="left" width="360"></textbox>
+			</panel>
+			<panel dock="top" height="30" margin="10,0,0,0">
+				<button text="@Btn_Apply" dock="left" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;" width="60" vertical_align="middle" margin="0,5,0,80">
+					<attach name="click">
+					<![CDATA[
+					if(!txt_imageurl.get_text())
+					{
+						txt_imageurl.focus();
+						//alert(ImageEditorDocument.Text["NeedUrl"]);
+						return;
+					}					
+					if(!confirm(ImageEditorDocument.Text["ConfirmCreate"]))
+						return;
+					
+					ImageEditorDocument.LoadUrl("",txt_imageurl.get_text());				  
+					instance.dispose();
+					]]>
+					</attach>
+				</button>
+				<button text="@Btn_Cancel" dock="left" css_text="border:solid #999999 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;" width="60" vertical_align="middle">
+					<attach name="click">
+						<![CDATA[
+						urltype.set_visible(0);
+						basic.set_visible(1);
+						]]>
+					</attach>
+				</button>
+			</panel>
+		</panel>
+	</panel>
+	<execute>
+		<![CDATA[
+		plugin.LoadUI = function(ctrl)
+		{
+			ctrl.append_child(jsml.class_create_instance("createdialog"));
+		}
+		]]>
+	</execute>
+</jsml>

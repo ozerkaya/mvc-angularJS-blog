@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../core/jsml.xsd">
+
+
+	<execute>
+		<![CDATA[
+		
+		plugin.Execute=function(element,arg1,arg2)
+		{
+			var newoption={width:560,height:420}
+			newoption.plugin=plugin;
+			var selectedurl;
+			newoption.seturl=function(url)
+			{
+				selectedurl=url;
+			}
+			newoption.callback=function(res)
+			{
+				if(!res||!selectedurl)return;
+				var nodes=editor.InsertHTML("<img src='"+jsml.html_encode(selectedurl)+"' alt=''/>",true);
+			}
+			editor.ShowXmlDialog("{folder}plugins/{plugin}/googlemap.xml?{timems}",newoption);
+		}
+		
+		
+		editor.AttachEvent("CreateControlProvider",function(editor,e)
+		{
+			var provider=e.Arguments[0];
+			var control=provider.Control;
+			var nl=control.GetNameLower();
+			if(nl!="img")return;
+			var src=control.GetAttribute("src");
+			if(!src||src.indexOf("://maps.google.com/maps/api/staticmap?")==-1)
+				return;
+			provider.GetTitle=function()
+			{
+				return "Google map";
+			}
+			provider.ShowPropertiesDialog=function()
+			{
+				var newoption={width:560,height:420}
+				newoption.plugin=plugin;
+				newoption.targetnode=control;
+				newoption.currenturl=control.GetAttribute("src");
+				var selectedurl;
+				newoption.seturl=function(url)
+				{
+					selectedurl=url;
+				}
+				newoption.callback=function(res)
+				{
+					if(!res||!selectedurl)return;
+					control.SetAttribute("src",selectedurl);
+				}
+				editor.ShowXmlDialog("{folder}plugins/{plugin}/googlemap.xml?{timems}",newoption);
+			}
+		});
+		
+		]]>
+	</execute>
+
+
+</jsml>

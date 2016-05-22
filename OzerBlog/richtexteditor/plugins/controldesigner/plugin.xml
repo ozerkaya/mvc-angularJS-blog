@@ -1,0 +1,990 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../core/jsml.xsd">
+
+	<execute>
+		plugin.header_attribute_name="class";
+	</execute>
+
+	<panel jsml-class="controldesigner_proptag" overflow="visible">
+
+		<label dock="fill" margin="0,0,1,0" vertical_align="middle" font_size="12px" text_align="center" back_color="#f5f5f5" text_color="#555555" border_color="#cccccc" border_width="0,0,1,0">
+			<attach name="attach_dom,loadvalue">
+				var name=plugin.selectednode.GetName();
+				name=name.charAt(0).toUpperCase()+name.substring(1);
+				self.set_text(name);
+				self._estyle.borderRadius="0"
+			</attach>
+		</label>
+
+		<panel dock="right" width="1" height="1" overflow="visible" jsml-base="panelbutton" margin="1,2,3,0" padding="2,2,0,2">
+			<image dock="left"  width="1" height="1" src="{folder}plugins/{plugin}/images/url_icon.gif"/>
+			<attach name="click">
+				<![CDATA[
+				//plugin.controldesigner.toggle_toolbar();
+				var newoption={}
+				newoption.callback=function()
+				{
+					plugin.controldesigner.invoke_recursive("loadvalue");
+				}
+				editor.ShowPropertiesDialog(plugin.selectednode,newoption);
+				]]>
+			</attach>
+		</panel>
+	</panel>
+
+	<panel jsml-class="controldesigner_propsize" overflow="visible">
+		<label dock="left" text="@SIZE|:" margin="0,0,1,0" vertical_align="middle" width="38"/>
+		<panel jsml-base="rtepropunitbox" dock="left" propname="style:width" border_width="0,0,1,0" border_color="gray">
+			<attach name="change">
+				plugin.selectednode.RemoveAttribute("width");
+			</attach>
+		</panel>
+		<image dock="left" jsml-base="imagebutton" width="18" height="18" margin="3,5,1,5" tooltip="@RESET" src="{folder}plugins/{plugin}/images/reset.gif">
+			<attach name="click">
+				plugin.selectednode.RemoveAttribute("width");
+				plugin.selectednode.RemoveAttribute("height");
+				plugin.selectednode.SetStyle("width",null);
+				plugin.selectednode.SetStyle("height",null);
+				plugin.controldesigner.invoke_recursive("loadvalue");
+			</attach>
+		</image>
+		<panel jsml-base="rtepropunitbox" dock="left" propname="style:height" border_width="0,0,1,0" border_color="gray">
+			<attach name="change">
+				plugin.selectednode.RemoveAttribute("height");
+			</attach>
+		</panel>
+	</panel>
+
+	<panel jsml-class="controldesigner_propidcls" overflow="visible">
+		<label dock="left" text="ID:" margin="0,0,1,0" vertical_align="middle" width="38"/>
+		<textbox dock="left" border_width="0,0,1,0" border_color="gray" width="60">
+			<attach name="change,keyup">
+				var val=self.get_text().replace(/(^\s+|\s+$)/g,"")
+				plugin.selectednode.SetAttribute("id",val||null);
+			</attach>
+			<attach name="attach_dom">
+				self.set_text(plugin.selectednode.GetAttribute("id")||"")
+			</attach>
+		</textbox>
+		<label dock="left" text="class:" margin="0,0,1,4"  vertical_align="middle" width="28" />
+		<panel jsml-base="rteproptextbox" dock="left" propname="class" border_width="0,0,1,0" border_color="gray" width="60"/>
+	</panel>
+
+	<panel jsml-class="controldesigner_proptitle" overflow="visible">
+		<label dock="left" text="@TOOLTIP|:" margin="0,0,1,0" vertical_align="middle" width="38"/>
+		<panel jsml-base="rteproptextbox" dock="left" propname="title" border_width="0,0,1,0" border_color="gray" width="148"/>
+	</panel>
+
+	<panel jsml-class="controldesigner_propfloat" overflow="visible">
+		<panel jsml-base="rtebtngroup_float" dock="left" />
+	</panel>
+
+	<panel jsml-class="controldesigner_tag_div" margin="0,0,5,0" overflow="visible">
+
+		<panel jsml-base="controldesigner_proptag" dock="top" />
+		<panel jsml-base="controldesigner_propsize" dock="top" margin="2,5,0,5" />
+		<panel jsml-base="controldesigner_propidcls" dock="top" margin="2,5,0,5" />
+		<panel jsml-base="controldesigner_proptitle" dock="top" margin="2,5,0,5" />
+
+	</panel>
+
+	<panel jsml-class="controldesigner_tag_img" margin="0,0,5,0" overflow="visible">
+
+		<panel jsml-base="controldesigner_proptag" dock="top" />
+		<panel jsml-base="controldesigner_propsize" dock="top" margin="2,5,0,5" />
+		<panel jsml-base="controldesigner_propidcls" dock="top" margin="2,5,0,5" />
+		<panel jsml-base="controldesigner_proptitle" dock="top" margin="2,5,0,5" />
+		<panel dock="top" height="30" margin="3,0,3,0">
+			<panel jsml-base="tbgroup_{skin}_{color}" dock="right" margin="4">
+				<image jsml-base="image_{skin}_{color}" command="insertimagemap" tooltip="@INSERTIMAGEMAP" imagename="imagemap"/>
+				<image jsml-base="image_{skin}_{color}" command="imageeditor" tooltip="@IMAGEEDITOR" imagename="imageeditor" />
+			</panel>
+			<panel jsml-base="controldesigner_propfloat" dock="fill" margin="2,5,5,5" />
+		</panel>
+
+	</panel>
+
+	<panel jsml-class="controldesigner_tag_fieldset" margin="0,0,5,0" overflow="visible">
+
+		<panel jsml-base="controldesigner_proptag" dock="top" />
+		<panel jsml-base="controldesigner_propsize" dock="top" margin="2,5,0,5" />
+		<panel jsml-base="controldesigner_propidcls" dock="top" margin="2,5,0,5" />
+		<panel jsml-base="controldesigner_proptitle" dock="top" margin="2,5,0,5" />
+		<panel jsml-base="controldesigner_propfloat" dock="top" margin="2,5,0,5" />
+
+	</panel>
+
+	<panel jsml-class="controldesigner_tag_table" margin="0,0,5,0" overflow="visible">
+
+		<panel jsml-base="controldesigner_proptag" dock="top" />
+		<panel jsml-base="controldesigner_propsize" dock="top" margin="2,5,0,5" />
+		<panel jsml-base="controldesigner_propidcls" dock="top" margin="2,5,0,5" />
+		<panel jsml-base="controldesigner_proptitle" dock="top" margin="2,5,0,5" />
+		<panel jsml-base="controldesigner_propfloat" dock="top" margin="2,5,0,5" />
+
+	</panel>
+
+	<panel jsml-class="controldesigner_tag_td" margin="0,0,5,0" overflow="visible">
+
+		<panel jsml-base="controldesigner_proptag" dock="top" />
+		<panel jsml-base="controldesigner_propsize" dock="top" margin="2,5,0,5" />
+		<panel jsml-base="controldesigner_propidcls" dock="top" margin="2,5,0,5" />
+		<panel jsml-base="controldesigner_proptitle" dock="top" margin="2,5,0,5" />
+
+		<panel dock="top" overflow="visible" horizontal_align="center" margin="3,0,3,0"  padding="3">
+			<panel jsml-base="tbgroup_{skin}_{color}" dock="none">
+
+				<image jsml-base="image_{skin}_{color}" command="mergecells" tooltip="@MERGECELLS" imagename="mrgcell"/>
+				<image jsml-base="image_{skin}_{color}" command="splitcells" tooltip="@SPLITCELLS" imagename="spltcell" />
+				<image jsml-base="image_{skin}_{color}" command="insertrowtop" tooltip="@INSERTROWTOP" imagename="insrow_t"/>
+				<image jsml-base="image_{skin}_{color}" command="insertrowbottom" tooltip="@INSERTROWBOTTOM" imagename="insrow_b" />
+				<image jsml-base="image_{skin}_{color}" command="insertcolumnleft" tooltip="@INSERTCOLUMNLEFT" imagename="inscol_l"/>
+				<image jsml-base="image_{skin}_{color}" command="insertcolumnright" tooltip="@INSERTCOLUMNRIGHT" imagename="inscol_r"/>
+				<image jsml-base="image_{skin}_{color}" command="deleterow" tooltip="@DELETEROW" imagename="delrow"/>
+				<image jsml-base="image_{skin}_{color}" command="deletecolumn" tooltip="@DELETECOLUMN" imagename="delcol"/>
+
+			</panel>
+		</panel>
+
+	</panel>
+
+	<panel jsml-class="controldesigner">
+
+		<panel jsml-local="linel" width="1" height="1" back_color="orange" />
+		<panel jsml-local="linet" width="1" height="1" back_color="orange" />
+		<panel jsml-local="liner" width="1" height="1" back_color="orange">
+			<initialize>
+				self._estyle.boxShadow="3px 3px 12px #999999";
+			</initialize>
+		</panel>
+		<panel jsml-local="lineb" width="1" height="1" back_color="orange">
+			<initialize>
+				self._estyle.boxShadow="3px 3px 12px #999999";
+			</initialize>
+		</panel>
+
+		<panel jsml-local="mergelinel" width="1" height="1" back_color="red" />
+		<panel jsml-local="mergelinet" width="1" height="1" back_color="red" />
+		<panel jsml-local="mergeliner" width="1" height="1" back_color="red">
+			<initialize>
+				self._estyle.boxShadow="3px 3px 12px #999999";
+			</initialize>
+		</panel>
+		<panel jsml-local="mergelineb" width="1" height="1" back_color="red">
+			<initialize>
+				self._estyle.boxShadow="3px 3px 12px #999999";
+			</initialize>
+		</panel>
+
+		<panel jsml-local="controlheader" width="20" height="16" padding="0,5,0,6" back_color="#eeeeee" border_color="#3169C6" border_width="1,1,1,1" overflow_x="visible" unselectable="true">
+			<label jsml-local="nodenamelabel" dock="fill" vertical_align="middle" width="10" overflow_x="visible" cursor="pointer" />
+			<initialize>
+				self._estyle.borderTopLeftRadius="4px";
+				self._estyle.borderTopRightRadius="4px";
+			</initialize>
+			<attach name="click">
+				editor.Focus();
+				editor.SelectControl(plugin.headerctrl);
+			</attach>
+			<attach name="mousedown" arguments="je,de">
+				<![CDATA[
+				var now=new Date().getTime();
+				if(now-(self._lastmousedowntime||0)<300)
+				{
+					editor.ShowPropertiesDialog(plugin.headerctrl);
+				}
+				else if(plugin.headerctrl.GetStyle("position")!="absolute")
+				{
+					editor.StartDragControl(de,plugin.headerctrl);
+				}
+				self._lastmousedowntime=now;
+				]]>
+			</attach>
+			<attach name="mouseup" arguments="je,de">
+				editor.StopDragControl(de);
+			</attach>
+			<attach name="contextmenu" arguments="je,de">
+				de.cancel_default();
+				var option={floatboxClass:"floatmenu",control:self,floatMode:'b-r',stopLoadingImage:true};
+				option.node=plugin.headerctrl;
+				editor.ShowXmlFloatBox(editor.BuildDialogUrl("menu_tagitem.xml"),option);
+			</attach>
+			<attach name="mousehover">
+				<![CDATA[
+				var code=plugin.headerctrl.GetAttributeCode();
+				if(code)code=" "+code;
+				code="<"+plugin.headerctrl.GetName()+code+">";
+				self.set_tooltip(code);
+				]]>
+			</attach>
+			<attach name="mousedown" arguments="je,devent">
+				<![CDATA[
+				if(plugin.headerctrl.GetStyle("position")!="absolute")
+					return;
+
+				var _x=devent.clientX;
+				var _y=devent.clientY;
+				
+				var hct=parseInt(plugin.headerctrl.GetStyle("top"))||0;
+				var hcl=parseInt(plugin.headerctrl.GetStyle("left"))||0;
+				
+				function update_position(moveevent)
+				{
+					var x=moveevent.clientX;
+					var y=moveevent.clientY;
+					
+					var newt=hct+y-_y;
+					var newl=hcl+x-_x;
+					plugin.headerctrl.SetStyle("top",newt+"px");
+					plugin.headerctrl.SetStyle("left",newl+"px");
+				}
+				
+				jsml.startcapture(update_position,null,"move");
+
+				devent.cancel_default();
+
+				]]>
+			</attach>
+			<attach name="resetui">
+				<![CDATA[
+				if(plugin.headerctrl.GetStyle("position")=="absolute")
+				{
+					self.set_cursor("move");
+					nodenamelabel.set_cursor("move");
+				}
+				else
+				{
+					self.set_cursor("pointer");
+					nodenamelabel.set_cursor("pointer");
+				}
+				]]>
+			</attach>
+		</panel>
+
+		<panel jsml-local="resizeoverlay" width="20" height="20" overflow="none" border_width="1" border_color="gray" vertical_align="middle" horizontal_align="center">
+			<panel dock="fill" back_color="blue" opacity="20" />
+			<label jsml-local="resizeinfo" />
+			<attach name="resize">
+				<![CDATA[
+				var nw=self.get_current_width();
+				var nh=self.get_current_height();
+				var zoom=parseInt(editor.GetWindow().document.body.style.zoom)||100;
+				if(zoom!=100)
+				{
+					nw=Math.floor(nw*100/zoom)
+					nh=Math.floor(nh*100/zoom)
+				}
+				resizeinfo.set_text(nw+" x "+nh)
+				]]>
+			</attach>
+		</panel>
+
+		<image jsml-local="tdresize" width="16" height="16" overflow="none" opacity="50" cursor="nw-resize" src="{folder}plugins/{plugin}/images/corner.png">
+			<attach name="mousedown" arguments="je,devent">
+				instance.invoke_event("resize_mousedown",devent,1,1);
+			</attach>
+		</image>
+		<panel jsml-local="tdresizer" width="4" height="4" cursor="w-resize" back_color="white" opacity="11">
+			<attach name="mousedown" arguments="je,devent">
+				instance.invoke_event("resize_mousedown",devent,1,0);
+			</attach>
+		</panel>
+		<panel jsml-local="tdresizeb" width="4" height="4" cursor="n-resize" back_color="white" opacity="11">
+			<attach name="mousedown" arguments="je,devent">
+				instance.invoke_event("resize_mousedown",devent,0,1);
+			</attach>
+		</panel>
+
+		<image jsml-local="nwresize" width="7" height="7" overflow="none" cursor="nw-resize" src="{folder}plugins/{plugin}/images/dot_ring.6.png">
+			<attach name="mousedown" arguments="je,devent">
+				instance.invoke_event("resize_mousedown",devent,1,1);
+			</attach>
+			<attach name="mousehover">
+				var w=plugin.selectednode.GetStyle("width")
+				var h=plugin.selectednode.GetStyle("height")
+				var s=(w||"*")+" - "+(h||"*")
+				self.set_tooltip(s)
+			</attach>
+		</image>
+		<image jsml-local="wresize" width="7" height="7" overflow="none" cursor="w-resize" src="{folder}plugins/{plugin}/images/dot_ring.6.png">
+			<attach name="mousedown" arguments="je,devent">
+				instance.invoke_event("resize_mousedown",devent,1,0);
+			</attach>
+			<attach name="mousehover">
+				var w=plugin.selectednode.GetStyle("width")
+				self.set_tooltip(editor.GetLangText("WIDTH")+":"+(w||"*"))
+			</attach>
+		</image>
+		<image jsml-local="nresize" width="7" height="7" overflow="none" cursor="n-resize" src="{folder}plugins/{plugin}/images/dot_ring.6.png">
+			<attach name="mousedown" arguments="je,devent">
+				instance.invoke_event("resize_mousedown",devent,0,1);
+			</attach>
+			<attach name="mousehover">
+				var h=plugin.selectednode.GetStyle("height")
+				self.set_tooltip(editor.GetLangText("HEIGHT")+":"+(h||"*"))
+			</attach>
+		</image>
+
+
+
+		<panel jsml-local="toolbar" width="20" height="20" overflow="visible" border_width="1" border_color="gray" back_color="#ffffff">
+			<initialize>
+				self._estyle.boxShadow="3px 3px 12px #999999";
+			</initialize>
+		</panel>
+
+		<panel jsml-local="objarrow" width="11" height="11" cursor="pointer" unselectable='true'>
+			<image dock="fill" jsml-local="objarrowr" src="{folder}plugins/{plugin}/images/arrow-r.png"/>
+			<image dock="fill" visible="false" jsml-local="objarrowl" src="{folder}plugins/{plugin}/images/arrow-l.png"/>
+			<attach name="resetui">
+				objarrowr.set_visible(toolbar.ishided);
+				objarrowl.set_visible(!toolbar.ishided);
+			</attach>
+			<attach name="click">
+				instance.toggle_toolbar();
+			</attach>
+		</panel>
+
+
+		<method name="jsml_append" arguments="panel">
+			panel._dommode='absolute';
+			panel.set_parent(document.body);
+			self.hidepanel(panel,true);
+			if(!self.panels)self.panels=[];
+			self.panels.push(panel);
+		</method>
+		<method name="invoke_recursive" overrideas="panel_invoke_recursive">
+			<![CDATA[
+			self.panel_invoke_recursive();
+			for(var i=0;i<self.panels.length;i++)
+				self.panels[i].invoke_recursive.apply(self.panels[i],arguments);
+			]]>
+		</method>
+		<attach name="resize_mousedown" arguments="je,devent,fr,fb">
+			<![CDATA[
+			devent.cancel();
+			self.showpanel(resizeoverlay,self.calc_ctrl_pos(plugin.selectednode),null,"s");
+			//plugin.selectednode.SetRuntimeAttribute("style","border:solid 1px red;background-color:yellow;","resizing");
+			var w=resizeoverlay.get_current_width();
+			var h=resizeoverlay.get_current_height();
+			resizeoverlay.start_resize(devent,0,fr,fb,0,20,function()
+			{
+				var nw=resizeoverlay.get_current_width();
+				var nh=resizeoverlay.get_current_height();
+				
+				var zoom=parseInt(editor.GetWindow().document.body.style.zoom)||100;
+				if(zoom!=100)
+				{
+					nw=Math.floor(nw*100/zoom)
+					nh=Math.floor(nh*100/zoom)
+				}
+				
+				if(nw!=w)
+				{
+					plugin.selectednode.RemoveAttribute("width");
+					plugin.selectednode.SetStyle("width",nw+"px");
+				}
+				if(nh!=h)
+				{
+					plugin.selectednode.RemoveAttribute("height");
+					plugin.selectednode.SetStyle("height",nh+"px");
+				}
+
+				self.hidepanel(resizeoverlay);
+				//plugin.selectednode.SetRuntimeAttribute("style",null,"resizing");
+				self.invoke_recursive("loadvalue");
+				self.updatepos();
+			})
+			]]>
+		</attach>
+
+		<method name="toggle_toolbar">
+			<![CDATA[
+			if(objarrowr.get_visible())
+			{
+				self.pageinst.set_parent(toolbar);
+				self.showpanel(toolbar,self.lastpos,"r",null,objarrow.get_current_width(),1);
+				objarrowl.set_visible(true);
+				objarrowr.set_visible(false);
+			}
+			else
+			{
+				self.hidepanel(toolbar);
+				objarrowl.set_visible(false);
+				objarrowr.set_visible(true);
+			}
+			]]>
+		</method>
+
+		<method name="hidepanel" arguments="panel,hidenow">
+			<![CDATA[
+			if(panel.ishided)return;
+			panel.ishided=true;
+			function hideit()
+			{
+				panel.set_visibility("hidden");
+				panel._estyle.left="-1000px";
+				panel._estyle.top="-1000px";
+			}
+			if(hidenow)
+			{
+				hideit();
+				return;
+			}
+			self.setDelegateTimeout(function()
+			{
+				if(!panel.ishided)return;
+				hideit();
+			},5);
+			]]>
+		</method>
+		<method name="showpanel" arguments="panel,pos,mode,edge,xoffset,yoffset">
+			<![CDATA[
+
+			panel.ishided=false;
+			panel.set_visibility("visible");
+			
+			var pew=pos.width;
+			var peh=pos.height;
+			
+			if(edge=="w"||edge=="s")panel.set_width(pew);
+			if(edge=="h"||edge=="s")panel.set_height(peh);
+			
+			var w=panel.get_current_width();
+			var h=panel.get_current_height();
+
+			panel._estyle.zIndex=editor._config.ctrltool_zindex;
+		
+			pos={left:pos.left,top:pos.top}
+			
+			var nomovey,nomovex;
+
+			var fmpair=mode?mode.split('-'):[];
+
+			switch(fmpair[0])
+			{
+				case "t":
+					nomovey=true;
+					pos.top+=-h;
+					break;
+				case "b":
+					nomovey=true;
+					pos.top+=peh;
+					break;
+				case "l":
+					nomovex=true;
+					pos.left+=-w;
+					break;
+				case "r":
+					nomovex=true;
+					pos.left+=pew;
+					break;
+			}
+			
+			switch(fmpair[1])
+			{
+				case "l":
+					if(pew<w)pos.left+=pew-w;
+					break;
+				case "r":
+					if(pew>w)pos.left+=pew-w;
+					break;
+				case "t":
+					if(peh<h)pos.top+=peh-h;
+					break;
+				case "b":
+					if(peh>h)pos.top+=peh-h;
+					break;
+				case "c":
+				case "m":
+					if(fmpair[0]=="t"||fmpair[0]=="b")
+					{
+						pos.left+=Math.floor((pew-w)/2)
+					}
+					else
+					{
+						pos.top+=Math.floor((peh-h)/2)
+					}
+					break;
+			}
+			
+
+			if(xoffset)pos.left+=xoffset;
+			if(yoffset)pos.top+=yoffset;
+
+			panel._estyle.left=pos.left+"px";
+			panel._estyle.top=pos.top+"px";
+			
+			]]>
+		</method>
+
+		<method name="calc_ctrl_pos" arguments="ctrl,autoadjust">
+			<![CDATA[
+			var viewnode=ctrl.GetViewNode();
+
+			var fp=jsml.get_scrollposition(editor._config.skin_frame);			
+			var pos=jsml.get_clientposition(viewnode,editor.GetWindow());
+
+			pos.width=viewnode.offsetWidth;
+			pos.height=viewnode.offsetHeight;
+			
+			var zoom=parseInt(editor.GetWindow().document.body.style.zoom)||100;
+			if(zoom!=100)
+			{
+				pos.top=pos.top*zoom/100;
+				pos.left=pos.left*zoom/100;
+				pos.width=pos.width*zoom/100;
+				pos.height=pos.height*zoom/100;
+			}
+			
+			if(autoadjust)
+			{
+				fp.width=editor._config.skin_frame.offsetWidth-1;
+				fp.height=editor._config.skin_frame.offsetHeight-1;
+			
+				pos.left-=1;
+				pos.top-=1;
+				pos.width+=2;
+				pos.height+=2;
+				
+				if(pos.top<0)
+				{
+					pos.height-=-pos.top;
+					pos.top=0;
+				}
+				if(pos.left<0)
+				{
+					pos.left=0;
+					pos.width-=-pos.left;
+				}
+				
+				if(pos.left+pos.width>fp.width)
+				{
+					var sub=pos.left+pos.width-fp.width;
+					pos.width-=sub;
+				}
+				if(pos.top+pos.height>fp.height)
+				{
+					var sub=pos.top+pos.height-fp.height;
+					pos.height-=sub;
+				}
+				
+			}
+			
+			if(pos.width<0)pos.width=0;
+			if(pos.height<0)pos.height=0;
+			
+			pos.left+=fp.left;
+			pos.top+=fp.top;
+			return pos;
+			]]>
+
+		</method>
+		<method name="startmonitor">
+			<![CDATA[
+			
+			
+			plugin.selectedprovider=editor.CreateControlProvider(plugin.selectednode);
+			
+			plugin.headerctrl=plugin.selectednode;
+			
+			if(plugin.selectednode.IsTableCell)
+			{
+				for(var table=plugin.selectednode;table;table=table.GetParent())
+				{
+					if(table.GetNameLower()=="table")
+					{
+						plugin.headerctrl=table;
+						break;
+					}
+				}
+			}
+
+
+			if(plugin.headerctrl==plugin.selectednode)
+				plugin.headerprovider=plugin.selectedprovider;
+			else
+				plugin.headerprovider=editor.CreateControlProvider(plugin.headerctrl);
+
+
+			var nodenametext=plugin.headerprovider.GetTitle();
+			if(plugin.header_attribute_name)
+			{
+				var hat=plugin.headerctrl.GetAttribute(plugin.header_attribute_name);
+				if(hat)nodenametext+="."+hat;
+			}
+			nodenamelabel.set_text(nodenametext);
+			
+			self.docversion=null;
+			self.docstop=null;
+			self.lastupdatetime=null;
+			self.lastpos=null;
+			self.updatepos();
+			
+			
+			
+			]]>
+		</method>
+
+		<method name="updatepos">
+			<![CDATA[
+			
+			clearTimeout(self.updateposid);
+			self.updateposid=self.setDelegateTimeout(self.delegate_updatepos,10);
+			
+			for(var skindiv=editor._config.skin_div;skindiv!=null;skindiv=skindiv.parentNode)
+			{
+				if(skindiv.style&&skindiv.style.display=='none')
+				{
+					self.stopmonitor();
+					plugin.selectednode=null;
+					return;
+				}
+			}
+			
+			var now=new Date().getTime();
+			var ver=editor.GetContentVersion();
+			var doc=editor.GetWindow().document;
+			var sct=Math.max(doc.body.scrollTop,doc.documentElement.scrollTop);
+			if(self.docversion==ver&&self.docstop==sct)
+			{
+				if(now-(self.lastupdatetime||0)<200)
+					return;
+			}
+
+			self.docversion=ver;
+			self.docstop=sct
+			self.lastupdatetime=now;
+						
+			var pos;
+			
+			try
+			{
+				pos=self.calc_ctrl_pos(plugin.selectednode,true);
+			}
+			catch(x)
+			{
+				return;
+			}
+			
+			if(self.lastpos&&self.lastpos.top==pos.top&&self.lastpos.left==pos.left
+				&&self.lastpos.width==pos.width&&self.lastpos.height==pos.height)
+			{
+				return;
+			}
+			
+			self.lastpos=pos;
+			
+			if(pos.width<1||pos.height<1)
+			{
+				for(var i=0;i<self.panels.length;i++)
+					self.hidepanel(self.panels[i]);
+				return;
+			}
+			
+			if(self.mergepn&&self.mergepn.IsAttached()&&self.mergern&&self.mergern.IsAttached())
+			{
+				var p1=self.calc_ctrl_pos(self.mergepn,true);
+				var p2=self.calc_ctrl_pos(self.mergern,true);
+				var p3={left:p1.left,top:p1.top,width:p2.width+p2.left-p1.left,height:p2.height+p2.top-p1.top}
+				self.showpanel(mergelinel,p3,"l-m" ,"h")
+				self.showpanel(mergeliner,p3,"r-m" ,"h")
+				self.showpanel(mergelinet,p3,"t-c" ,"w")
+				self.showpanel(mergelineb,p3,"b-c" ,"w")
+			}
+			
+			var ctrlpos=pos;
+			if(plugin.headerctrl!=plugin.selectednode)
+				ctrlpos=self.calc_ctrl_pos(plugin.headerctrl,true);
+			
+			var showheader=true;
+			if(plugin.headerctrl.GetNameLower()=="a"&&plugin.headerctrl.GetChildCount()==0)
+				showheader=false;
+			if(showheader)
+			{
+				self.showpanel(controlheader,ctrlpos,'t',null,2,jsml.msie?-5:0);
+			}
+			controlheader.invoke_event("resetui");
+			
+			var clsname="controldesigner_tag_"+plugin.selectednode.GetNameLower();
+			if(jsml.class_exists(clsname))
+			{
+				var keyname="pageinst_"+plugin.selectednode.GetNameLower();
+				self.pageinst=self[keyname];
+				if(!self.pageinst)
+				{
+					self.pageinst=jsml.class_create_instance(clsname);
+					self.pageinst.invoke_recursive("editor_ready",editor);
+					self[keyname]=self.pageinst;
+				}
+				self.showpanel(objarrow,pos,"r-t",null,0,1)
+			}
+
+			if(plugin.selectednode.IsTableCell)
+			{
+				if(editor._config.enableobjectresizing)
+				{
+					//self.showpanel(tdresizeb,pos,"b-c","w")
+					//self.showpanel(tdresizer,pos,"r-m","h")
+					self.showpanel(tdresize,pos,"b-r",null,0,-16)
+				}
+			}
+			else// if(!jsml.msie||plugin.selectednode.GetNameLower()=="table")
+			{
+				self.showpanel(linel,pos,"l-m" ,"h")
+				self.showpanel(liner,pos,"r-m" ,"h")
+				self.showpanel(linet,pos,"t-c" ,"w")
+				self.showpanel(lineb,pos,"b-c" ,"w")
+				
+				var allowresize=editor._config.enableobjectresizing;
+				switch(plugin.selectednode.GetNameLower())
+				{
+					case "a":
+						allowresize=false;
+						break;
+				}
+				
+				if(allowresize&&(!jsml.msie))
+				{
+					self.showpanel(wresize,pos,"r-m",null,-3,0)
+					self.showpanel(nresize,pos,"b-c",null,0,-3)
+					self.showpanel(nwresize,pos,"b-r",null,4,-3)
+				}
+				
+			}
+			
+			if(!toolbar.ishided)
+			{
+				self.showpanel(toolbar,pos,"r",null,objarrow.get_current_width(),1);
+			}
+			objarrow.invoke_event("resetui");
+			
+			]]>
+		</method>
+		<method name="stopmonitor">
+			<![CDATA[
+			clearTimeout(self.updateposid);
+			for(var i=0;i<self.panels.length;i++)
+				self.hidepanel(self.panels[i]);
+			self.lastpos=null;
+			if(self.pageinst)self.pageinst.set_parent(null);
+			if(jsml.msie)clearInterval(self._ieresizetimerid);
+			]]>
+		</method>
+
+
+		<method name="updatecontrols">
+			<![CDATA[
+			if(!editor.IsTabEdit())
+			{
+				if(plugin.selectednode)
+				{
+					self.stopmonitor();
+					plugin.selectednode=null;
+				}
+				return;
+			}
+
+			var mergepn=null;
+			var mergern=null;
+			var node=editor.GetDragControl()||editor.GetPointNode();
+			var control;
+			var seltype=editor.GetSelectionType();
+			if(seltype=="Control"||(seltype=="Point"&&node.IsControl()))
+			{
+				control=node;
+			}
+			else if(seltype=="Range")
+			{
+				var endnode=editor.GetRangeNode();
+				
+				if(editor.CanExecCommand("mergecells"))
+				{
+					mergepn=node;
+					mergern=endnode;
+					for(mergepn=node;mergepn;mergepn=mergepn.GetParent())
+						if(mergepn.IsTableCell)
+							break;
+					for(mergern=endnode;mergern;mergern=mergern.GetParent())
+						if(mergern.IsTableCell)
+							break;
+				}
+				
+				var root=node;
+				while(root&&!root.Contains(endnode))
+					root=root.GetParent();
+				node=root;
+			}
+			for(;node&&!control;node=node.GetParent())
+			{
+				if(node.IsControl()||node.IsTableCell||node.GetStyle("position")=="absolute")
+					control=node;
+			}
+			
+			if(plugin.selectednode==control&&self.mergepn==mergepn&&self.mergern==mergern)
+			{
+				return;
+			}
+			
+			jsml.suppend_layout();
+			
+			if(plugin.selectednode)
+			{
+				self.stopmonitor();
+				plugin.selectednode=null;
+			}
+			
+			self.mergepn=mergepn;
+			self.mergern=mergern;
+			
+			if(control)
+			{
+				plugin.selectednode=control;
+				toolbar._rtenode=plugin.selectednode;
+				self.startmonitor();
+			}
+			
+			jsml.resume_layout();
+			]]>
+		</method>
+		<method name="HookControlSelectionForIE">
+			<![CDATA[
+			
+			if(!jsml.msie)return;
+			
+			clearInterval(self._ieresizetimerid);
+			
+			if(editor.GetSelectionType()!="Control")
+				return;
+		
+			var node=plugin.selectednode;
+			
+			if(!node)
+				return;
+			
+			var vn=node.GetViewNode();
+			var sl=vn.style.left;
+			var st=vn.style.top;
+			var sw=vn.style.width;
+			var sh=vn.style.height;
+			var surl=vn.getAttribute("src");
+			var framever=editor.GetFrameVersion();
+			self._ieresizetimerid=setInterval(function()
+			{
+				if(editor.GetFrameVersion()!=framever||plugin.selectednode!=node)
+				{
+					clearInterval(self._ieresizetimerid);
+					return;
+				}
+				
+				if(self.iedownelement!=vn)
+					return;
+				
+				var url=vn.getAttribute("src");
+				if(surl && url && surl!=url)
+				{
+					node.SetStyle("width","");
+					node.SetStyle("height","");
+					return;
+				}
+					
+				var l=vn.style.left;
+				var t=vn.style.top;
+				var w=vn.style.width;
+				var h=vn.style.height;
+
+				if(sl==l&&st==t&&sw==w&&sh==h)return;
+				
+				sw=w;
+				sh=h;
+				sl=l;
+				st=t;
+				if(l)node.SetStyle("left",l);
+				if(t)node.SetStyle("top",t);
+				if(!self.iedowncenter)
+				{
+					self.ieresizenode=node;
+					self.ieresizewidth=w;
+					node.RemoveAttribute("width");
+				}
+				if(!self.iedownmiddle)
+				{
+					self.ieresizenode=node;
+					self.ieresizeheight=h;
+					node.RemoveAttribute("height");
+				}
+			},100);
+			]]>
+		</method>
+		<initialize>
+			<![CDATA[
+			
+			self.delegate_updatepos=self.delegate(self.updatepos);
+			
+			editor.AttachEvent("SelectionChanged",function(editor,e)
+			{
+				self.updatecontrols();
+				self.HookControlSelectionForIE();
+			});
+			editor.AttachEvent("TabModeChanged",function(editor,e)
+			{
+				self.updatecontrols();
+				self.HookControlSelectionForIE();
+			});
+			
+			function onmousedown()
+			{
+				var event=editor.GetWindow().event;
+				self.iedownelement=event.srcElement;
+				self.iedownoffsetx=event.offsetX
+				self.iedownoffsety=event.offsetY
+				self.iedowncenter=Math.abs(self.iedownelement.offsetWidth/2-event.offsetX)<10
+				self.iedownmiddle=Math.abs(self.iedownelement.offsetHeight/2-event.offsetY)<10
+				
+			}
+			function onmouseup()
+			{
+				self.iedownelement=null;
+				if(self.ieresizenode)
+				{
+					if(self.ieresizewidth)self.ieresizenode.SetStyle("width",self.ieresizewidth);
+					if(self.ieresizeheight)self.ieresizenode.SetStyle("height",self.ieresizeheight);
+				}
+				self.ieresizenode=null;
+			}
+			
+			function InitEvent()
+			{
+				editor.GetWindow().document.attachEvent("onmousedown",onmousedown);
+				editor.GetWindow().document.attachEvent("onmouseup",onmouseup);
+			}
+			function UninitEvent()
+			{
+				editor.GetWindow().document.detachEvent("onmousedown",onmousedown);
+				editor.GetWindow().document.detachEvent("onmouseup",onmouseup);
+			}
+			if(jsml.msie)
+			{
+				editor.AttachEvent("InitEvent",InitEvent);
+				editor.AttachEvent("UninitEvent",UninitEvent);
+				InitEvent();
+			}
+			
+			]]>
+		</initialize>
+	</panel>
+
+	<execute>
+		<![CDATA[
+		plugin.Execute=function(element,arg1,arg2)
+		{
+			
+		}
+		plugin.controldesigner=jsml.class_create_instance("controldesigner");
+		plugin.controldesigner.invoke_recursive("editor_ready",editor);
+		]]>
+	</execute>
+
+
+</jsml>

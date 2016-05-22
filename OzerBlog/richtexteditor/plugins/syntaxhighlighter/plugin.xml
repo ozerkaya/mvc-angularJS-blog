@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../core/jsml.xsd">
+
+	
+
+	<execute>
+		<![CDATA[
+		plugin.Execute=function(element,arg1,arg2)
+		{
+			var option={width:436,height:380}
+			option.plugin=plugin;
+			editor.ShowXmlDialog("{folder}server/syntaxhighlighter.xml?{timems}",option);
+		}
+		
+		function InsertToDoc(doc)
+		{
+			if(doc["syntaxhighlightercss"])return;
+			var link=doc.createElement("link");
+			link.setAttribute("rel","stylesheet");
+			link.setAttribute("href",editor._config.folder+"plugins/{plugin}/syntaxhighlighter.css");
+			doc.getElementsByTagName("head")[0].appendChild(link);
+			doc["syntaxhighlightercss"]=link;
+		}
+		
+		function InitPreview(editor,e)
+		{
+			InsertToDoc(e.Arguments[0]);
+		}
+		
+		function InsertCss()
+		{
+			InsertToDoc(editor.GetWindow().document);
+		}
+		
+		InsertCss();
+		
+		editor.AttachEvent("InitPreview",InitPreview);
+		editor.AttachEvent("InitEvent",InsertCss);
+		
+		]]>
+	</execute>
+
+
+</jsml>

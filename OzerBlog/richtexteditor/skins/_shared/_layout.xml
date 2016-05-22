@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../core/jsml.xsd">
+
+	<panel jsml-class="_shared_layout_{skin}_{color}_{toolbar}" dock="fill" overflow="visible" jsml-append="false">
+
+		<jsml-ref name="rteborderstyle"/>
+
+		<initialize>
+			self.toggle_css_class("tbtoolbar_{skin}");
+			self.toggle_css_class("tbtoolbar_{color}");
+			self.toggle_css_class("tbtoolbar_{skin}_{color}");
+		</initialize>
+
+		<jsml-ref name="toolbar_{toolbar}_{skin}_{color}"/>
+
+	</panel>
+
+	<jsml-def name="_shared_layout_{skin}_{color}">
+
+		<initialize>
+			self.toggle_css_class("rteskin_{skin}");
+			self.toggle_css_class("rteskin_{color}");
+			self.toggle_css_class("rteskin_{skin}_{color}");
+		</initialize>
+
+		<panel dock="bottom" height="26" padding="1,1,1,3" border_width="1,0,0,0" css_class="rtelayoutbottom" visible="false">
+			<panel jsml-base="tbgroup_{skin}_{color}" dock="left" margin="0,2,0,2" visible="false">
+				<image jsml-base="image_{skin}_{color}" command="TabEdit" imagename="design" overflow="visible" tooltip="@TABEDIT">
+					<attach name="editor_ready" arguments="je,editor">
+						if(!editor._config.showeditmode)self.set_visible(false);
+					</attach>
+				</image>
+				<image jsml-base="image_{skin}_{color}" command="TabCode" imagename="htmlview" overflow="visible" tooltip="@TABCODE">
+					<attach name="editor_ready" arguments="je,editor">
+						if(!editor._config.showcodemode)self.set_visible(false);
+					</attach>
+				</image>
+				<image jsml-base="image_{skin}_{color}" command="TabView" imagename="preview" overflow="visible" tooltip="@TABVIEW">
+					<attach name="editor_ready" arguments="je,editor">
+						if(!editor._config.showpreviewmode)self.set_visible(false);
+					</attach>
+				</image>
+				<attach name="editor_ready" arguments="je,editor">
+					if(editor._config.showeditmode)self.set_visible(true);
+					if(editor._config.showcodemode)self.set_visible(true);
+					if(editor._config.showpreviewmode)self.set_visible(true);
+				</attach>
+			</panel>
+			<panel dock="right" jsml-base="rtepluginholder" plugin="resizecorner" width="10" overflow="visible" />
+			<panel dock="right" jsml-base="rtepluginholder" plugin="zoomview" tooltip="@ZOOM" width="10" overflow="visible" />
+			<panel dock="right" jsml-base="rtepluginholder" plugin="statistics" width="10" overflow="visible" />
+			<panel dock="fill" jsml-base="rtepluginholder" plugin="taglist" />
+
+			<method name="find_config">
+				<![CDATA[
+					for(var ctrl=self;ctrl!=null;ctrl=ctrl.get_jsml_parent())
+						if(ctrl._rteconfig)return ctrl._rteconfig;
+					]]>
+			</method>
+			<initialize>
+				<![CDATA[
+					self.setDelegateTimeout(function()
+					{
+						var config=self.find_config();
+						if(config&&!config.showbottombar)
+							return;
+						self.set_visible(true);
+					},30);
+					]]>
+			</initialize>
+		</panel>
+
+		<panel jsml-member="tabeditpanel" dock="fill">
+
+			<panel dock="top" overflow_y="visible" padding="1" border_width="0,0,1,0" border_color="#7E9DB9" css_class="rtelayouttop"  visible="false">
+				<method name="find_config">
+					<![CDATA[
+					for(var ctrl=self;ctrl!=null;ctrl=ctrl.get_jsml_parent())
+						if(ctrl._rteconfig)return ctrl._rteconfig;
+					]]>
+				</method>
+				<initialize>
+					<![CDATA[
+					self.setDelegateTimeout(function()
+					{
+						var config=self.find_config();
+						if(config&&!config.showtoolbar)
+							return;
+						self.set_visible(true);
+						self.setDelegateTimeout(function()
+						{
+							var ctrl=jsml.class_create_instance("_shared_layout_{skin}_{color}_{toolbar}");
+							self.append_child(ctrl);
+							if(self._rteinstance)ctrl.invoke_recursive("editor_ready",self._rteinstance);
+						},222);
+					},10);
+					]]>
+				</initialize>
+				<attach name="editor_ready" arguments="je,editor">
+					<![CDATA[
+					self._rteinstance=editor;
+					editor.AttachEvent("ReloadToolbar",function()
+					{
+						self.dispose_children();
+						var ctrl=jsml.class_create_instance("_shared_layout_{skin}_{color}_{toolbar}");
+						self.append_child(ctrl);
+						ctrl.invoke_recursive("editor_ready",editor);
+					});
+					]]>
+				</attach>
+			</panel>
+
+			<panel jsml-local="rulerpanel1" visible="false" dock="top" height="15" back_color="white">
+				<panel dock="left" width="15" height="15" border_color="#9EAAB6" border_width="0,1,1,0"></panel>
+				<panel dock="fill" background="white url({folder}images/ruler-horizontal.png) repeat-x">
+				</panel>
+			</panel>
+			<panel jsml-local="rulerpanel2" visible="false" dock="left" width="15" background="white url({folder}images/ruler-vertical.png) repeat-y" back_color="white"></panel>
+
+			<htmlcontrol jsml-member="editor_frame_container" dock="fill" back_color="white">
+
+			</htmlcontrol>
+
+			<panel dock="fill" cursor="wait" back_color="white">
+				<attach name="editor_ready" arguments="jevent,arg0">
+					jsml.dispose_delay(self);
+				</attach>
+			</panel>
+
+		</panel>
+
+		<panel jsml-member="tabcodepanel" dock="fill" visible="false">
+			<panel dock="top" overflow_y="visible" padding="3,1,1,3" border_width="0,0,1,0" border_color="#7E9DB9" css_class="rtelayouttop" >
+				<panel dock="fill" jsml-base="rtepluginholder" plugin="toolbar_code" />
+			</panel>
+
+			<panel dock="fill" >
+				<textbox jsml-member="codebox" text_mode="multipleline" dock="fill" back_color="white" border_color="white" border_width="5,0,5,5" font="normal 12px sans-serif" >
+					<attach name="editor_ready" arguments="jevent,arg0">
+						self._rteinstance=arg0;
+					</attach>
+					<attach name="keydown" arguments="je,de">
+						var editor=self._rteinstance;
+						if(de.keyCode==editor._config.event_fullscreenkeycode)
+						{
+						editor.ExecUICommand(null,"FullScreen");
+						return de.cancel_default();
+						}
+					</attach>
+				</textbox>
+			</panel>
+
+		</panel>
+
+		<panel jsml-member="tabviewpanel" dock="fill" visible="false">
+			<panel dock="top" overflow_y="visible" padding="3,1,1,3" border_width="0,0,1,0" border_color="#7E9DB9" css_class="rtelayouttop" >
+				<panel dock="fill" jsml-base="rtepluginholder" plugin="toolbar_view" />
+			</panel>
+			<htmlcontrol jsml-member="previewcontrol" dock="fill" back_color="white">
+
+			</htmlcontrol>
+		</panel>
+
+		<method name="synctext">
+			<![CDATA[
+			if(self._stopsync)return;
+			self.srchtml=self._rteinstance.GetHtmlCode();
+			self.codebox.set_text(self.srchtml);
+			function handletimer()
+			{
+				self.synctexttimerid=self.setDelegateTimeout(handletimer,10);
+				
+				if(self.srchtml!=self.codebox.get_text())
+				{
+					self.srchtml=self.codebox.get_text();
+					self._stopsync=true;
+					self._rteinstance.SetHtmlCode(self.srchtml);
+					self._stopsync=false;
+				}
+			}
+			handletimer();
+			]]>
+		</method>
+		<method name="updatepanels" arguments="sync">
+			<![CDATA[
+			self.tabeditpanel.set_visible(self._rteinstance.IsTabEdit());
+			self.tabcodepanel.set_visible(self._rteinstance.IsTabCode());
+			self.tabviewpanel.set_visible(self._rteinstance.IsTabView());
+			clearTimeout(self.synctexttimerid);
+			
+			self.codebox.set_disabled(self._rteinstance._config.readonly);
+			
+			if(sync&&self._rteinstance.IsTabCode())
+			{
+				self.synctext();
+			}
+			if(sync)
+			{
+				if(self.previewiframe)
+				{
+					self.previewiframe.setAttribute("src",self._rteinstance._config.blankfileurl);
+					self.previewcontrol._content.innerHTML="";
+					self.previewiframe=null;
+				}
+			}
+			if(sync&&self._rteinstance.IsTabView())
+			{
+				self.updatepreviewframe();
+			}
+			]]>
+		</method>
+		<method name="updatepreviewframe" arguments="doprint">
+			<![CDATA[
+			
+			var updated=false;
+					 
+			var config=self._rteinstance._config;
+			function doupdate()
+			{
+				if(updated)return;
+				updated=true;
+										 
+				self.previewiframe.onload=jsml.empty_function;
+
+				if(!self.previewiframe.inited)
+					self.previewiframe.inited=self._rteinstance.InitPreviewFrame(self.previewiframe);
+				
+				if(!doprint)
+					return;
+
+				var framewin=self.previewiframe.contentWindow;
+				
+				self.printtime=new Date().getTime();
+				
+				framewin.document.execCommand("print",false,null);
+				if(/Firefox/.test(navigator.userAgent))framewin.print();
+				
+				//if(framewin.print&&new Date().getTime()-self.printtime<222)framewin.print();
+				
+				if(jsml.chrome)
+				{
+					self.setDelegateTimeout(function()
+					{
+						if(new Date().getTime()-self.printtime>222)
+							return;
+						alert(self._rteinstance.GetLangText("printblocked"));
+					},100);
+					
+				}
+			}
+	
+			if(self.previewiframe)
+			{
+				doupdate();
+				self.adjustiframesize();
+			}
+			else
+			{
+				var iframe=document.createElement("iframe");
+				self.previewiframe=iframe;
+				iframe.onload=doupdate;
+				iframe.setAttribute("sendbox","sendbox");
+				iframe.setAttribute("src",self._rteinstance._config.blankfileurl);
+				iframe.setAttribute("frameborder","0");
+				self.previewcontrol._content.appendChild(iframe);
+				jsml.queue_resumehandler(function(){self.adjustiframesize()});
+			}
+			
+			function checkie678()
+			{
+				if(updated)return;
+				if(!self.previewiframe)return;
+				if(self.previewiframe.document.readyState=="complete"&&self.previewiframe.document.documentElement)
+					doupdate();
+				else
+					self.setDelegateTimeout(checkie678,100);
+			}
+			if(jsml.msie5678)self.setDelegateTimeout(checkie678,100);
+			]]>
+		</method>
+		<method name="adjustiframesize">
+			if(!self.previewiframe)return;
+			self.previewiframe.style.width=self.previewcontrol.get_client_width()+"px";
+			self.previewiframe.style.height=self.previewcontrol.get_client_height()+"px";
+			jsml.queue_resumehandler(function(){self.previewcontrol.invoke_notify_content()});
+		</method>
+		<attach name="resize">
+			jsml.queue_resumehandler(function(){self.adjustiframesize()});
+		</attach>
+		<attach name="editor_ready" arguments="jevent,arg0">
+			<![CDATA[
+			self._rteinstance=arg0;
+			self.mode="edit";
+			self.updatepanels();
+			
+			self.codebox.codetabindent=arg0._config.codetabindent
+			
+			if(self._rteinstance._config.showrulers)
+			{
+				rulerpanel1.set_visible(true);
+				rulerpanel2.set_visible(true);
+			}
+			
+			self._rteinstanceeventid=self._rteinstance.AttachEvent(function(editor,e){
+				if(e.Name=="TabModeChanged")
+				{
+					self.updatepanels(true);
+					if(self._rteinstance.IsTabCode())
+						self.codebox.start_log();
+					else
+						self.codebox.stop_log();
+				}
+				if(e.Name=="FullPageChanged")
+				{
+					self.updatepreviewframe(false);
+				}
+				if(e.Name=="TextChanged")
+				{
+					if(self._rteinstance.IsTabCode())
+						self.synctext();
+				}
+				if(e.Name=="DoFocus")
+				{
+					if(self._rteinstance.IsTabCode())
+						self.codebox.focus();
+				}
+				if(e.Name=="TCCut"||e.Name=="TCCopy")
+				{
+					var html=self.codebox.get_range_text();
+					if(html)
+					{
+						e.ReturnValue=html;
+						if(e.Name=="TCCut")
+						{
+							self.codebox.set_range_text("");
+						}
+					}
+				}
+				if(e.Name=="TCPaste")
+				{
+					self.codebox.set_range_text(e.Arguments[0]);
+					self.codebox.collapse(false);
+				}
+				if(e.Name=="TCAppend")
+				{
+					self.codebox.select_all();
+					self.codebox.collapse(false);
+					self.codebox.set_range_text(e.Arguments[0]);
+					self.codebox.collapse(false);
+				}
+				if(e.Name=="ExecCommand")
+				{
+					switch(e.Arguments[0].toLowerCase())
+					{
+					case "print":
+						self.updatepreviewframe(true);
+						break;
+					case "tc_undo":
+						self.codebox.undo();
+						break;
+					case "tc_redo":
+						self.codebox.redo();
+						break;
+					case "tc_selectall":
+						self.codebox.select_all();
+						break;
+					case "tc_delete":
+						self.codebox.set_range_text("");
+						break;
+					}
+				}
+			});
+			]]>
+		</attach>
+
+	</jsml-def>
+
+</jsml>

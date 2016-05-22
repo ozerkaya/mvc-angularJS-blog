@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../core/jsml.xsd">
+
+
+	<panel jsml-class="sidebar_debug" jsml-base="sidebarmenu" dock="fill">
+		<panel jsml-base="sidebarmenuitem" text="Back">
+			<attach name="click">
+				sidebar.back();
+			</attach>
+		</panel>
+		<panel jsml-base="sidebarmenuitem" text="editor.GetText">
+			<attach name="click">
+				alert(editor.GetText());
+			</attach>
+		</panel>
+		<panel jsml-base="sidebarmenuitem" text="iframe HTML">
+			<attach name="click">
+				alert(editor.GetWindow().document.documentElement.outerHTML);
+			</attach>
+		</panel>
+	</panel>
+
+
+	<panel jsml-base="sidebar_debug" />
+
+
+</jsml>

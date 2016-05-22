@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../core/jsml.xsd">
+
+
+	<panel jsml-class="sidebar_paragraph" jsml-base="sidebarmenu" dock="fill">
+		<panel jsml-base="sidebarmenuitem" text="Back">
+			<attach name="click">
+				sidebar.back();
+			</attach>
+		</panel>
+
+		<!--
+		<panel jsml-base="sidebarmenuitem" command="InsertOrderedList" text="@ORDEREDLIST" imagename="numlist" />
+		<panel jsml-base="sidebarmenuitem" command="InsertUnorderedList" text="@UNORDEREDLIST" imagename="bullist" />
+		-->
+		<panel jsml-base="sidebarmenuitem" arrow="true" text="Insert List" imagename="numlist">
+			<attach name="click">
+				sidebar.loadpanel("insertlist.xml");
+			</attach>
+		</panel>
+		<panel jsml-base="sidebarmenuitem" command="OUTDENT" text="@OUTDENT" />
+		<panel jsml-base="sidebarmenuitem" command="Indent" text="@INDENT" />
+		<panel jsml-base="sidebarmenuitem" command="InsertBlockQuote" text="@INSERTBLOCKQUOTE" imagename="blockquote" />
+
+		<panel jsml-base="sidebarmenuitem" command="JustifyLeft" text="@JUSTIFYLEFT" imagename="left" />
+		<panel jsml-base="sidebarmenuitem" command="JustifyCenter" text="@JUSTIFYCENTER" imagename="center" />
+		<panel jsml-base="sidebarmenuitem" command="JustifyRight" text="@JUSTIFYRIGHT" imagename="right" />
+		<panel jsml-base="sidebarmenuitem" command="JustifyFull" text="@JUSTIFYFULL" />
+		<panel jsml-base="sidebarmenuitem" command="JustifyNone" text="@JUSTIFYNONE" noactive="true" />
+	</panel>
+
+	<panel jsml-base="sidebar_paragraph" />
+
+
+</jsml>

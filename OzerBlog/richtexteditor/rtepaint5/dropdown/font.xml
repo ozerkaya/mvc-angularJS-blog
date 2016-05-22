@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="jsml.xsl"?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../JSML/jsml.xsd">
+	<panel jsml-class="fontbutton" width="200" height="36" margin="4,1,0,1" border_color="#8f8f8f" border_width="0" css_text="border-radius:2px;">
+		<image jsml-local="img_loaded" src="images/accept.png" width="16" margin="2" dock="right" vertical_align="middle" tooltip="@Title_Loaded" visible="0"></image>
+		<image jsml-local="img_font" dock="fill" vertical_align="middle"></image>
+		<property name="fontname">
+			<get>
+				return self._fontname;
+			</get>
+			<set>
+				self._fontname = value;
+			</set>
+		</property>
+		<method name="InitFont">
+			<![CDATA[
+			var fontname = self.get_fontname();
+			var arr = doc.GetOption("LoadedFonts");
+			img_font.set_src("images/font/"+fontname+".gif");
+			for(var i=0; i<arr.length;i++)
+			{
+				if(fontname!=arr[i])
+					continue;
+				img_loaded.set_visible(1);
+				return;
+			}
+			]]>
+		</method>
+		<attach name="click">
+			<![CDATA[
+			var isloaded = img_loaded.get_visible();
+			if(isloaded) 
+			{
+				if(selectfunc) selectfunc(self.get_fontname());
+			}
+			else if(loadfunc)
+			{
+				loadfunc(self.get_fontname());
+				img_loaded.set_visible(1);
+			}
+			box.dispose();
+			]]>
+		</attach>
+		<attach name="mousehover">
+			<![CDATA[
+			self.set_back_color("#dddddd");
+			]]>
+		</attach>
+		<attach name="mouseleave">
+			<![CDATA[
+			self.set_back_color("");
+			]]>
+		</attach>
+	</panel>
+	<panel jsml-class="fontpanel" width="200" height="80" back_color="white">
+		<initialize>
+			<![CDATA[
+			var PreInitFonts = ["WorldWideWeb","AnandaNeptouch"];
+			for(var i=0;i<PreInitFonts.length;i++)
+			{
+				var fb = jsml.class_create_instance("fontbutton");
+				fb.set_dock("top");
+				fb.set_fontname(PreInitFonts[i]);
+				fb.InitFont();
+				self.append_child(fb);
+			}
+			]]>
+		</initialize>
+	</panel>
+	<panel jsml-base="fontpanel"></panel>
+</jsml>

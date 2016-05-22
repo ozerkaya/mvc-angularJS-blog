@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="jsml.xsl"?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../JSML/jsml.xsd">
+	<panel jsml-class="watermark_item" height="84" width="140" border_color="#cccccc" border_width="1">
+		<property name="framepadding">
+			<get>
+				return self._framepadding || [0,0];
+			</get>
+			<set arguments="val">
+				<![CDATA[
+				var arr = val.split(",");
+				if(arr.length==1) {
+					var ret = IntSure(arr[0]);
+					self._framepadding = [ret,ret];
+					return;
+				}
+				self._framepadding = [0,0];
+				for(var i=0;i<2;i++) {
+					if(arr.length>i) {
+						var ret = IntSure(arr[i]);
+						self._framepadding[i] = ret;
+					}
+				}
+				
+				function IntSure(v)
+				{
+					if(typeof(v)=="undefined" || v==null || v=="" || isNaN(v))
+						return 0;
+					return parseInt(v);
+				}
+				]]>
+			</set>
+		</property>
+		<property name="src">
+			<get>
+				return self._src;
+			</get>
+			<set>
+				self._src = value;
+			</set>
+		</property>
+		<panel jsml-local="btn_use" dock="bottom" margin="2" height="24" visible="0">
+			<panel dock="right" width="60" margin="2" css_text="text-shadow: 2px 2px 5px #99999;border:solid #d1decd 1px; background:#f3f3f3;color:#333333;border-radius:2px; -webkit-border-radius:2px;">
+				<image dock="left" margin="0,0,0,2" src="images/accept.png" vertical_align="middle" horizontal_align="center" width="16" cursor="default"></image>
+				<label dock="fill" text="@Btn_Apply" margin="0,0,0,3" css_text="font-weight:bold;" vertical_align="middle" horizontal_align="left"></label>
+				<attach name="click">
+					<![CDATA[
+					ImageEditorDocument.$069(instance.get_framepadding(), instance.get_src());
+					instance.get_parent().get_parent().Remove();			
+					]]>
+				</attach>
+				<initialize>
+					<![CDATA[
+					ImageEditorDocument.$039(self.get_element(),"top","#fce877","#dfb642");
+					]]>
+				</initialize>
+				<attach name="mousehover">
+					<![CDATA[
+					ImageEditorDocument.$039(self.get_element(),"top","#f1f6fa","#b0bce2");
+					]]>
+				</attach>
+				<attach name="mouseleave">
+					<![CDATA[
+					ImageEditorDocument.$039(self.get_element(),"top","#fce877","#dfb642");
+					]]>
+				</attach>
+			</panel>
+		</panel>
+		<panel jsml-local="backpanel" dock="fill" vertical_align="middle" horizontal_align="center"></panel>
+		<attach name="click">
+			<![CDATA[
+			self.Preview();
+			self.get_parent().SelectFrame(self);
+			return;
+			]]>
+		</attach>
+		<method name="Preview">
+			<![CDATA[
+			var pd = self.get_framepadding();
+			var img = new Image();
+			img.onload = function()
+			{
+				ImageEditorDocument.$0116();
+				var offsetx = ImageEditorDocument._canvas.width - img.width - pd[0];
+				var offsety = ImageEditorDocument._canvas.height - img.height - pd[1];
+				ImageEditorDocument._2d.drawImage(img, offsetx, offsety);
+			}
+			var src = self.get_src();
+			//if (src.toLowerCase().indexOf("http://") == 0 || src.toLowerCase().indexOf("https://") == 0)
+			//	src = "ReadImage.html5." + ImageEditorDocument.GetOption("PageType") + "?url=" + encodeURIComponent(src);
+			img.src = src;
+			]]>
+		</method>
+		<method name="SetButtonEnable" arguments="val">
+			<![CDATA[
+			if(val==true)
+			{
+				btn_use.set_visible(1);
+				self.set_height(104);
+			}
+			else
+			{
+				btn_use.set_visible(0);
+				self.set_height(80);
+			}
+			]]>
+		</method>
+		<initialize>
+			<![CDATA[
+			var div = backpanel.get_element();
+			self.setDelegateTimeout(function(){
+				var w = self.get_current_width();
+				var img = new Image();
+				img.onload = function()
+				{
+					if(img.width>w || img.height>80)
+					{
+						if(img.width/img.height<w/80)
+						{
+							img.style.height = "80px";
+							img.style.width = parseInt(img.width*80/img.height+"") + "px";
+							img.style.marginLeft = parseInt((w-img.width*80/img.height)/2 + "") + "px";
+						}
+						else
+						{
+							img.style.width = w + "px";
+							img.style.height = parseInt(img.height*w/img.width+"") + "px";
+							img.style.marginTop = parseInt((80-img.height*w/img.width)/2 + "") + "px";
+						}
+					}
+					else
+					{
+						img.style.marginLeft = parseInt((w-img.width)/2 + "") + "px";
+						img.style.marginTop = parseInt((80-img.height)/2 + "") + "px";
+					}
+					div.appendChild(img);
+				}
+				img.src = self.get_src();
+			},100);
+			]]>
+		</initialize>
+	</panel>	
+	<panel jsml-class="watermarklist" right="0" width="150" border_width="0,1,1,1" back_color="#eeeeee" border_color="#cccccc">
+		<panel dock="top" height="24" css_text="background:#bcc3c6 url(images/back/group.gif) repeat-x;">
+			<image dock="right" src="images/close.gif" tooltip="@Title_Close" vertical_align="middle" width="16" cursor="default">
+				<attach name="click">
+					<![CDATA[
+					if(instance._selectedmark)
+					{
+						instance._selectedmark = null;
+						ImageEditorDocument.$0116();
+					}
+					instance.Remove();
+					]]>
+				</attach>
+			</image>
+			<label dock="fill" width="10" overflow="visible" text="@Tool_Water_Head" vertical_align="middle" text_color="#545454" css_text="font-weight:bold;" margin="0,0,0,3"></label>
+		</panel>
+		<panel dock="fill" overflow_y="scroll">
+			<panel jsml-base="watermark_item" dock="top" margin="3" framepadding="5" src="images/watermark/sample1.jpg"></panel>
+			<panel jsml-base="watermark_item" dock="top" margin="3" framepadding="5" src="images/watermark/sample2.jpg"></panel>
+			<panel jsml-base="watermark_item" dock="top" margin="3" framepadding="5" src="images/watermark/sample3.jpg"></panel>
+			<panel jsml-base="watermark_item" dock="top" margin="3" framepadding="5,5" src="images/watermark/sample4.gif"></panel>
+			<panel jsml-base="watermark_item" dock="top" margin="3" framepadding="5" src="images/watermark/sample5.jpg"></panel>
+			<method name="SelectFrame" arguments="frame">
+				<![CDATA[
+				var arr = self.get_children();
+				for(var i=0;i<arr.length;i++)
+				{
+					arr[i].set_border_color("#cccccc");
+					arr[i].SetButtonEnable(false);
+				}
+				if(frame)
+				{
+					frame.set_border_color("red");
+					frame.SetButtonEnable(true);
+					instance._selectedmark = frame;
+				}
+				]]>
+			</method>
+		</panel>
+		<initialize>
+			<![CDATA[
+			ImageEditorDocument._watermarklist = self;
+			setInterval(function(){
+				self.AdjustHight();
+			},100);
+			self.AdjustHight();
+			]]>
+		</initialize>
+		<method name="AdjustHight">
+			<![CDATA[
+			var rect=jsml.get_body_rect();
+			self.set_left(rect.width-150);
+			if(rect.height==self.get_height())
+				return;
+			self.set_height(rect.height);
+			]]>
+		</method>
+		<method name="Remove">
+			<![CDATA[
+			ImageEditorDocument._watermarklist = null;
+			self.dispose();
+			]]>
+		</method>
+	</panel>
+	<execute>
+		<![CDATA[
+		plugin.LoadUI = function(ctrl)
+		{
+			ctrl.append_child(jsml.class_create_instance("watermarklist"));
+		}
+		]]>
+	</execute>  
+</jsml>

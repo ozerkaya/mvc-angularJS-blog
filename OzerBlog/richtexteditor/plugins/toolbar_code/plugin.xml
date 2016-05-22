@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../core/jsml.xsd">
+
+	<panel jsml-class="rte_plugin_toolbar_code" dock="fill" overflow="visible">
+		<panel jsml-base="tbgroup_{skin}_{color}">
+			<image jsml-base="image_{skin}_{color}" command="Print" tooltip="@PRINT" />
+			<image jsml-base="image_{skin}_{color}" command="FullScreen" tooltip="@FULLSCREEN" imagename="fit" />
+			<image jsml-base="image_{skin}_{color}" command="Help"  tooltip="@HELP" />
+			<image jsml-base="image_{skin}_{color}" command="Save" tooltip="@SAVE"/>
+			<image jsml-base="image_{skin}_{color}" command="New" tooltip="@NEW" imagename="newdoc" />
+			<image jsml-base="image_{skin}_{color}" command="CleanCode" tooltip="@CLEANCODE" imagename="cleanup" />
+
+			<image jsml-base="image_{skin}_{color}" command="TC_Undo" tooltip="@UNDO" imagename="undo" />
+			<image jsml-base="image_{skin}_{color}" command="TC_Redo" tooltip="@REDO" imagename="redo" />
+			<!--
+			<image jsml-base="image_{skin}_{color}" command="TC_Find" tooltip="@FINDANDREPLACE" imagename="find" />
+			-->
+			<image jsml-base="image_{skin}_{color}" command="TC_SelectAll" tooltip="@SELECTALL" imagename="selectall" />
+			<image jsml-base="image_{skin}_{color}" command="TC_Delete" tooltip="@DELETE" imagename="delete" />
+			<image jsml-base="image_{skin}_{color}" command="TC_Cut" tooltip="@CUT" imagename="cut">
+				<attach name="mousehover">
+					self._ResetFCButton();
+				</attach>
+			</image>
+			<image jsml-base="image_{skin}_{color}" command="TC_Copy" tooltip="@COPY" imagename="copy">
+				<attach name="mousehover">
+					self._ResetFCButton();
+				</attach>
+			</image>
+			<image jsml-base="image_{skin}_{color}" command="PasteHtml" tooltip="@PASTE" imagename="paste" />
+			<!--
+			<image jsml-base="image_{skin}_{color}" command="PasteText" tooltip="@PASTETEXT" imagename="pastetext"/>
+			<image jsml-base="image_{skin}_{color}" command="PasteWord" tooltip="@PASTEWORD" imagename="pasteword"/>
+			-->
+
+			<image jsml-base="image_{skin}_{color}" command="formatcode" tooltip="@FORMATCODE" imagename="formatcode" />
+			
+		</panel>
+	</panel>
+
+	<execute>
+		<![CDATA[
+		plugin.Execute=function(element,arg1,arg2)
+		{
+			
+		}
+		plugin.LoadUI=function(ctrl,arg0)
+		{
+			var toolbar=jsml.class_create_instance("rte_plugin_toolbar_code");
+			ctrl.append_child(toolbar);
+			toolbar.invoke_recursive("editor_ready",editor);
+		}
+		]]>
+	</execute>
+
+
+</jsml>

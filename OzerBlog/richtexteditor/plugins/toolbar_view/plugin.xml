@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsml xmlns="http://cutesoft.net/jsml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cutesoft.net/jsml ../../core/jsml.xsd">
+
+	<panel jsml-class="rte_plugin_toolbar_view" dock="fill" overflow="visible">
+		<panel jsml-base="tbgroup_{skin}_{color}">
+			<image jsml-base="image_{skin}_{color}" command="Print" tooltip="@PRINT" />
+			<image jsml-base="image_{skin}_{color}" command="FullScreen" tooltip="@FULLSCREEN" imagename="fit" />
+			<image jsml-base="image_{skin}_{color}" command="Help"  tooltip="@HELP" />
+		</panel>
+	</panel>
+
+	<execute>
+		<![CDATA[
+		plugin.Execute=function(element,arg1,arg2)
+		{
+			
+		}
+		plugin.LoadUI=function(ctrl,arg0)
+		{
+			var toolbar=jsml.class_create_instance("rte_plugin_toolbar_view");
+			ctrl.append_child(toolbar);
+			toolbar.invoke_recursive("editor_ready",editor);
+		}
+		]]>
+	</execute>
+
+
+</jsml>
