@@ -92,61 +92,41 @@ namespace OzerBlog.Controllers
         }
 
         [HttpGet]
-        public ActionResult Posts(int id=0)
+        public ActionResult Posts()
         {
-            using (var db = new DBContext())
-            {
-                PostView model = new PostView
-                {
-                    post = new Posts(),
-                    postList = db.Posts.ToList().OrderByDescending(ok => ok.ID)
-                };
-                if (id!=0)
-                {
-                    var currentPost = db.Posts.FirstOrDefault(ok => ok.ID == id);
-                    model.post = currentPost;
-                }
-                richEditorCreate(model.post.content);
-                return View(model);
-            }
+            return View();
 
         }
 
-
-        [ValidateInput(false)]
-        [HttpPost]
-        public ActionResult Posts(PostView model, string Editor1)
+        public ActionResult PostsGet()
         {
             using (var db = new DBContext())
             {
-                Posts postModel = new BlogDAL.DAL.Posts
-                {
-                    content = Editor1,
-                    title = model.post.title
-                };
-                model.post.content = Editor1;
-                db.Posts.Add(postModel);
-                db.SaveChanges();
-                model.postList = db.Posts.ToList().OrderByDescending(ok => ok.ID);
+                var postList = db.Posts.ToList().OrderByDescending(ok => ok.ID);
+                return Json(postList, JsonRequestBehavior.AllowGet);
             }
-            richEditorCreate(string.Empty);
-            return View(model);
         }
 
         public ActionResult PostsEdit(int id)
         {
-
-            return View();
+            using (var db = new DBContext())
+            {
+                Posts post = db.Posts.FirstOrDefault(ok => ok.ID == id);
+                return Json(post, JsonRequestBehavior.AllowGet);
+            }
         }
 
-        public void richEditorCreate(string content)
+        public ActionResult PostDelete(int id)
         {
-            Editor Editor1 = new Editor(System.Web.HttpContext.Current, "Editor1");
-            Editor1.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-            Editor1.Height = 500;
-            Editor1.LoadFormData(content);
-            Editor1.MvcInit();
-            ViewBag.Editor = Editor1.MvcGetString();
+            using (var db = new DBContext())
+            {
+                var post = db.Posts.FirstOrDefault(ok => ok.ID == id);
+                db.Posts.Attach(post);
+                db.Posts.Remove(post);
+                db.SaveChanges();
+                var postList = db.Posts.ToList().OrderByDescending(ok => ok.ID);
+                return Json(postList, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }
