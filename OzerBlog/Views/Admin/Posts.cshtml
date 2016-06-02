@@ -35,6 +35,11 @@
                         <table>
                             <tr>
                                 <td>
+                                    <input ng-model="postID" hidden/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                     <h5>* Yazı Başlığı</h5>
                                     <input ng-model="postTitle" />
                                 </td>
@@ -51,7 +56,7 @@
                             </tr>
                             <tr>
                                 <td style="float:right">
-                                    <input type="submit" value="Kaydet" style="width:150px;margin-top:10px" />
+                                    <input ng-click="saveEditPost(postID,postTitle,postContet)" type="submit" value="Kaydet" style="width:150px;margin-top:10px" />
                                 </td>
                             </tr>
                         </table>
@@ -63,7 +68,7 @@
                     <table>
                         <tr ng-repeat="post in postList">
                             <td style="width:10%">
-                                <button ng-click="editPost(post.ID);" class="list-group-item">Düzenle</button>
+                                <button ng-click="editPostTake(post.ID);" class="list-group-item">Düzenle</button>
                             </td>
                             <td style="width:10%">
                                 <button ng-click="deletePost(post.ID);" class="list-group-item">Sil</button>

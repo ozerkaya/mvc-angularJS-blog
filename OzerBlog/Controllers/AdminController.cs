@@ -128,5 +128,30 @@ namespace OzerBlog.Controllers
                 return Json(postList, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public ActionResult SaveEdit(int ID, string Content, string Title)
+        {
+            using (var db = new DBContext())
+            {
+                if (ID == 0)
+                {
+                    Posts post = new Posts
+                    {
+                        content = Content,
+                        title = Title
+                    };
+                    db.Posts.Add(post);
+                }
+                else
+                {
+                    Posts post = db.Posts.FirstOrDefault(ok => ok.ID == ID);
+                    post.content = Content;
+                    post.title = Title;
+                }
+                db.SaveChanges();
+                var postList = db.Posts.ToList().OrderByDescending(ok => ok.ID);
+                return Json(postList, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }
