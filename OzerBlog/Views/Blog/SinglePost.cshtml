@@ -1,0 +1,17 @@
+﻿@model BlogDAL.DAL.Posts
+
+<table>
+    <tr>
+        <td>
+            <h2>@Model.title</h2>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>
+                @Html.Raw(Model.content)
+            </p>
+        </td>
+    </tr>
+
+</table>

@@ -249,6 +249,7 @@
     <Content Include="Views\Admin\Posts.cshtml" />
     <Content Include="Views\Admin\_Menu.cshtml" />
     <Content Include="Views\Shared\_LayoutMini.cshtml" />
+    <Content Include="Views\Blog\SinglePost.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

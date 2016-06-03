@@ -36,6 +36,20 @@ namespace OzerBlog.Controllers
             return View();
         }
 
+        public ActionResult SinglePost(int id = 0)
+        {
+            if (id == 0)
+            {
+                return RedirectToAction("Index", "Blog");
+            }
+            using (var db = new DBContext())
+            {
+                Posts posts = db.Posts.FirstOrDefault(ok => ok.ID == id);
+                return View(posts);
+            }
+
+        }
+
         private string GeneratePostFontText(string text)
         {
             if (text.Length <= 500)
