@@ -101,7 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AngularJSControllers\IndexBlog.js" />
-    <Content Include="AngularJSControllers\Posts.js" />
+    <Content Include="AngularJSControllers\Post.js" />
     <Content Include="Content\angular\angular-sanitize.js" />
     <Content Include="Content\angular\angular.min.js" />
     <Content Include="Content\bootstrap.css" />
