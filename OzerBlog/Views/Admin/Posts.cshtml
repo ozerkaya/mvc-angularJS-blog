@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Posts";
+    Layout = "~/Views/Shared/_LayoutMini.cshtml";
 }
 
 
@@ -10,12 +11,13 @@
         width: 100%;
     }
 
-    td {
-        vertical-align: top;
+    input {
+        width: 95%;
+        margin: 5px;
     }
 
-    input {
-        width: 100%;
+    td {
+        vertical-align: top;
     }
 </style>
 <html ng-app="myPosts">
@@ -40,13 +42,13 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <h5>* Yazı Başlığı</h5>
+                                    <h5>Yazı Başlığı</h5>
                                     <input ng-model="postTitle" />
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <h5>* Yazı İçeriği</h5>
+                                    <h5>Yazı İçeriği</h5>
 
                                     <div text-angular ng-model="postContet">
 

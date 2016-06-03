@@ -3,23 +3,31 @@
     ViewBag.Title = "Index";
 }
 
-@*<h2>Blog</h2>*@
+<html ng-app="myIndexBlog">
+<body ng-controller="IndexBlogController">
 
-@foreach (var item in Model)
-{
-    <table>
-        <tr>
-            <td>
-                <h2 class="section-heading">@item.title</h2>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <p>
-                    @Html.Raw(item.content)
-                </p>
-            </td>
-        </tr>
 
-    </table>
-}
+
+    @foreach (var item in Model)
+    {
+        <table>
+            <tr>
+                <td>
+                    <h2 style="cursor:pointer" ng-click="GotoPost(@item.ID)">@item.title</h2>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        @Html.Raw(item.content)
+                    </p>
+                </td>
+            </tr>
+
+        </table>
+
+    }
+
+</body>
+</html>
+<script src="~/AngularJSControllers/IndexBlog.js"></script>

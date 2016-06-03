@@ -21,6 +21,8 @@ namespace OzerBlog.Controllers
                 var posts = db.Posts.ToList().OrderByDescending(ok => ok.ID);
                 foreach (var item in posts)
                 {
+                    string itemText = GeneratePostFontText(item.content);
+                    item.content = itemText;
                     postList.Add(item);
                 }
                 return View(postList);
@@ -32,6 +34,44 @@ namespace OzerBlog.Controllers
         public ActionResult Index(Posts model)
         {
             return View();
+        }
+
+        private string GeneratePostFontText(string text)
+        {
+            if (text.Length <= 500)
+            {
+                return text + "...";
+            }
+            else
+            {
+                string returnText = String.Empty;
+                for (int i = 0; i <= 500; i++)
+                {
+                    returnText = returnText + text.Substring(i, 1);
+                    if (i == 500)
+                    {
+                        int j = i;
+                        while (true)
+                        {
+                            if (text.Substring(j, 1) == " ")
+                            {
+                                returnText = returnText + "...";
+                                break;
+                            }
+                            else
+                            {
+                                returnText = returnText + text.Substring(j, 1);
+                                j++;
+                            }
+
+                        }
+
+                    }
+                }
+
+
+                return returnText;
+            }
         }
     }
 }

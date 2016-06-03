@@ -1,6 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_LayoutMini.cshtml";
 }
 
 <style>
@@ -18,11 +19,10 @@
     }
 </style>
 
-<h2>Kullanıcılar</h2>
 @using (Html.BeginForm("AdminMenu", "Admin", FormMethod.Post))
 {
 
-    <table>
+    <table style="margin-top:30px">
         <tr>
             <td style="width:20%">
                 @Html.Partial("~/Views/Admin/_Menu.cshtml")

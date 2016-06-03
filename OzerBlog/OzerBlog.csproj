@@ -100,6 +100,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AngularJSControllers\IndexBlog.js" />
     <Content Include="AngularJSControllers\Posts.js" />
     <Content Include="Content\angular\angular-sanitize.js" />
     <Content Include="Content\angular\angular.min.js" />
@@ -182,6 +183,10 @@
     <Content Include="Content\textAngular-1.5.0\test\textAngularToolbar.spec.js" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <None Include="Scripts\angular.intellisense.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\textAngular-1.5.0\.bowerrc" />
@@ -192,10 +197,12 @@
     <Content Include="Content\textAngular-1.5.0\package.json" />
     <Content Include="Content\textAngular-1.5.0\README.md" />
     <None Include="Properties\PublishProfiles\blog.pubxml" />
+    <Content Include="Scripts\angular.min.js.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <None Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -241,6 +248,7 @@
     <Content Include="Views\Admin\Pages.cshtml" />
     <Content Include="Views\Admin\Posts.cshtml" />
     <Content Include="Views\Admin\_Menu.cshtml" />
+    <Content Include="Views\Shared\_LayoutMini.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

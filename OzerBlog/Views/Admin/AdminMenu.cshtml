@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "AdminMenu";
+    Layout = "~/Views/Shared/_LayoutMini.cshtml";
 }
 <style>
     table {
@@ -38,19 +39,19 @@
                             <tr>
                                 <td>
                                     @Html.HiddenFor(ok => ok.ID)
-                                    <h5>* Blog Adı</h5>
+                                    <h5>Blog Adı</h5>
                                     @Html.TextBoxFor(ok => ok.BlogBossName)
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <h5>* Blog Açıklama</h5>
+                                    <h5>Blog Açıklama</h5>
                                     @Html.TextBoxFor(ok => ok.BlogBossTitle)
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <h5>* Blog Footer Text</h5>
+                                    <h5>Blog Footer Text</h5>
                                     @Html.TextBoxFor(ok => ok.BlogFooterText)
                                 </td>
                             </tr>

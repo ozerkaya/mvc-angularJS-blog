@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/css/clean-blog.min.css" rel="stylesheet">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <script src="~/Content/angular/angular.min.js"></script>
+    <script src="~/Content/angular/angular-sanitize.js"></script>
+  
+    <link href="~/Content/textAngular-1.5.0/dist/textAngular.css" rel="stylesheet" />
+    <script src="~/Content/textAngular-1.5.0/dist/textAngular-rangy.min.js"></script>
+    <script src="~/Content/textAngular-1.5.0/dist/textAngular-sanitize.min.js"></script>
+    <script src="~/Content/textAngular-1.5.0/dist/textAngular.min.js"></script>
+
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/Home/Index/">Ana Sayfa</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/Blog/Index/">BLOG</a>
+                    </li>
+                    <li>
+                        <a href="/About/Index/">HAKKIMDA</a>
+                    </li>
+                    <li>
+                        <a href="/Project/Index/">PROJELER</a>
+                    </li>
+                    <li>
+                        <a href="/Contact/Index/">İLETİŞİM</a>
+                    </li>
+                    <li>
+                        <a href="/Admin/Index/">ADMIN</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <header class="intro-header" style="background-image: url('/Content/img/home-bg.jpg') ; height: 70px;">
+        @*<div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1>@Session["BlogBossName"]</h1>
+                        <hr class="small">
+                        <span class="subheading">@Session["BlogBossTitle"]</span>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    </header>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>@Session["BlogFooterText"]</p>
+        </footer>
+    </div>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</body>
+</html>
