@@ -26,7 +26,7 @@ myApp.controller("PostController", function ($scope, $http) {
     ////Save and Edit 
     $scope.saveEditPost = function (ID, Title, Content) {
         var data = { ID: ID, Title: Title, Content: Content }
-        $http.post("/Admin/SaveEdit/", data).then(function (result) {
+        $http.post("/Admin/SaveEditPost/", data).then(function (result) {
             $scope.postList = result.data;
             $scope.postTitle = "";
             $scope.postContet = "";

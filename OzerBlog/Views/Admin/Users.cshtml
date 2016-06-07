@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Users";
     Layout = "~/Views/Shared/_LayoutMini.cshtml";
 }
@@ -19,35 +18,69 @@
     }
 </style>
 
-@using (Html.BeginForm("AdminMenu", "Admin", FormMethod.Post))
-{
+<html ng-app="myUsers">
+<body>
 
-    <table style="margin-top:30px">
+    <table style="margin-top:30px" ng-controller="UserController">
         <tr>
-            <td style="width:20%">
+            <td style="width:20%;">
                 @Html.Partial("~/Views/Admin/_Menu.cshtml")
             </td>
             <td>
-                <table>
-                    <tr>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="submit" value="Kaydet" style="width:150px;" />
-                        </td>
-                    </tr>
-                </table>
+                <div class="panel panel-primary" style="margin-left:10px">
+                    <div class="list-group">
+                        <a class="list-group-item active">Kullanıcılar</a>
+                    </div>
+                    <div class="panel-body">
+                        <table>
+                            <tr>
+                                <td>
+                                    <input ng-model="userID" hidden />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>Kullanıcı Adı</h5>
+                                    <input style="margin-left:-1px;width:100%" ng-model="userUsername" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>Şifre</h5>
+                                    <input style="margin-left:-1px;width:100%" ng-model="userPassword" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="float:right">
+                                    <input ng-click="saveEditUser(userID,userUsername,userPassword)" type="submit" value="Kaydet" style="width:150px;margin-top:10px" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="list-group" style="margin-left:10px">
+
+                    <table>
+                        <tr ng-repeat="user in userList">
+                            <td style="width:10%">
+                                <button ng-click="editUserTake(user.ID);" class="list-group-item">Düzenle</button>
+                            </td>
+                            <td style="width:10%">
+                                <button ng-click="deleteUser(user.ID);" class="list-group-item">Sil</button>
+                            </td>
+                            <td style="width:80%">
+                                <a class="list-group-item">{{user.username}}</a>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+
             </td>
         </tr>
     </table>
-}
+</body>
+</html>
+
+<script src="~/AngularJSControllers/User.js"></script>

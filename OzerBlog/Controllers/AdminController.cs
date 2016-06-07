@@ -129,7 +129,7 @@ namespace OzerBlog.Controllers
             }
         }
 
-        public ActionResult SaveEdit(int ID, string Content, string Title)
+        public ActionResult SaveEditPost(int ID, string Content, string Title)
         {
             using (var db = new DBContext())
             {
@@ -151,6 +151,63 @@ namespace OzerBlog.Controllers
                 db.SaveChanges();
                 var postList = db.Posts.ToList().OrderByDescending(ok => ok.ID);
                 return Json(postList, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        public ActionResult UsersGet()
+        {
+            using (var db = new DBContext())
+            {
+                var userList = db.Users.ToList().OrderByDescending(ok => ok.ID);
+                return Json(userList, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult UsersEdit(int id)
+        {
+            using (var db = new DBContext())
+            {
+                User user = db.Users.FirstOrDefault(ok => ok.ID == id);
+                return Json(user, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult UserDelete(int id)
+        {
+            using (var db = new DBContext())
+            {
+                var user = db.Users.FirstOrDefault(ok => ok.ID == id);
+                db.Users.Attach(user);
+                db.Users.Remove(user);
+                db.SaveChanges();
+                var userList = db.Users.ToList().OrderByDescending(ok => ok.ID);
+                return Json(userList, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult SaveEditUser(int ID, string Username, string Password)
+        {
+            using (var db = new DBContext())
+            {
+                if (ID == 0)
+                {
+                    User user = new User
+                    {
+                        username = Username,
+                        password = Security.sha256_hash(Password)
+                    };
+                    db.Users.Add(user);
+                }
+                else
+                {
+                    User user = db.Users.FirstOrDefault(ok => ok.ID == ID);
+                    user.username = Username;
+                    user.password = Password;
+                }
+                db.SaveChanges();
+                var userList = db.Users.ToList().OrderByDescending(ok => ok.ID);
+                return Json(userList, JsonRequestBehavior.AllowGet);
             }
         }
     }

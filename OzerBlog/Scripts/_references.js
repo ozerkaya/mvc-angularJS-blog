@@ -55,3 +55,4 @@
 /// <reference path="angular-mocks.js" />
 /// <reference path="angular.js" />
 /// <reference path="../angularjscontrollers/post.js" />
+/// <reference path="../angularjscontrollers/user.js" />
