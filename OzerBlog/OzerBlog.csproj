@@ -214,11 +214,13 @@
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="Enums\Labels.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Security.cs" />
     <Compile Include="Models\Login.cs" />
+    <Compile Include="Models\PostsGet.cs" />
     <Compile Include="Models\PostView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

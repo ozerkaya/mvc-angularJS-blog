@@ -12,7 +12,7 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     <script src="~/Content/angular/angular.min.js"></script>
     <script src="~/Content/angular/angular-sanitize.js"></script>
-  
+
     <link href="~/Content/textAngular-1.5.0/dist/textAngular.css" rel="stylesheet" />
     <script src="~/Content/textAngular-1.5.0/dist/textAngular-rangy.min.js"></script>
     <script src="~/Content/textAngular-1.5.0/dist/textAngular-sanitize.min.js"></script>
@@ -50,6 +50,12 @@
                     <li>
                         <a href="/Admin/Index/">ADMIN</a>
                     </li>
+                    @if (Session["Login"] == "True")
+                    {
+                        <li>
+                            <a href="/Admin/LogOut/">LOGOUT</a>
+                        </li>
+                    }
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -57,18 +63,18 @@
         <!-- /.container -->
     </nav>
 
-    <header class="intro-header" style="background-image: url('/Content/img/home-bg.jpg') ; height: 70px;">
+    <header class="intro-header" style="background-image: url('/Content/img/post-bg.jpg') ; height: 70px;">
         @*<div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <div class="site-heading">
-                        <h1>@Session["BlogBossName"]</h1>
-                        <hr class="small">
-                        <span class="subheading">@Session["BlogBossTitle"]</span>
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                        <div class="site-heading">
+                            <h1>@Session["BlogBossName"]</h1>
+                            <hr class="small">
+                            <span class="subheading">@Session["BlogBossTitle"]</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>*@
+            </div>*@
     </header>
 
     <div class="container body-content">

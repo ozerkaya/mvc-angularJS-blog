@@ -5,13 +5,12 @@ using System.Web;
 
 namespace BlogDAL.DAL
 {
-    public class Posts
+    public class Pages
     {
         public int ID { get; set; }
-        public string title { get; set; }
 
-        public string content { get; set; }
+        public string PageName { get; set; }
 
-        public IList<Labels> Label { get; set; }
+        public string PageContent { get; set; }
     }
 }

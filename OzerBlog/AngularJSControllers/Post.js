@@ -1,9 +1,11 @@
 ﻿var myApp = angular.module('myPosts', ['ngSanitize', 'textAngular']);
 myApp.controller("PostController", function ($scope, $http) {
+    $scope.labels = [];
 
     ////Take Post List
     $http.get("/Admin/PostsGet/").then(function (result) {
-        $scope.postList = result.data;
+        $scope.postList = result.data.Posts;
+        $scope.enumList = result.data.Enums;
         $scope.postID = 0;
     });
 
@@ -32,6 +34,21 @@ myApp.controller("PostController", function ($scope, $http) {
             $scope.postContet = "";
             $scope.postID = 0;
         });
+    }
+
+    $scope.labelClick = function (ID) {
+        ID = ID + ",";
+        if ($scope.labels.indexOf(ID) == -1) {
+            $scope.labels.push(ID);
+        }
+        else {
+            $scope.labels.splice($scope.labels.indexOf(ID), 1);
+        }
+
+        $scope.labelsTxt = "";
+        for (var i = 0; i < $scope.labels.length; i++) {
+            $scope.labelsTxt += $scope.labels[i];
+        }
     }
 
 

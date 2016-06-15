@@ -50,6 +50,12 @@ namespace OzerBlog.Controllers
 
         }
 
+        public ActionResult LogOut()
+        {
+            Session["Login"] = "False";
+            return RedirectToAction("Index", "Home");
+        }
+
         [HttpGet]
         public ActionResult AdminMenu()
         {
@@ -102,8 +108,23 @@ namespace OzerBlog.Controllers
         {
             using (var db = new DBContext())
             {
-                var postList = db.Posts.ToList().OrderByDescending(ok => ok.ID);
-                return Json(postList, JsonRequestBehavior.AllowGet);
+                PostsGet PostsGet = new PostsGet
+                {
+                    Posts = db.Posts.OrderByDescending(ok => ok.ID).ToList(),
+                    Enums = new List<dictionary>()
+                };
+
+                foreach (var item in db.LabelTypes.ToList())
+                {
+                    dictionary dic = new dictionary
+                    {
+                        key = item.Key,
+                        value = item.ID
+                    };
+                    PostsGet.Enums.Add(dic);
+                }
+
+                return Json(PostsGet, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -138,7 +159,7 @@ namespace OzerBlog.Controllers
                     Posts post = new Posts
                     {
                         content = Content,
-                        title = Title
+                        title = Title,
                     };
                     db.Posts.Add(post);
                 }
@@ -203,7 +224,7 @@ namespace OzerBlog.Controllers
                 {
                     User user = db.Users.FirstOrDefault(ok => ok.ID == ID);
                     user.username = Username;
-                    user.password = Password;
+                    user.password = Security.sha256_hash(Password);
                 }
                 db.SaveChanges();
                 var userList = db.Users.ToList().OrderByDescending(ok => ok.ID);

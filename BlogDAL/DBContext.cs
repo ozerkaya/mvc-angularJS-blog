@@ -7,7 +7,7 @@ using System.Data.Entity;
 
 namespace BlogDAL
 {
-    [DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))] 
+    [DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
     public class DBContext : System.Data.Entity.DbContext
     {
         static DBContext()
@@ -19,7 +19,26 @@ namespace BlogDAL
         public DbSet<ThemeOptions> ThemeOptions { get; set; }
 
         public DbSet<Posts> Posts { get; set; }
+
+        public DbSet<Pages> Pages { get; set; }
+
+        public DbSet<Labels> Labels { get; set; }
+
+        public DbSet<LabelTypes> LabelTypes { get; set; }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Labels>()
+           .HasRequired(p => p.Post)
+           .WithMany(p => p.Label)
+           .HasForeignKey(p => p.Post_ID)
+           .WillCascadeOnDelete();
+
+            base.OnModelCreating(modelBuilder);
+        }
+
     }
 
-    
+
+
+
 }

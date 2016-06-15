@@ -37,7 +37,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    <input ng-model="postID" hidden/>
+                                    <input ng-model="postID" hidden />
                                 </td>
                             </tr>
                             <tr>
@@ -56,6 +56,23 @@
 
                                 </td>
                             </tr>
+
+                            <tr>
+                                <td>
+                                    <table>
+                                        <tr ng-repeat="item in enumList">
+                                            <td style="width:20px">
+                                                <input type="checkbox" value="{{item.value}}" ng-click="labelClick(item.value)" />
+                                            </td>
+                                            <td>
+                                                <label>{{item.key}}</label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <input type="text" ng-model="labelsTxt" hidden />
+                                </td>
+                            </tr>
+
                             <tr>
                                 <td style="float:right">
                                     <input ng-click="saveEditPost(postID,postTitle,postContet)" type="submit" value="Kaydet" style="width:150px;margin-top:10px" />

@@ -19,8 +19,6 @@
 @using (Html.BeginForm("Index", "Admin", FormMethod.Post))
 {
     {
-    if (Session["Username"] == "ADMIN")
-    {
         <table align="center">
             <tr>
                 <td align="center">
@@ -31,7 +29,7 @@
         }
         else
         {
-                    <span class="subheading" style="color:red">@Model.loginMessage</span>
+            <span class="subheading" style="color:red">@Model.loginMessage</span>
         }
                     }
 
@@ -59,17 +57,7 @@
             </tr>
 
         </table>
-    }
-    else
-    {
-        <table align="center">
-            <tr>
-                <td>
-                    <input type="submit" value="Oturumu Kapat" />
-                </td>
-            </tr>
-        </table>
-    }
+
     }
 
 
