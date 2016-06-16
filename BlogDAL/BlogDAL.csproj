@@ -125,6 +125,10 @@
     <Compile Include="Migrations\201606141307580_ver9.Designer.cs">
       <DependentUpon>201606141307580_ver9.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606160718594_ver10.cs" />
+    <Compile Include="Migrations\201606160718594_ver10.Designer.cs">
+      <DependentUpon>201606160718594_ver10.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -155,6 +159,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606141307580_ver9.resx">
       <DependentUpon>201606141307580_ver9.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606160718594_ver10.resx">
+      <DependentUpon>201606160718594_ver10.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

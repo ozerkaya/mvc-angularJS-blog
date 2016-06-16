@@ -119,7 +119,8 @@ namespace OzerBlog.Controllers
                     dictionary dic = new dictionary
                     {
                         key = item.Key,
-                        value = item.ID
+                        value = item.ID,
+                        check = false
                     };
                     PostsGet.Enums.Add(dic);
                 }
@@ -132,8 +133,23 @@ namespace OzerBlog.Controllers
         {
             using (var db = new DBContext())
             {
-                Posts post = db.Posts.FirstOrDefault(ok => ok.ID == id);
-                return Json(post, JsonRequestBehavior.AllowGet);
+                PostEditTake model = new PostEditTake
+                {
+                    Post = db.Posts.FirstOrDefault(ok => ok.ID == id)
+                };
+
+                model.Labels = new List<label>();
+                foreach (var item in db.Labels.Where(ok => ok.Post_ID == id))
+                {
+                    model.Labels.Add(new label
+                    {
+                        key = item.Label,
+                        value = item.LabelTypes_ID
+                    });
+                }
+
+                model.Post.Label = null;
+                return Json(model, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -150,10 +166,12 @@ namespace OzerBlog.Controllers
             }
         }
 
-        public ActionResult SaveEditPost(int ID, string Content, string Title)
+        public ActionResult SaveEditPost(int ID, string Content, string Title, string Labels)
         {
             using (var db = new DBContext())
             {
+                Labels = Labels.Substring(0, Labels.Length - 1);
+                var labelList = Labels.Split(',');
                 if (ID == 0)
                 {
                     Posts post = new Posts
@@ -161,20 +179,40 @@ namespace OzerBlog.Controllers
                         content = Content,
                         title = Title,
                     };
+
+                    post.Label = new List<Labels>();
+                    foreach (var item in labelList)
+                    {
+                        post.Label.Add(new Labels
+                        {
+                            LabelTypes_ID = Convert.ToInt32(item)
+
+                        });
+                    }
                     db.Posts.Add(post);
                 }
                 else
                 {
-                    Posts post = db.Posts.FirstOrDefault(ok => ok.ID == ID);
+                    Posts post = db.Posts.Include("Label").FirstOrDefault(ok => ok.ID == ID);
                     post.content = Content;
                     post.title = Title;
+
+                    db.Labels.RemoveRange(db.Labels.Where(ok => ok.Post_ID == ID));
+
+                    foreach (var item in labelList)
+                    {
+                        post.Label.Add(new Labels
+                        {
+                            LabelTypes_ID = Convert.ToInt32(item)
+                        });
+                    }
                 }
+
                 db.SaveChanges();
-                var postList = db.Posts.ToList().OrderByDescending(ok => ok.ID);
+                var postList = db.Posts.Select(ok => new { ok.content, ok.ID, ok.title }).OrderByDescending(ok => ok.ID).ToList();
                 return Json(postList, JsonRequestBehavior.AllowGet);
             }
         }
-
 
         public ActionResult UsersGet()
         {

@@ -25,6 +25,7 @@ namespace BlogDAL
         public DbSet<Labels> Labels { get; set; }
 
         public DbSet<LabelTypes> LabelTypes { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Labels>()
@@ -32,6 +33,12 @@ namespace BlogDAL
            .WithMany(p => p.Label)
            .HasForeignKey(p => p.Post_ID)
            .WillCascadeOnDelete();
+
+
+            modelBuilder.Entity<Labels>()
+                .HasRequired(a => a.LabelTypes)
+                .WithMany()
+                .HasForeignKey(u => u.LabelTypes_ID);
 
             base.OnModelCreating(modelBuilder);
         }

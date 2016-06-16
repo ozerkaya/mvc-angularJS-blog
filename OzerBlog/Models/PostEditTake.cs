@@ -6,19 +6,17 @@ using System.Web;
 
 namespace OzerBlog.Models
 {
-    public class PostsGet
+    public class PostEditTake
     {
-        public List<Posts> Posts;
+        public Posts Post { get; set; }
 
-        public List<dictionary> Enums;
+        public List<label> Labels { get; set; }
     }
 
-    public class dictionary
+    public class label
     {
         public string key;
 
         public int value;
-
-        public bool check;
     }
 }

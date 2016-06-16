@@ -49,33 +49,35 @@
                             <tr>
                                 <td>
                                     <h5>Yazı İçeriği</h5>
-
-                                    <div text-angular ng-model="postContet">
+                                    <div text-angular ng-model="postContent">
 
                                     </div>
 
                                 </td>
+
                             </tr>
 
                             <tr>
                                 <td>
                                     <table>
                                         <tr ng-repeat="item in enumList">
-                                            <td style="width:20px">
-                                                <input type="checkbox" value="{{item.value}}" ng-click="labelClick(item.value)" />
+
+                                            <td style="width:20px" ng-switch on="{{item.check}}">
+
+                                                <input type="checkbox" ng-model="checkValue" ng-switch-when="false" value="{{item.value}}" ng-click="labelClick(item.value,checkValue)" ng-checked="item.check" />
+
                                             </td>
                                             <td>
                                                 <label>{{item.key}}</label>
                                             </td>
                                         </tr>
                                     </table>
-                                    <input type="text" ng-model="labelsTxt" hidden />
+                                    <input type="text" ng-model="labelsTxt" hidden/>
                                 </td>
                             </tr>
-
                             <tr>
                                 <td style="float:right">
-                                    <input ng-click="saveEditPost(postID,postTitle,postContet)" type="submit" value="Kaydet" style="width:150px;margin-top:10px" />
+                                    <input ng-click="saveEditPost(postID,postTitle,postContent,labelsTxt)" type="submit" value="Kaydet" style="width:150px;margin-top:10px" />
                                 </td>
                             </tr>
                         </table>
