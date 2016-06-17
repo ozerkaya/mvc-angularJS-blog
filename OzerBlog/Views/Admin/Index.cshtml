@@ -5,6 +5,9 @@
     Layout = "~/Views/Shared/_LayoutMini.cshtml";
 }
 
+<link href="~/Content/css/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.min.js"></script>
+
 <h2>Admin</h2>
 <style>
     td {
@@ -23,14 +26,16 @@
             <tr>
                 <td align="center">
                     @{
-        if (Model == null)
-        {
+                        if (Model == null)
+                        {
 
-        }
-        else
-        {
-            <span class="subheading" style="color:red">@Model.loginMessage</span>
-        }
+                        }
+                        else
+                        {
+                            <script>
+                                swal("Dikkat", "@Model.loginMessage", "error")
+                            </script>
+                        }
                     }
 
                 </td>
