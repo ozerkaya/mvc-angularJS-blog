@@ -18,7 +18,7 @@ namespace OzerBlog.Controllers
             using (var db = new DBContext())
             {
                 List<Posts> postList = new List<BlogDAL.DAL.Posts>();
-                var posts = db.Posts.ToList().OrderByDescending(ok => ok.ID);
+                var posts = db.Posts.Include("Label").ToList().OrderByDescending(ok => ok.ID);
                 foreach (var item in posts)
                 {
                     string itemText = GeneratePostFontText(item.content);

@@ -166,7 +166,7 @@ namespace OzerBlog.Controllers
             }
         }
 
-        public ActionResult SaveEditPost(int ID, string Content, string Title, string Labels)
+        public ActionResult SaveEditPost(int ID, string Content, string Title, string Labels, string labelsText)
         {
             using (var db = new DBContext())
             {
@@ -183,9 +183,11 @@ namespace OzerBlog.Controllers
                     post.Label = new List<Labels>();
                     foreach (var item in labelList)
                     {
+                        int labelID = Convert.ToInt32(item);
                         post.Label.Add(new Labels
                         {
-                            LabelTypes_ID = Convert.ToInt32(item)
+                            LabelTypes_ID = labelID,
+                            Label = db.LabelTypes.FirstOrDefault(ok => ok.ID == labelID).Key
 
                         });
                     }
@@ -201,9 +203,12 @@ namespace OzerBlog.Controllers
 
                     foreach (var item in labelList)
                     {
+                        int labelID = Convert.ToInt32(item);
                         post.Label.Add(new Labels
                         {
-                            LabelTypes_ID = Convert.ToInt32(item)
+                            LabelTypes_ID = labelID,
+                            Label = db.LabelTypes.FirstOrDefault(ok => ok.ID == labelID).Key
+
                         });
                     }
                 }
