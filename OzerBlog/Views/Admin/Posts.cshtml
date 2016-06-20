@@ -49,9 +49,14 @@
                             <tr>
                                 <td>
                                     <h5>Yazı İçeriği</h5>
-                                    <div text-angular ng-model="postContent">
+                                    @*<div text-angular ng-model="postContent">
 
-                                    </div>
+                                        </div>*@
+
+
+                                    <div ckeditor="options" ng-model="postContent" ready="onReady()"></div>
+
+
 
                                 </td>
 
@@ -75,7 +80,7 @@
                                     <table>
                                         <tr>
                                             <td>
-                                                <input type="text" ng-model="newLabel" style="width:150px"/>
+                                                <input type="text" ng-model="newLabel" style="width:150px" />
                                                 <input type="submit" ng-click="addNewLabel(newLabel)" value="Ekle" style="width:60px;margin-top:10px" />
                                             </td>
                                         </tr>

@@ -178,7 +178,7 @@ namespace OzerBlog.Controllers
                     {
                         content = Content,
                         title = Title,
-                        date = DateTime.Now
+                        postDate = DateTime.Now
                     };
 
                     post.Label = new List<Labels>();
@@ -199,7 +199,7 @@ namespace OzerBlog.Controllers
                     Posts post = db.Posts.Include("Label").FirstOrDefault(ok => ok.ID == ID);
                     post.content = Content;
                     post.title = Title;
-                    post.date = DateTime.Now;
+                    post.postDate = DateTime.Now;
                     db.Labels.RemoveRange(db.Labels.Where(ok => ok.Post_ID == ID));
 
                     foreach (var item in labelList)

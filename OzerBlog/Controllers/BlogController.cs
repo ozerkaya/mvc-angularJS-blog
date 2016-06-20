@@ -52,17 +52,17 @@ namespace OzerBlog.Controllers
 
         private string GeneratePostFontText(string text)
         {
-            if (text.Length <= 500)
+            if (text.Length <= 250)
             {
                 return text + "...";
             }
             else
             {
                 string returnText = String.Empty;
-                for (int i = 0; i <= 500; i++)
+                for (int i = 0; i <= 250; i++)
                 {
                     returnText = returnText + text.Substring(i, 1);
-                    if (i == 500)
+                    if (i == 250)
                     {
                         int j = i;
                         while (true)
@@ -74,7 +74,7 @@ namespace OzerBlog.Controllers
                             }
                             else
                             {
-                                returnText = returnText + text.Substring(j, 1);
+                                returnText = returnText + text.Substring(j+1, 1);
                                 j++;
                             }
 

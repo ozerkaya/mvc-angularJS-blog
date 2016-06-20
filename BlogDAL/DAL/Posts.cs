@@ -14,6 +14,6 @@ namespace BlogDAL.DAL
 
         public IList<Labels> Label { get; set; }
 
-        public DateTime date { get; set; }
+        public DateTime postDate { get; set; }
     }
 }
