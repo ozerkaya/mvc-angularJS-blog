@@ -58,6 +58,14 @@ myApp.controller("PostController", function ($scope, $http, $location, $anchorSc
         });
     }
 
+    $scope.addNewLabel = function (label) {
+        var data = { label: label };
+        $http.post("/Admin/AddNewLabel/", data).success(function (result) {
+            $scope.enumList.push(result);
+            $scope.newLabel = "";
+        });
+    }
+
     $scope.labelClick = function (ID, checkValue) {
         if (checkValue) {
             $scope.labels.push(ID);

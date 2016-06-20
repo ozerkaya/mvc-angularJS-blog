@@ -72,12 +72,20 @@
                                             </td>
                                         </tr>
                                     </table>
-                                    <input type="text" ng-model="labelsTxt" hidden/>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <input type="text" ng-model="newLabel" style="width:150px"/>
+                                                <input type="submit" ng-click="addNewLabel(newLabel)" value="Ekle" style="width:60px;margin-top:10px" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <input type="text" ng-model="labelsTxt" hidden />
                                 </td>
                             </tr>
                             <tr>
                                 <td style="float:right">
-                                    <input ng-click="saveEditPost(postID,postTitle,postContent,labelsTxt)" type="submit" value="Kaydet" style="width:150px;margin-top:10px" />
+                                    <input ng-click="saveEditPost(postID,postTitle,postContent,labelsTxt)" type="submit" value="Kaydet" style="width:150px;" />
                                 </td>
                             </tr>
                         </table>
@@ -98,6 +106,7 @@
                                 <a class="list-group-item">{{post.title}}</a>
                             </td>
                         </tr>
+
                     </table>
 
                 </div>

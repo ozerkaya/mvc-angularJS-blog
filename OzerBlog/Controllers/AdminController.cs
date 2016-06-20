@@ -275,5 +275,26 @@ namespace OzerBlog.Controllers
                 return Json(userList, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public ActionResult AddNewLabel(string label)
+        {
+            using (var db = new DBContext())
+            {
+                db.LabelTypes.Add(new LabelTypes
+                {
+                    Key = label
+                });
+                db.SaveChanges();
+
+                dictionary dic = new dictionary
+                {
+                    key = label,
+                    value = db.LabelTypes.FirstOrDefault(ok => ok.Key == label).ID,
+                    check = false
+                };
+
+                return Json(dic, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }
