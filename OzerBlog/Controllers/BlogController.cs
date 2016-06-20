@@ -44,7 +44,7 @@ namespace OzerBlog.Controllers
             }
             using (var db = new DBContext())
             {
-                Posts posts = db.Posts.FirstOrDefault(ok => ok.ID == id);
+                Posts posts = db.Posts.Include("Label").FirstOrDefault(ok => ok.ID == id);
                 return View(posts);
             }
 

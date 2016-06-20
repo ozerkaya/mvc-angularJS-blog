@@ -13,5 +13,7 @@ namespace BlogDAL.DAL
         public string content { get; set; }
 
         public IList<Labels> Label { get; set; }
+
+        public DateTime date { get; set; }
     }
 }

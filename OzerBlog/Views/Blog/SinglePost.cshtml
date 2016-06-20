@@ -13,5 +13,19 @@
             </p>
         </td>
     </tr>
+    <tr>
+        <td>
+            <label class="label-warning" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px">@Model.date.ToString("dd.MM.yyyy")</label>
+
+            @foreach (var label in Model.Label)
+            {
+
+                <label class="label-info" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px">@label.Label</label>
+
+            }
+        </td>
+    </tr>
+
+
 
 </table>
