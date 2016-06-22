@@ -2,12 +2,13 @@
 using BlogDAL.DAL;
 using OzerBlog.Helpers;
 using OzerBlog.Models;
-using RTE;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using RepositoryBL;
+using BlogDAL;
 
 namespace OzerBlog.Controllers
 {
@@ -32,21 +33,22 @@ namespace OzerBlog.Controllers
         public ActionResult Index(Login model)
         {
             string sha256 = Security.sha256_hash(model.password);
-            using (var connection = new DBContext())
+
+            SimpleRepo<User> repo = new SimpleRepo<User>(new DBContext());
+
+            if (repo.countByWhere(ok => ok.username == model.username && ok.password == sha256) > 0)
             {
-                if (connection.Users.Count(ok => ok.username == model.username && ok.password == sha256) > 0)
-                {
-                    Session["Username"] = model.username;
-                    Session["Login"] = "True";
-                    return RedirectToAction("AdminMenu", "Admin");
-                }
-                else
-                {
-                    Session["Login"] = "False";
-                    model.loginMessage = "Kullanıcı Adı yada Şifre Hatalı!";
-                    return View(model);
-                }
+                Session["Username"] = model.username;
+                Session["Login"] = "True";
+                return RedirectToAction("AdminMenu", "Admin");
             }
+            else
+            {
+                Session["Login"] = "False";
+                model.loginMessage = "Kullanıcı Adı yada Şifre Hatalı!";
+                return View(model);
+            }
+
 
         }
 
@@ -61,9 +63,9 @@ namespace OzerBlog.Controllers
         {
             using (var db = new DBContext())
             {
-                return View(db.ThemeOptions.FirstOrDefault());
+                SimpleRepo<ThemeOptions> repo = new SimpleRepo<ThemeOptions>(new DBContext());
+                return View(repo.getFirstOrDefault());
             }
-
         }
 
         [HttpPost]

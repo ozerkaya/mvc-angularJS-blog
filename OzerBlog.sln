@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OzerBlog", "OzerBlog\OzerBl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogDAL", "BlogDAL\BlogDAL.csproj", "{1B6ED316-65BE-425E-8359-56D668B34A2A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryBL", "RepositoryBL\RepositoryBL.csproj", "{B71D51AC-8999-4F36-B1C2-6A3FDD1A0F23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1B6ED316-65BE-425E-8359-56D668B34A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B6ED316-65BE-425E-8359-56D668B34A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B6ED316-65BE-425E-8359-56D668B34A2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B71D51AC-8999-4F36-B1C2-6A3FDD1A0F23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B71D51AC-8999-4F36-B1C2-6A3FDD1A0F23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B71D51AC-8999-4F36-B1C2-6A3FDD1A0F23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B71D51AC-8999-4F36-B1C2-6A3FDD1A0F23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

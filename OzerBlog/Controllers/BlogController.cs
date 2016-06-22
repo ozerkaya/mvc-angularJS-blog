@@ -5,29 +5,22 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BlogDAL;
-using BlogDAL.DAL;
+using RepositoryBL;
+using RepositoryBL.Interfaces;
 
 namespace OzerBlog.Controllers
 {
     public class BlogController : Controller
     {
+        SimpleRepo<Posts> repo = new SimpleRepo<BlogDAL.DAL.Posts>(new DBContext());
         // GET: Blog
         [HttpGet]
         public ActionResult Index()
         {
-            using (var db = new DBContext())
+            using (UnitOfWork work = new UnitOfWork())
             {
-                List<Posts> postList = new List<BlogDAL.DAL.Posts>();
-                var posts = db.Posts.Include("Label").ToList().OrderByDescending(ok => ok.ID);
-                foreach (var item in posts)
-                {
-                    string itemText = GeneratePostFontText(item.content);
-                    item.content = itemText;
-                    postList.Add(item);
-                }
-                return View(postList);
+                return View(work.PostsRepository.list("Label"));
             }
-
         }
 
         [HttpPost]
@@ -42,10 +35,9 @@ namespace OzerBlog.Controllers
             {
                 return RedirectToAction("Index", "Blog");
             }
-            using (var db = new DBContext())
+            using (UnitOfWork work = new UnitOfWork())
             {
-                Posts posts = db.Posts.Include("Label").FirstOrDefault(ok => ok.ID == id);
-                return View(posts);
+                return View(work.PostsRepository.find(ok => ok.ID == id, "Label").FirstOrDefault());
             }
 
         }
@@ -74,7 +66,7 @@ namespace OzerBlog.Controllers
                             }
                             else
                             {
-                                returnText = returnText + text.Substring(j+1, 1);
+                                returnText = returnText + text.Substring(j + 1, 1);
                                 j++;
                             }
 

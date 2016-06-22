@@ -517,19 +517,6 @@
     <Content Include="Content\less\clean-blog.less" />
     <Content Include="Content\less\mixins.less" />
     <Content Include="Content\less\variables.less" />
-    <Content Include="Content\ng-ckeditor\.gitignore" />
-    <Content Include="Content\ng-ckeditor\examples\1.html" />
-    <Content Include="Content\ng-ckeditor\examples\css\bootstrap.css" />
-    <Content Include="Content\ng-ckeditor\examples\demo1.html" />
-    <Content Include="Content\ng-ckeditor\examples\demo2.html" />
-    <Content Include="Content\ng-ckeditor\examples\inlineall.html" />
-    <Content Include="Content\ng-ckeditor\Gruntfile.js" />
-    <Content Include="Content\ng-ckeditor\ng-ckeditor.css" />
-    <Content Include="Content\ng-ckeditor\ng-ckeditor.js" />
-    <Content Include="Content\ng-ckeditor\ng-ckeditor.min.js" />
-    <Content Include="Content\ng-ckeditor\test\karma.conf.js" />
-    <Content Include="Content\ng-ckeditor\test\spec\directiveOnFormSpec.js" />
-    <Content Include="Content\ng-ckeditor\test\spec\directiveSpec.js" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\textAngular-1.5.0\.gitignore" />
     <Content Include="Content\textAngular-1.5.0\demo\demo.html" />
@@ -606,19 +593,6 @@
     <Content Include="Content\ckeditor\samples\toolbarconfigurator\font\fontello.woff" />
     <Content Include="Content\ckeditor\samples\toolbarconfigurator\lib\codemirror\LICENSE" />
     <Content Include="Content\ckeditor\skins\moono\readme.md" />
-    <Content Include="Content\ng-ckeditor\.bowerrc" />
-    <Content Include="Content\ng-ckeditor\.jshintrc" />
-    <Content Include="Content\ng-ckeditor\.travis.yml" />
-    <Content Include="Content\ng-ckeditor\bower.json" />
-    <Content Include="Content\ng-ckeditor\examples\checkspelling.php" />
-    <Content Include="Content\ng-ckeditor\examples\spellcheck\handler.php" />
-    <Content Include="Content\ng-ckeditor\examples\test.php" />
-    <Content Include="Content\ng-ckeditor\LICENSE" />
-    <Content Include="Content\ng-ckeditor\ng-ckeditor.min.js.map" />
-    <Content Include="Content\ng-ckeditor\package.json" />
-    <Content Include="Content\ng-ckeditor\README.md" />
-    <Content Include="Content\ng-ckeditor\styles\ng-ckeditor.less" />
-    <Content Include="Content\ng-ckeditor\test\.jshintrc" />
     <Content Include="Content\angular-ckeditor-master\.editorconfig" />
     <Content Include="Content\angular-ckeditor-master\.jshintignore" />
     <Content Include="Content\angular-ckeditor-master\.jshintrc" />
@@ -712,6 +686,10 @@
     <ProjectReference Include="..\BlogDAL\BlogDAL.csproj">
       <Project>{1b6ed316-65be-425e-8359-56d668b34a2a}</Project>
       <Name>BlogDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RepositoryBL\RepositoryBL.csproj">
+      <Project>{b71d51ac-8999-4f36-b1c2-6a3fdd1a0f23}</Project>
+      <Name>RepositoryBL</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
