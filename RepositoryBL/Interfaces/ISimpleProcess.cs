@@ -10,11 +10,11 @@ namespace RepositoryBL.Interfaces
 {
     public interface ISimpleProcess<T> where T : class
     {
-        T findById(object id);
+        T findById(object id, string include = "NoN");
 
-        IEnumerable<T> find(Expression<Func<T, bool>> Filter = null);
+        IEnumerable<T> find(Expression<Func<T, bool>> Filter = null, string include = "NoN");
 
-        IList<T> list(string include = "NoN");
+        List<T> list(string include = "NoN");
 
         IList<T> listByWhere(Expression<Func<T, bool>> Filter = null);
 
@@ -27,5 +27,7 @@ namespace RepositoryBL.Interfaces
         bool insert(T Entity);
 
         T getFirstOrDefault();
+
+        bool removeRange(Expression<Func<T, bool>> Filter = null);
     }
 }

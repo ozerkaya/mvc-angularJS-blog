@@ -107,7 +107,7 @@ namespace RepositoryBL
 
         }
 
-        public IList<T> list(string include = "NoN")
+        public List<T> list(string include = "NoN")
         {
             if (include == "NoN")
             {
@@ -118,7 +118,7 @@ namespace RepositoryBL
                 return dbset.Include(include).ToList();
             }
 
-        }
+        }      
 
         public IList<T> listByWhere(Expression<Func<T, bool>> Filter = null)
         {
@@ -135,14 +135,20 @@ namespace RepositoryBL
             return dbset.FirstOrDefault();
         }
 
-        public T findById(object id)
+        public bool removeRange(Expression<Func<T, bool>> Filter = null)
         {
-            throw new NotImplementedException();
+            try
+            {
+                dbset.RemoveRange(dbset.Where(Filter));
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
         }
 
-        public IEnumerable<T> find(Expression<Func<T, bool>> Filter = null)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

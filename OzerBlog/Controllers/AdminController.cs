@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using RepositoryBL;
 using BlogDAL;
+using RepositoryBL.Interfaces;
 
 namespace OzerBlog.Controllers
 {
@@ -34,21 +35,21 @@ namespace OzerBlog.Controllers
         {
             string sha256 = Security.sha256_hash(model.password);
 
-            SimpleRepo<User> repo = new SimpleRepo<User>(new DBContext());
-
-            if (repo.countByWhere(ok => ok.username == model.username && ok.password == sha256) > 0)
+            using (UnitOfWork work = new UnitOfWork())
             {
-                Session["Username"] = model.username;
-                Session["Login"] = "True";
-                return RedirectToAction("AdminMenu", "Admin");
+                if (work.UserRepository.countByWhere(ok => ok.username == model.username && ok.password == sha256) > 0)
+                {
+                    Session["Username"] = model.username;
+                    Session["Login"] = "True";
+                    return RedirectToAction("AdminMenu", "Admin");
+                }
+                else
+                {
+                    Session["Login"] = "False";
+                    model.loginMessage = "Kullanıcı Adı yada Şifre Hatalı!";
+                    return View(model);
+                }
             }
-            else
-            {
-                Session["Login"] = "False";
-                model.loginMessage = "Kullanıcı Adı yada Şifre Hatalı!";
-                return View(model);
-            }
-
 
         }
 
@@ -61,24 +62,25 @@ namespace OzerBlog.Controllers
         [HttpGet]
         public ActionResult AdminMenu()
         {
-            using (var db = new DBContext())
+            using (UnitOfWork work = new UnitOfWork())
             {
-                SimpleRepo<ThemeOptions> repo = new SimpleRepo<ThemeOptions>(new DBContext());
-                return View(repo.getFirstOrDefault());
+                return View(work.ThemeOptionsRepository.getFirstOrDefault());
             }
         }
 
         [HttpPost]
         public ActionResult AdminMenu(ThemeOptions options)
         {
-            using (var db = new DBContext())
+            using (UnitOfWork work = new UnitOfWork())
             {
-                var theme = db.ThemeOptions.FirstOrDefault(ok => ok.ID == options.ID);
+                var theme = work.ThemeOptionsRepository.findById(options.ID);
                 theme.BlogBossName = options.BlogBossName;
                 theme.BlogBossTitle = options.BlogBossTitle;
                 theme.BlogFooterText = options.BlogFooterText;
                 theme.BlogHeaderPhoto = options.BlogHeaderPhoto;
-                db.SaveChanges();
+
+                work.ThemeOptionsRepository.update(theme);
+                work.Save();
 
                 Session["BlogBossName"] = options.BlogBossName;
                 Session["BlogBossTitle"] = options.BlogBossTitle;
@@ -108,15 +110,15 @@ namespace OzerBlog.Controllers
 
         public ActionResult PostsGet()
         {
-            using (var db = new DBContext())
+            using (UnitOfWork work = new UnitOfWork())
             {
                 PostsGet PostsGet = new PostsGet
                 {
-                    Posts = db.Posts.OrderByDescending(ok => ok.ID).ToList(),
+                    Posts = work.PostsRepository.list(),
                     Enums = new List<dictionary>()
                 };
 
-                foreach (var item in db.LabelTypes.ToList())
+                foreach (var item in work.LabelTypesRepository.list())
                 {
                     dictionary dic = new dictionary
                     {
@@ -133,15 +135,15 @@ namespace OzerBlog.Controllers
 
         public ActionResult PostsEdit(int id)
         {
-            using (var db = new DBContext())
+            using (UnitOfWork work = new UnitOfWork())
             {
                 PostEditTake model = new PostEditTake
                 {
-                    Post = db.Posts.FirstOrDefault(ok => ok.ID == id)
+                    Post = work.PostsRepository.findById(id)
                 };
 
                 model.Labels = new List<label>();
-                foreach (var item in db.Labels.Where(ok => ok.Post_ID == id))
+                foreach (var item in work.LabelsRepository.listByWhere(ok => ok.Post_ID == id))
                 {
                     model.Labels.Add(new label
                     {
@@ -157,20 +159,17 @@ namespace OzerBlog.Controllers
 
         public ActionResult PostDelete(int id)
         {
-            using (var db = new DBContext())
+            using (UnitOfWork work = new UnitOfWork())
             {
-                var post = db.Posts.FirstOrDefault(ok => ok.ID == id);
-                db.Posts.Attach(post);
-                db.Posts.Remove(post);
-                db.SaveChanges();
-                var postList = db.Posts.ToList().OrderByDescending(ok => ok.ID);
-                return Json(postList, JsonRequestBehavior.AllowGet);
+                work.PostsRepository.delete(ok => ok.ID == id);
+                work.Save();
+                return Json(work.PostsRepository.list(), JsonRequestBehavior.AllowGet);
             }
         }
 
         public ActionResult SaveEditPost(int ID, string Content, string Title, string Labels, string labelsText)
         {
-            using (var db = new DBContext())
+            using (UnitOfWork work = new UnitOfWork())
             {
                 Labels = Labels.Substring(0, Labels.Length - 1);
                 var labelList = Labels.Split(',');
@@ -190,19 +189,20 @@ namespace OzerBlog.Controllers
                         post.Label.Add(new Labels
                         {
                             LabelTypes_ID = labelID,
-                            Label = db.LabelTypes.FirstOrDefault(ok => ok.ID == labelID).Key
+                            Label = work.LabelTypesRepository.findById(labelID).Key
 
                         });
                     }
-                    db.Posts.Add(post);
+                    work.PostsRepository.insert(post);
+                    work.Save();
                 }
                 else
                 {
-                    Posts post = db.Posts.Include("Label").FirstOrDefault(ok => ok.ID == ID);
+                    Posts post = work.PostsRepository.findById(ID, "Label");
                     post.content = Content;
                     post.title = Title;
                     post.postDate = DateTime.Now;
-                    db.Labels.RemoveRange(db.Labels.Where(ok => ok.Post_ID == ID));
+                    work.LabelsRepository.removeRange(ok => ok.Post_ID == ID);
 
                     foreach (var item in labelList)
                     {
@@ -210,52 +210,47 @@ namespace OzerBlog.Controllers
                         post.Label.Add(new Labels
                         {
                             LabelTypes_ID = labelID,
-                            Label = db.LabelTypes.FirstOrDefault(ok => ok.ID == labelID).Key
+                            Label = work.LabelTypesRepository.findById(labelID).Key
 
                         });
                     }
                 }
 
-                db.SaveChanges();
-                var postList = db.Posts.Select(ok => new { ok.content, ok.ID, ok.title }).OrderByDescending(ok => ok.ID).ToList();
-                return Json(postList, JsonRequestBehavior.AllowGet);
+                work.Save();
+                var postList = work.PostsRepository.list().Select(ok => new { ok.content, ok.ID, ok.title }).OrderByDescending(ok => ok.ID);
+                return Json(null, JsonRequestBehavior.AllowGet);
             }
         }
 
         public ActionResult UsersGet()
         {
-            using (var db = new DBContext())
+            using (UnitOfWork work = new UnitOfWork())
             {
-                var userList = db.Users.ToList().OrderByDescending(ok => ok.ID);
-                return Json(userList, JsonRequestBehavior.AllowGet);
+                return Json(work.UserRepository.list().OrderByDescending(ok => ok.ID), JsonRequestBehavior.AllowGet);
             }
         }
 
         public ActionResult UsersEdit(int id)
         {
-            using (var db = new DBContext())
+            using (UnitOfWork work = new UnitOfWork())
             {
-                User user = db.Users.FirstOrDefault(ok => ok.ID == id);
-                return Json(user, JsonRequestBehavior.AllowGet);
+                return Json(work.UserRepository.find(ok => ok.ID == id).FirstOrDefault(), JsonRequestBehavior.AllowGet);
             }
         }
 
         public ActionResult UserDelete(int id)
         {
-            using (var db = new DBContext())
+            using (UnitOfWork work = new UnitOfWork())
             {
-                var user = db.Users.FirstOrDefault(ok => ok.ID == id);
-                db.Users.Attach(user);
-                db.Users.Remove(user);
-                db.SaveChanges();
-                var userList = db.Users.ToList().OrderByDescending(ok => ok.ID);
-                return Json(userList, JsonRequestBehavior.AllowGet);
+                work.UserRepository.deleteById(id);
+                work.Save();
+                return Json(work.UserRepository.list().OrderByDescending(ok => ok.ID), JsonRequestBehavior.AllowGet);
             }
         }
 
         public ActionResult SaveEditUser(int ID, string Username, string Password)
         {
-            using (var db = new DBContext())
+            using (UnitOfWork work = new UnitOfWork())
             {
                 if (ID == 0)
                 {
@@ -264,35 +259,34 @@ namespace OzerBlog.Controllers
                         username = Username,
                         password = Security.sha256_hash(Password)
                     };
-                    db.Users.Add(user);
+                    work.UserRepository.insert(user);
                 }
                 else
                 {
-                    User user = db.Users.FirstOrDefault(ok => ok.ID == ID);
+                    User user = work.UserRepository.findById(ID);
                     user.username = Username;
                     user.password = Security.sha256_hash(Password);
                 }
-                db.SaveChanges();
-                var userList = db.Users.ToList().OrderByDescending(ok => ok.ID);
+                work.Save();
+                var userList = work.UserRepository.list().OrderByDescending(ok => ok.ID);
                 return Json(userList, JsonRequestBehavior.AllowGet);
             }
         }
 
         public ActionResult AddNewLabel(string label)
         {
-            using (var db = new DBContext())
+            using (UnitOfWork work = new UnitOfWork())
             {
-                db.LabelTypes.Add(new LabelTypes
+                work.LabelTypesRepository.insert(new LabelTypes
                 {
                     Key = label
                 });
-                db.SaveChanges();
+                work.Save();
 
                 dictionary dic = new dictionary
                 {
                     key = label,
-                    value = db.LabelTypes.FirstOrDefault(ok => ok.Key == label).ID,
-                    check = false
+                    value = work.LabelTypesRepository.listByWhere(ok => ok.Key == label).FirstOrDefault().ID,                  check = false
                 };
 
                 return Json(dic, JsonRequestBehavior.AllowGet);

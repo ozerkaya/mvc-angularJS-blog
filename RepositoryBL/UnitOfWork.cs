@@ -13,10 +13,14 @@ namespace RepositoryBL.Interfaces
     public class UnitOfWork : IOperations
     {
         private DBContext context = new BlogDAL.DBContext();
+
         private SimpleRepo<ThemeOptions> _themeOptionsRepository;
         private SimpleRepo<Posts> _postsRepository;
-        private bool _disposed = false;
+        private SimpleRepo<User> _userRepository;
+        private SimpleRepo<LabelTypes> _labelTypesRepository;
+        private SimpleRepo<Labels> _labelsRepository;
 
+        private bool _disposed = false;
 
         public SimpleRepo<ThemeOptions> ThemeOptionsRepository
         {
@@ -39,6 +43,42 @@ namespace RepositoryBL.Interfaces
                     _postsRepository = new SimpleRepo<Posts>(context);
                 }
                 return _postsRepository;
+            }
+        }
+
+        public SimpleRepo<User> UserRepository
+        {
+            get
+            {
+                if (_userRepository == null)
+                {
+                    _userRepository = new SimpleRepo<User>(context);
+                }
+                return _userRepository;
+            }
+        }
+
+        public SimpleRepo<LabelTypes> LabelTypesRepository
+        {
+            get
+            {
+                if (_labelTypesRepository == null)
+                {
+                    _labelTypesRepository = new SimpleRepo<LabelTypes>(context);
+                }
+                return _labelTypesRepository;
+            }
+        }
+
+        public SimpleRepo<Labels> LabelsRepository
+        {
+            get
+            {
+                if (_labelsRepository == null)
+                {
+                    _labelsRepository = new SimpleRepo<Labels>(context);
+                }
+                return _labelsRepository;
             }
         }
 
