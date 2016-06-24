@@ -291,7 +291,6 @@
 /// <reference path="../content/ckeditor/plugins/syntaxhighlight/lang/en.js" />
 /// <reference path="../content/ckeditor/plugins/syntaxhighlight/lang/fr.js" />
 /// <reference path="../content/ckeditor/plugins/syntaxhighlight/lang/zh-cn.js" />
-/// <reference path="../angularjscontrollers/ckeditor.js" />
 /// <reference path="../content/angular-ckeditor-master/angular-ckeditor.js" />
 /// <reference path="../content/angular-ckeditor-master/gruntfile.js" />
 /// <reference path="../content/angular-ckeditor-master/karma.conf.js" />

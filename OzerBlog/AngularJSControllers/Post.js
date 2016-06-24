@@ -44,6 +44,7 @@ myApp.controller("PostController", function ($scope, $http, $location, $anchorSc
         $http.post("/Admin/PostDelete/" + ID).then(function (result) {
             $scope.postList = result.data;
         });
+        swal("İşlem Başarılı", "", "success")
     }
 
     ////Save and Edit 
@@ -55,7 +56,12 @@ myApp.controller("PostController", function ($scope, $http, $location, $anchorSc
             $scope.postContent = "";
             $scope.postID = 0;
             $scope.labelsTxt = "";
+
+            for (var i = 0; i < $scope.enumList.length; i++) {
+                $scope.enumList[i].check = false;
+            }
         });
+        swal("İşlem Başarılı", "", "success")
     }
 
     $scope.addNewLabel = function (label) {
@@ -64,6 +70,7 @@ myApp.controller("PostController", function ($scope, $http, $location, $anchorSc
             $scope.enumList.push(result);
             $scope.newLabel = "";
         });
+        swal("İşlem Başarılı", "", "success")
     }
 
     $scope.labelClick = function (ID, checkValue) {

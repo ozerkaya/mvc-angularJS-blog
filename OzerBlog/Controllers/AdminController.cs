@@ -114,7 +114,7 @@ namespace OzerBlog.Controllers
             {
                 PostsGet PostsGet = new PostsGet
                 {
-                    Posts = work.PostsRepository.list(),
+                    Posts = work.PostsRepository.list().OrderByDescending(ok => ok.ID).ToList(),
                     Enums = new List<dictionary>()
                 };
 
@@ -218,7 +218,7 @@ namespace OzerBlog.Controllers
 
                 work.Save();
                 var postList = work.PostsRepository.list().Select(ok => new { ok.content, ok.ID, ok.title }).OrderByDescending(ok => ok.ID);
-                return Json(null, JsonRequestBehavior.AllowGet);
+                return Json(postList, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -286,7 +286,8 @@ namespace OzerBlog.Controllers
                 dictionary dic = new dictionary
                 {
                     key = label,
-                    value = work.LabelTypesRepository.listByWhere(ok => ok.Key == label).FirstOrDefault().ID,                  check = false
+                    value = work.LabelTypesRepository.listByWhere(ok => ok.Key == label).FirstOrDefault().ID,
+                    check = false
                 };
 
                 return Json(dic, JsonRequestBehavior.AllowGet);

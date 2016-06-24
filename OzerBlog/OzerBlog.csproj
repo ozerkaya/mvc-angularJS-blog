@@ -101,7 +101,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AngularJSControllers\CKEditor.js" />
     <Content Include="AngularJSControllers\IndexBlog.js" />
     <Content Include="AngularJSControllers\Post.js" />
     <Content Include="AngularJSControllers\User.js" />
