@@ -8,5 +8,14 @@ CKEDITOR.editorConfig = function( config ) {
 	// config.language = 'fr';
     // config.uiColor = '#AADC6E';
 
+    //config.extraPlugins = 'codesnippet';
+    //config.codeSnippet_theme = 'monokai_sublime';
+
     config.extraPlugins = 'syntaxhighlight';
+  
+    
+
+    //config.extraPlugins = 'lineutils';
 };
+
+

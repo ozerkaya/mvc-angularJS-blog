@@ -19,7 +19,7 @@ namespace OzerBlog.Controllers
         {
             using (UnitOfWork work = new UnitOfWork())
             {
-                return View(work.PostsRepository.list("Label"));
+                return View(work.PostsRepository.list("Label").OrderByDescending(ok => ok.ID));
             }
         }
 

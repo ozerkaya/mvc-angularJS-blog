@@ -1,4 +1,4 @@
-﻿var myApp = angular.module('myPosts', ['ngSanitize', 'textAngular', 'ckeditor']);
+﻿var myApp = angular.module('myPosts', ['ngSanitize', 'ckeditor']);
 myApp.controller("PostController", function ($scope, $http, $location, $anchorScroll) {
     $scope.labels = [];
     ////Take Post List
@@ -80,15 +80,5 @@ myApp.controller("PostController", function ($scope, $http, $location, $anchorSc
         }
     }
 
-    $scope.options = {
-        language: 'en',
-        allowedContent: true,
-        entities: false
-    };
-
-    // Called when the editor is completely ready.
-    //$scope.onReady = function () {
-    //    // ...
-    //};
 
 });
