@@ -35,7 +35,16 @@
         {
             <a href="/Admin/Pages/" class="list-group-item">Sayfalar</a>
         }
+
+        if (HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString() == "SocialNetwork")
+        {
+            <a href="/Admin/SocialNetwork/" class="list-group-item active">Sosyal Ağ</a>
+        }
+        else
+        {
+            <a href="/Admin/SocialNetwork/" class="list-group-item">Sosyal Ağ</a>
+        }
 }
 
-    
+
 </div>

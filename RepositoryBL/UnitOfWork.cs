@@ -19,6 +19,7 @@ namespace RepositoryBL.Interfaces
         private SimpleRepo<User> _userRepository;
         private SimpleRepo<LabelTypes> _labelTypesRepository;
         private SimpleRepo<Labels> _labelsRepository;
+        private SimpleRepo<SocialContacts> _socialContactsRepository;
 
         private bool _disposed = false;
 
@@ -79,6 +80,18 @@ namespace RepositoryBL.Interfaces
                     _labelsRepository = new SimpleRepo<Labels>(context);
                 }
                 return _labelsRepository;
+            }
+        }
+
+        public SimpleRepo<SocialContacts> SocialContactsRepository
+        {
+            get
+            {
+                if (_socialContactsRepository == null)
+                {
+                    _socialContactsRepository = new SimpleRepo<SocialContacts>(context);
+                }
+                return _socialContactsRepository;
             }
         }
 

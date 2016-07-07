@@ -15,11 +15,20 @@ namespace OzerBlog.Controllers
         SimpleRepo<Posts> repo = new SimpleRepo<BlogDAL.DAL.Posts>(new DBContext());
         // GET: Blog
         [HttpGet]
+        [OzerBlog.Interceptors.Logging.CustomLogger]
         public ActionResult Index()
         {
             using (UnitOfWork work = new UnitOfWork())
             {
-                return View(work.PostsRepository.list("Label").OrderByDescending(ok => ok.ID));
+                var postList = new List<Posts>();
+
+                foreach (var item in work.PostsRepository.list("Label").OrderByDescending(ok => ok.ID))
+                {
+                    string itemText = GeneratePostFontText(item.content);
+                    item.content = itemText;
+                    postList.Add(item);
+                }
+                return View(postList);
             }
         }
 
@@ -61,7 +70,7 @@ namespace OzerBlog.Controllers
                         {
                             if (text.Substring(j, 1) == " ")
                             {
-                                returnText = returnText + "...";
+                                returnText = returnText.Substring(0, returnText.Length - 1) + "...";
                                 break;
                             }
                             else

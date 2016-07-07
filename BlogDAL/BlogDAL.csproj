@@ -82,6 +82,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL\SocialContacts.cs" />
     <Compile Include="DAL\Labels.cs" />
     <Compile Include="DAL\LabelTypes.cs" />
     <Compile Include="DAL\Pages.cs" />

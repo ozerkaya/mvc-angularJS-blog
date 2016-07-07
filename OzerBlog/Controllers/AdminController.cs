@@ -179,7 +179,7 @@ namespace OzerBlog.Controllers
                     {
                         content = Content,
                         title = Title,
-                        postDate = DateTime.Now
+                        date = DateTime.Now
                     };
 
                     post.Label = new List<Labels>();
@@ -201,7 +201,7 @@ namespace OzerBlog.Controllers
                     Posts post = work.PostsRepository.findById(ID, "Label");
                     post.content = Content;
                     post.title = Title;
-                    post.postDate = DateTime.Now;
+                    post.date = DateTime.Now;
                     work.LabelsRepository.removeRange(ok => ok.Post_ID == ID);
 
                     foreach (var item in labelList)
@@ -292,6 +292,46 @@ namespace OzerBlog.Controllers
 
                 return Json(dic, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public ActionResult SaveEditSocialNetwork(int platformID, string platform, string adress, string image, bool active)
+        {
+            using (UnitOfWork work = new UnitOfWork())
+            {
+                if (platformID == 0)
+                {
+                    SocialContacts contact = new SocialContacts
+                    {
+                        Active = active,
+                        Address = adress,
+                        Image = image,
+                        Platform = platform
+                    };
+                    work.SocialContactsRepository.insert(contact);
+                }
+                else
+                {
+                    SocialContacts contact = work.SocialContactsRepository.findById(platformID);
+                    contact.Active = active;
+                    contact.Address = adress;
+                    contact.Image = image;
+                    contact.Platform = platform;
+                }
+                work.Save();
+                return Json(work.SocialContactsRepository.list().OrderByDescending(ok => ok.ID), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult SocialNetworkGet()
+        {
+            using (UnitOfWork work = new UnitOfWork())
+            {
+                return Json(work.SocialContactsRepository.list().OrderByDescending(ok => ok.ID), JsonRequestBehavior.AllowGet);
+            }
+        }
+        public ActionResult SocialNetwork()
+        {
+            return View();
         }
     }
 }

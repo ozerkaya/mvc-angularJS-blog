@@ -26,6 +26,8 @@ namespace BlogDAL
 
         public DbSet<LabelTypes> LabelTypes { get; set; }
 
+        public DbSet<SocialContacts> SocialContacts { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Labels>()

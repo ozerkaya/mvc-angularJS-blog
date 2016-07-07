@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "Pages";
+    Layout = "~/Views/Shared/_LayoutMini.cshtml";
+}
+
+
+<style>
+    table {
+        width: 100%;
+    }
+
+    input {
+        width: 95%;
+        margin: 5px;
+    }
+
+    td {
+        vertical-align: top;
+    }
+</style>
+<html ng-app="mySocialNetworks">
+<body>
+    <table style="margin-top:30px" ng-controller="SocialNetworksController">
+        <tr>
+            <td style="width:20%">
+                @Html.Partial("~/Views/Admin/_Menu.cshtml")
+            </td>
+            <td>
+                <div class="panel panel-primary" style="margin-left:10px">
+                    <div class="list-group">
+                        <a class="list-group-item active">Sosyal Ağ</a>
+                    </div>
+                    <div class="panel-body">
+                        <table>
+                            <tr>
+                                <td>
+                                    <input ng-model="platformID" hidden />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>Platform</h5>
+                                    <input class="standart" ng-model="platform" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>Adres</h5>
+                                    <input class="standart" ng-model="adress" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>İcon</h5>
+                                    <input class="standart" type="file" accept="image/*" image="image" fileread="platformIcon" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="float:left">
+                                    <h5>Aktif</h5>
+                                    <input class="standart" type="checkbox" ng-model="active" style="margin-left:-10px" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="float:right">
+                                    <input ng-click="savePlatform(platformID, platform, adress,platformIcon, active)" type="submit" value="Kaydet" style="width:150px;margin-top:10px" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="list-group" style="margin-left:10px">
+
+                    <table>
+                        <tr ng-repeat="platform in platformList">
+                            <td style="width:10%">
+                                <button ng-click="editPostTake(platform.ID);" class="list-group-item">Düzenle</button>
+                            </td>
+                            <td style="width:10%">
+                                <button ng-click="deletePost(platform.ID);" class="list-group-item">Sil</button>
+                            </td>
+                            <td style="width:80%">
+                                <a class="list-group-item">{{platform.Platform}}</a>
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+<script src="~/AngularJSControllers/SocialNetworks.js"></script>

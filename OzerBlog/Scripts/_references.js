@@ -400,3 +400,4 @@
 /// <reference path="../content/ckeditor/plugins/widget/lang/zh-cn.js" />
 /// <reference path="../content/ckeditor/plugins/widget/lang/zh.js" />
 /// <reference path="../content/ckeditor/plugins/lineutils/plugin.js" />
+/// <reference path="../angularjscontrollers/socialnetworks.js" />
