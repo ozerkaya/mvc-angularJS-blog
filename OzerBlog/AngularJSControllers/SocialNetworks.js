@@ -1,6 +1,6 @@
 ﻿var myApp = angular.module("mySocialNetworks", []);
-myApp.controller("SocialNetworksController", function ($scope, $http) {   
-    
+myApp.controller("SocialNetworksController", function ($scope, $http) {
+
 
     $http.get("/Admin/SocialNetworkGet/").then(function (result) {
         $scope.platformList = result.data;
@@ -8,7 +8,24 @@ myApp.controller("SocialNetworksController", function ($scope, $http) {
         $scope.active = true;
     });
 
-    $scope.savePlatform = function (platformID, platform, adress, platformIcon, active) {
+    $scope.deleteSocialNetwork = function (ID) {
+        $http.post("/Admin/SocialNetworkDelete/" + ID).then(function (result) {
+            $scope.platformList = result.data;
+        });
+        swal("İşlem Başarılı", "", "success")
+    }
+
+    $scope.editSocialNetwork = function (ID) {
+        $http.post("/Admin/SocialNetworkEdit/" + ID).then(function (result) {
+            $scope.platformID = result.data.ID;
+            $scope.platform = result.data.Platform;
+            $scope.adress = result.data.Address;
+            $scope.active = result.data.Active;
+            $scope.image = result.data.Image;
+        });
+    }
+
+    $scope.saveSocialNetwork = function (platformID, platform, adress, platformIcon, active) {
 
         var data = [{ platformID: platformID, platform: platform, adress: adress, image: platformIcon, active: active }];
 

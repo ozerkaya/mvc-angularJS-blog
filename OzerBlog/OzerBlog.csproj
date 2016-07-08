@@ -670,6 +670,7 @@
     <Content Include="Content\img\about-bg.jpg" />
     <Content Include="Content\img\contact-bg.jpg" />
     <Content Include="Content\img\home-bg.jpg" />
+    <Content Include="Content\img\ozer.jpg" />
     <Content Include="Content\img\post-bg.jpg" />
     <Content Include="Content\img\post-sample-image.jpg" />
     <Content Include="Content\js\bootstrap.js" />
@@ -737,7 +738,6 @@
     <Content Include="Content\textAngular-1.5.0\test\textAngularSanitize\ngBindHtml.spec.js" />
     <Content Include="Content\textAngular-1.5.0\test\textAngularSanitize\sanitize.spec.js" />
     <Content Include="Content\textAngular-1.5.0\test\textAngularToolbar.spec.js" />
-    <Content Include="deneme.html" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\angular-mocks.js" />

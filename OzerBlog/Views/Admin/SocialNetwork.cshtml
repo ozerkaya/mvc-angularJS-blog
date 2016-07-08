@@ -56,6 +56,11 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>
+                                    <img data-ng-src="{{image}}" />
+                                </td>
+                            </tr>
+                            <tr>
                                 <td style="float:left">
                                     <h5>Aktif</h5>
                                     <input class="standart" type="checkbox" ng-model="active" style="margin-left:-10px" />
@@ -63,7 +68,7 @@
                             </tr>
                             <tr>
                                 <td style="float:right">
-                                    <input ng-click="savePlatform(platformID, platform, adress,platformIcon, active)" type="submit" value="Kaydet" style="width:150px;margin-top:10px" />
+                                    <input ng-click="saveSocialNetwork(platformID, platform, adress,platformIcon, active)" type="submit" value="Kaydet" style="width:150px;margin-top:10px" />
                                 </td>
                             </tr>
                         </table>
@@ -75,10 +80,10 @@
                     <table>
                         <tr ng-repeat="platform in platformList">
                             <td style="width:10%">
-                                <button ng-click="editPostTake(platform.ID);" class="list-group-item">Düzenle</button>
+                                <button ng-click="editSocialNetwork(platform.ID);" class="list-group-item">Düzenle</button>
                             </td>
                             <td style="width:10%">
-                                <button ng-click="deletePost(platform.ID);" class="list-group-item">Sil</button>
+                                <button ng-click="deleteSocialNetwork(platform.ID);" class="list-group-item">Sil</button>
                             </td>
                             <td style="width:80%">
                                 <a class="list-group-item">{{platform.Platform}}</a>

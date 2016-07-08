@@ -13,7 +13,11 @@ namespace OzerBlog.Controllers
         // GET: SocialNetwork
         public ActionResult Index()
         {
-            return View();
+            using (UnitOfWork work = new UnitOfWork())
+            {
+                return View(work.SocialContactsRepository.list()); 
+            }
+            
         }
 
         

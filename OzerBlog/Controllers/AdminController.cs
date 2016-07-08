@@ -329,6 +329,25 @@ namespace OzerBlog.Controllers
                 return Json(work.SocialContactsRepository.list().OrderByDescending(ok => ok.ID), JsonRequestBehavior.AllowGet);
             }
         }
+
+        public ActionResult SocialNetworkDelete(int id)
+        {
+            using (UnitOfWork work = new UnitOfWork())
+            {
+                work.SocialContactsRepository.deleteById(id);
+                work.Save();
+                return Json(work.SocialContactsRepository.list().OrderByDescending(ok => ok.ID), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult SocialNetworkEdit(int id)
+        {
+            using (UnitOfWork work = new UnitOfWork())
+            {
+                return Json(work.SocialContactsRepository.find(ok => ok.ID == id).FirstOrDefault(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public ActionResult SocialNetwork()
         {
             return View();
