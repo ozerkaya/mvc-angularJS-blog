@@ -6,7 +6,7 @@ using System.Web;
 
 namespace BlogDAL.DAL
 {
-    public class Labels
+    public  class Labels
     {
         public int ID { get; set; }
 

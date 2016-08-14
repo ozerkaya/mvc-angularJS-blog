@@ -82,6 +82,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL\Comments.cs" />
     <Compile Include="DAL\SocialContacts.cs" />
     <Compile Include="DAL\Labels.cs" />
     <Compile Include="DAL\LabelTypes.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="DAL\ThemeOptions.cs" />
     <Compile Include="DAL\Users.cs" />
     <Compile Include="DBContext.cs" />
+    <Compile Include="Interfaces\IComments.cs" />
     <Compile Include="Migrations\201605190104120_ver1.cs" />
     <Compile Include="Migrations\201605190104120_ver1.Designer.cs">
       <DependentUpon>201605190104120_ver1.cs</DependentUpon>
@@ -138,6 +140,10 @@
     <Compile Include="Migrations\201606200711160_ver12.Designer.cs">
       <DependentUpon>201606200711160_ver12.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608110618312_ver13.cs" />
+    <Compile Include="Migrations\201608110618312_ver13.Designer.cs">
+      <DependentUpon>201608110618312_ver13.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -177,6 +183,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606200711160_ver12.resx">
       <DependentUpon>201606200711160_ver12.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608110618312_ver13.resx">
+      <DependentUpon>201608110618312_ver13.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

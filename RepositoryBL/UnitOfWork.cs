@@ -20,6 +20,7 @@ namespace RepositoryBL.Interfaces
         private SimpleRepo<LabelTypes> _labelTypesRepository;
         private SimpleRepo<Labels> _labelsRepository;
         private SimpleRepo<SocialContacts> _socialContactsRepository;
+        private SimpleRepo<Comments> _commentsRepository;
 
         private bool _disposed = false;
 
@@ -95,6 +96,17 @@ namespace RepositoryBL.Interfaces
             }
         }
 
+        public SimpleRepo<Comments> CommentRepository
+        {
+            get
+            {
+                if (_commentsRepository == null)
+                {
+                    _commentsRepository = new SimpleRepo<Comments>(context);
+                }
+                return _commentsRepository;
+            }
+        }
         public void Save()
         {
             using (TransactionScope scope = new TransactionScope())

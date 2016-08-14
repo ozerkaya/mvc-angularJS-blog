@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AngularJSControllers\IndexBlog.js" />
+    <Content Include="AngularJSControllers\SingleBlog.js" />
     <Content Include="AngularJSControllers\SocialNetworks.js" />
     <Content Include="AngularJSControllers\Post.js" />
     <Content Include="AngularJSControllers\User.js" />
@@ -803,6 +804,7 @@
     <Compile Include="Controllers\BlogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="Controllers\SinglePostController.cs" />
     <Compile Include="Controllers\SocialNetworkController.cs" />
     <Compile Include="Enums\Labels.cs" />
     <Compile Include="Global.asax.cs">
@@ -852,6 +854,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\SinglePost\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BlogDAL\BlogDAL.csproj">

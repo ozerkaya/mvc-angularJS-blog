@@ -14,6 +14,8 @@ namespace BlogDAL.DAL
 
         public IList<Labels> Label { get; set; }
 
+        public IList<Comments> Comment { get; set; }
+
         public DateTime date { get; set; }
     }
 }

@@ -28,11 +28,19 @@ namespace BlogDAL
 
         public DbSet<SocialContacts> SocialContacts { get; set; }
 
+        public DbSet<Comments> Comments { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Labels>()
            .HasRequired(p => p.Post)
            .WithMany(p => p.Label)
+           .HasForeignKey(p => p.Post_ID)
+           .WillCascadeOnDelete();
+
+            modelBuilder.Entity<Comments>()
+           .HasRequired(p => p.Post)
+           .WithMany(p => p.Comment)
            .HasForeignKey(p => p.Post_ID)
            .WillCascadeOnDelete();
 
