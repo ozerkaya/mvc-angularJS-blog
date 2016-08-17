@@ -1,7 +1,7 @@
 ﻿@model BlogDAL.DAL.Posts
 
 <html ng-app="mySingleBlog">
-<body ng-controller="SingleBlogController">
+<body ng-controller="SingleBlogController" ng-init="loadComments(@Model.ID);">
 
     <table>
         <tr>

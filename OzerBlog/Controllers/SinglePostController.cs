@@ -33,16 +33,17 @@ namespace OzerBlog.Controllers
 
                 });
                 work.Save();
-                return Json(work.CommentRepository.list().OrderByDescending(ok => ok.ID), JsonRequestBehavior.AllowGet);
+                int postIDInt = Convert.ToInt32(postID);
+                return Json(work.CommentRepository.listByWhere(ok => ok.Post_ID == postIDInt).OrderByDescending(ok => ok.ID), JsonRequestBehavior.AllowGet);
             }
 
         }
 
-        public ActionResult listComment()
+        public ActionResult listComment(int id)
         {
             using (UnitOfWork work = new UnitOfWork())
             {
-                return Json(work.CommentRepository.list().OrderByDescending(ok => ok.ID), JsonRequestBehavior.AllowGet);
+                return Json(work.CommentRepository.listByWhere(ok => ok.Post_ID == id).OrderByDescending(ok => ok.ID), JsonRequestBehavior.AllowGet);
             }
 
         }
