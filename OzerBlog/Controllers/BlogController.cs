@@ -28,6 +28,7 @@ namespace OzerBlog.Controllers
                     item.content = itemText;
                     postList.Add(item);
                 }
+                ViewBag.title = "Full Stack Software Developer";
                 return View(postList);
             }
         }
@@ -46,7 +47,9 @@ namespace OzerBlog.Controllers
             }
             using (UnitOfWork work = new UnitOfWork())
             {
-                return View(work.PostsRepository.find(ok => ok.ID == id, "Label").FirstOrDefault());
+                Posts post = work.PostsRepository.find(ok => ok.ID == id, "Label").FirstOrDefault();
+                ViewBag.title = post.title;
+                return View(post);
             }
 
         }

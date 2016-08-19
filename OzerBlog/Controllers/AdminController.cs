@@ -18,13 +18,14 @@ namespace OzerBlog.Controllers
         // GET: Admin
         [HttpGet]
         public ActionResult Index()
-        {
+        {            
             if (Session["Login"] == "True")
             {
                 return RedirectToAction("AdminMenu", "Admin");
             }
             else
             {
+                ViewBag.title = "Admin Kontrol";
                 return View();
             }
 

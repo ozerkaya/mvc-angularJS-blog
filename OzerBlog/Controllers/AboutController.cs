@@ -11,6 +11,7 @@ namespace OzerBlog.Controllers
         // GET: About
         public ActionResult Index()
         {
+            ViewBag.title = "Hakkımda";
             return View();
         }
     }

@@ -13,6 +13,7 @@ namespace OzerBlog.Controllers
         // GET: SocialNetwork
         public ActionResult Index()
         {
+            ViewBag.title = "Sosyal Ağım";
             using (UnitOfWork work = new UnitOfWork())
             {
                 return View(work.SocialContactsRepository.list()); 
