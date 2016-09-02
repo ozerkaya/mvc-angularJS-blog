@@ -16,13 +16,23 @@ namespace OzerBlog.Controllers
         // GET: Blog
         [HttpGet]
         [OzerBlog.Interceptors.Logging.CustomLogger]
-        public ActionResult Index()
+        public ActionResult Index(int labelId = 0)
         {
             using (UnitOfWork work = new UnitOfWork())
             {
                 var postList = new List<Posts>();
+                var posts = new List<Posts>();
+                if (labelId == 0)
+                {
+                    posts = work.PostsRepository.list("Label").OrderByDescending(ok => ok.ID).ToList();
+                }
+                else
+                {
+                    List<int> labelIds = work.LabelsRepository.listByWhere(ok => ok.LabelTypes_ID == labelId).Select(ok => ok.Post_ID).ToList();
+                    posts = work.PostsRepository.listByWhere(ok => labelIds.Contains(ok.ID)).OrderByDescending(ok => ok.ID).ToList();
+                }
 
-                foreach (var item in work.PostsRepository.list("Label").OrderByDescending(ok => ok.ID))
+                foreach (var item in posts)
                 {
                     string itemText = GeneratePostFontText(item.content);
                     item.content = itemText;

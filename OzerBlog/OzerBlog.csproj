@@ -669,7 +669,9 @@
     <Content Include="Content\css\sweetalert.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\img\about-bg.jpg" />
+    <Content Include="Content\img\asterisk-yellow-icon.png" />
     <Content Include="Content\img\contact-bg.jpg" />
+    <Content Include="Content\img\Folder-Classic-Yellow-icon.png" />
     <Content Include="Content\img\home-bg.jpg" />
     <Content Include="Content\img\ozer.jpg" />
     <Content Include="Content\img\post-bg.jpg" />
@@ -814,6 +816,7 @@
     <Compile Include="Helpers\Security.cs" />
     <Compile Include="Interceptors\Logging.cs" />
     <Compile Include="Models\Login.cs" />
+    <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\PostEditTake.cs" />
     <Compile Include="Models\PostsGet.cs" />
     <Compile Include="Models\PostView.cs" />
@@ -846,6 +849,7 @@
     <Content Include="Views\Shared\_LayoutMini.cshtml" />
     <Content Include="Views\Blog\SinglePost.cshtml" />
     <Content Include="Views\Admin\SocialNetwork.cshtml" />
+    <Content Include="Views\Shared\_RightMenu.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

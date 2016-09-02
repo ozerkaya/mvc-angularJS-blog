@@ -5,41 +5,40 @@
 
 <html ng-app="myIndexBlog">
 <body ng-controller="IndexBlogController">
+    <div class="col-md-9">
 
+        @foreach (var item in Model)
+        {
+            <table>
+                <tr>
+                    <td>
+                        <h2><a href="~/Blog/SinglePost/@item.ID">@item.title</a></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>
+                            @Html.Raw(item.content)
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="label-warning" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px">@item.date.ToString("dd.MM.yyyy")</label>
 
+                        @foreach (var label in item.Label)
+                        {
 
-    @foreach (var item in Model)
-    {
-        <table>
-            <tr>
-                <td>
-                    <h2><a href="~/Blog/SinglePost/@item.ID">@item.title</a></h2>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>
-                        @Html.Raw(item.content)
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label class="label-warning" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px">@item.date.ToString("dd.MM.yyyy")</label> 
+                            <label class="label-info" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px">@label.Label</label>
 
-                    @foreach (var label in item.Label)
-                    {
+                        }
+                    </td>
+                </tr>
 
-                       <label class="label-info" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px">@label.Label</label> 
+            </table>
 
-                    }
-                </td>
-            </tr>
-
-        </table>
-
-    }
-
+        }
+        </div>
 </body>
 </html>
 <script src="~/AngularJSControllers/IndexBlog.js"></script>

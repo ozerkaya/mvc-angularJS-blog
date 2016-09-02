@@ -4,29 +4,30 @@
 }
 
 <h2>Sosyal Ağ</h2>
+<div class="col-md-9">
+    <center>
 
-<center>
+        <table>
+            @foreach (var item in Model)
+            {
+                <tr align="center">
 
-    <table>
-        @foreach (var item in Model)
-        {
-            <tr align="center">
+                    <td>
 
-                <td>
+                        @if (item.Image != null)
+                        {
+                            string imageBase64Data = item.Image.ToString();
+                            string imageDataURL = string.Format(imageBase64Data);
+                            <img class="img_1" style="width:48px;height:48px" src=@imageDataURL>
+                        }
 
-                    @if (item.Image != null)
-                    {
-                        string imageBase64Data = item.Image.ToString();
-                        string imageDataURL = string.Format(imageBase64Data);
-                        <img class="img_1" style="width:48px;height:48px" src=@imageDataURL>
-                    }
+                    </td>
+                    <td>
+                        <a href="@item.Address" target="_blank">@item.Platform</a>
+                    </td>
 
-                </td>
-                <td>
-                    <a href="@item.Address" target="_blank">@item.Platform</a>
-                </td>
-
-            </tr>
-        }
-    </table>
-</center>
+                </tr>
+            }
+        </table>
+    </center>
+</div>
