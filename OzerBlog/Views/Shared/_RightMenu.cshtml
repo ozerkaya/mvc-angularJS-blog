@@ -1,0 +1,73 @@
+﻿@model List<OzerBlog.Models.Menu>
+<h2>Kategoriler</h2>
+<table>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td width="10%">
+                <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
+            </td>
+            <td width="90%">
+                @*<a href="/Blog/Index/@item.link">@item.title</a>*@
+                @Html.ActionLink(item.title, "../Blog/Index/", new { labelId = item.link })
+            </td>
+        </tr>
+    }
+    <tr>
+        <td width="10%">
+            <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
+        </td>
+        <td width="90%">
+            @*<a href="/Blog/Index/@item.link">@item.title</a>*@
+            @Html.ActionLink("Tüm Kategoriler", "../Blog/Index/", new { labelId = 0 })
+        </td>
+    </tr>
+</table>
+
+<h2>Sayfalar</h2>
+<table>
+    <tr>
+        <td width="10%">
+            <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
+        </td>
+        <td width="90%">
+            <a href="/Blog/Index">Blog</a>
+        </td>
+    </tr>
+
+    <tr>
+        <td width="10%">
+            <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
+        </td>
+        <td width="90%">
+            <a href="/About/Index">Hakkımda</a>
+        </td>
+    </tr>
+
+    <tr>
+        <td width="10%">
+            <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
+        </td>
+        <td width="90%">
+            <a href="/Project/Index">Projeler</a>
+        </td>
+    </tr>
+
+    <tr>
+        <td width="10%">
+            <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
+        </td>
+        <td width="90%">
+            <a href="/SocialNetwork/Index">Sosyal Ağ</a>
+        </td>
+    </tr>
+
+    <tr>
+        <td width="10%">
+            <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
+        </td>
+        <td width="90%">
+            <a href="/Admin/Index">Admin</a>
+        </td>
+    </tr>
+</table>

@@ -97,15 +97,15 @@
     </header>
 
     <div class="col-md-9">
-        <div class="container body-content">
             @RenderBody()
-        </div>
-        <footer>
-            <p>@Session["BlogFooterText"]</p>
-        </footer>
     </div>
+
     <div class="col-md-3">
         @Html.Action("_RightMenu", "Home")
+    </div>
+
+    <div class="col-md-3">
+        <p>@Session["BlogFooterText"]</p>
     </div>
 
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>

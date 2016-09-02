@@ -25,9 +25,10 @@ namespace OzerBlog.Controllers
                 var labels = work.LabelTypesRepository.list();
                 foreach (var item in labels)
                 {
+                    int count = work.LabelsRepository.countByWhere(ok => ok.LabelTypes_ID == item.ID);
                     menuList.Add(new Menu
                     {
-                        title = item.Key,
+                        title = item.Key + " (" + count.ToString() + ")",
                         link = item.ID.ToString()
                     });
                 }
