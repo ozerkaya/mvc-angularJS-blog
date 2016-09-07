@@ -46,7 +46,10 @@
                 <input ng-model="name" placeholder="Adınız" /><br />
                 <input ng-model="email" placeholder="E-Mail Adresiniz" style="margin-top:10px" /><br />
                 <textarea ng-model="comment" placeholder="Yorumunuz [Zorunlu]" style="margin-top:10px;width:50%;min-width:240px"></textarea><br />
-                <input ng-click="insertComment(name,email,comment,@Model.ID);" type="button" value="Ekle" />
+                
+                <simple-captcha valid="captchaValid"></simple-captcha> 
+
+                <input ng-click="insertComment(name,email,comment,@Model.ID);" ng-disabled="!captchaValid" type="button" value="Ekle" />
 
             </div>
 
@@ -54,7 +57,7 @@
                 <label>{{comment.Name}}</label><br />
                 <label>{{comment.Contact}}</label><br />
                 <label>{{comment.Comment}}</label>
-
+               
             </div>
         </div>
     </div>
