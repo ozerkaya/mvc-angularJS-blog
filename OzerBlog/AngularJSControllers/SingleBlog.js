@@ -31,7 +31,13 @@ myApp.directive('simpleCaptcha', function () {
     return {
         restrict: 'E',
         scope: { valid: '=' },
-        template: '<input ng-model="a.value" ng-show="a.input" style="width:2em; text-align: center;"><span ng-hide="a.input">{{a.value}}</span>&nbsp;{{operation}}&nbsp;<input ng-model="b.value" ng-show="b.input" style="width:2em; text-align: center;"><span ng-hide="b.input">{{b.value}}</span>&nbsp;=&nbsp;{{result}}',
+        template: '<input ng-model="a.value" ng-show="a.input" \
+                  style="width:2em; text-align: center;"><span \
+                  ng-hide="a.input">{{a.value}}</span>&nbsp;{{operation}}\
+                  &nbsp;<input ng-model="b.value" ng-show="b.input" \
+                  style="width:2em; text-align: center;"><span \
+                  ng-hide="b.input">{{b.value}}</span>&nbsp;=&nbsp;\
+                  {{result}}',
         controller: function ($scope) {
 
             var show = Math.random() > 0.5;
@@ -67,9 +73,8 @@ myApp.directive('simpleCaptcha', function () {
                 } else {
                     $scope.valid = false;
                 }
-                $scope.$apply(); // needed to solve 2 cycle delay problem;
+                $scope.$apply();
             };
-
 
             $scope.$watch('a.value', function () {
                 checkValidity();
@@ -78,9 +83,6 @@ myApp.directive('simpleCaptcha', function () {
             $scope.$watch('b.value', function () {
                 checkValidity();
             });
-
-
-
         }
     };
 });

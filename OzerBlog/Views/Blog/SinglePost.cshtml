@@ -2,65 +2,57 @@
 
 <html ng-app="mySingleBlog">
 <body ng-controller="SingleBlogController" ng-init="loadComments(@Model.ID);">
-    <div class="col-md-9">
-        <div class="zero-clipboard">
 
-
-            <table>
-                <tr>
-                    <td>
-                        <center>
-                            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57ab35bac69665fe"></script>
-                        </center>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <h2>@Model.title</h2>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>
-                            @Html.Raw(Model.content)
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label class="label-warning" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px">@Model.date.ToString("dd.MM.yyyy")</label>
-
-                        @foreach (var label in Model.Label)
-                        {
-
-                            <label class="label-info" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px">@label.Label</label>
-
-                        }
-                    </td>
-                </tr>
-
-            </table>
-
-            <div style="background-color:#ddd;padding:10px">
-
-                <input ng-model="name" placeholder="Adınız" /><br />
-                <input ng-model="email" placeholder="E-Mail Adresiniz" style="margin-top:10px" /><br />
-                <textarea ng-model="comment" placeholder="Yorumunuz [Zorunlu]" style="margin-top:10px;width:50%;min-width:240px"></textarea><br />
-                
-                <simple-captcha valid="captchaValid"></simple-captcha> 
-
-                <input ng-click="insertComment(name,email,comment,@Model.ID);" ng-disabled="!captchaValid" type="button" value="Ekle" />
-
-            </div>
-
-            <div style="background-color:#ddd;padding:10px;margin-top:5px" ng-repeat="comment in commentList">
-                <label>{{comment.Name}}</label><br />
-                <label>{{comment.Contact}}</label><br />
-                <label>{{comment.Comment}}</label>
-               
-            </div>
-        </div>
+    <div>
+        <center>
+            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57ab35bac69665fe"></script>
+        </center>
     </div>
+    <div>
+        <h2>@Model.title</h2>
+    </div>
+    <div>
+        @Html.Raw(Model.content)
+    </div>
+
+
+    <table style="width:100%">
+        <tr>
+            <td>
+                <label class="label-warning" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px">@Model.date.ToString("dd.MM.yyyy")</label>
+
+                @foreach (var label in Model.Label)
+                {
+
+                    <label class="label-info" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px">@label.Label</label>
+
+                }
+            </td>
+        </tr>
+
+    </table>
+
+    <div style="background-color:#ddd;padding:10px">
+
+        <input ng-model="name" placeholder="Adınız" /><br />
+        <input ng-model="email" placeholder="E-Mail Adresiniz" style="margin-top:10px" /><br />
+        <textarea ng-model="comment" placeholder="Yorumunuz [Zorunlu]" style="margin-top:10px;width:50%;min-width:240px"></textarea><br />
+
+        <simple-captcha valid="captchaValid"></simple-captcha>
+
+        <input ng-click="insertComment(name,email,comment,@Model.ID);" ng-disabled="!captchaValid" type="button" value="Ekle" />
+
+    </div>
+
+    <div style="background-color:#ddd;padding:10px;margin-top:5px" ng-repeat="comment in commentList">
+        <label>{{comment.Name}}</label><br />
+        <label>{{comment.Contact}}</label><br />
+        <label>{{comment.Comment}}</label>
+
+    </div>
+
+
 </body>
 </html>
+
 <script src="~/AngularJSControllers/SingleBlog.js"></script>
