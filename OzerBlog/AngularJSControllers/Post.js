@@ -41,10 +41,22 @@ myApp.controller("PostController", function ($scope, $http, $location, $anchorSc
 
     ////Delete Selected Post
     $scope.deletePost = function (ID) {
-        $http.post("/Admin/PostDelete/" + ID).then(function (result) {
-            $scope.postList = result.data;
-        });
-        swal("İşlem Başarılı", "", "success")
+        swal({
+            title: "Emin misin?",
+            text: "Kayıt Geri Dönülmeyecek şekilde Silinecek!",
+            type: "warning",
+            showCancelButton: true,
+            cancelButtonText: "İptal",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Evet, Kaydı Sil!",
+            closeOnConfirm: false
+        },
+          function () {
+              $http.post("/Admin/PostDelete/" + ID).then(function (result) {
+                  $scope.postList = result.data;
+                  swal("Silindi!", "Kayıt başarıyla Silindi...", "success");
+              });
+          });
     }
 
     ////Save and Edit 

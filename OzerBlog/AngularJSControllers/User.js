@@ -17,10 +17,24 @@ myApp.controller("UserController", function ($scope, $http) {
 
     ////Delete Selected User
     $scope.deleteUser = function (ID) {
-        $http.post("/Admin/UserDelete/" + ID).then(function (result) {
-            $scope.userList = result.data;
-        });
+        swal({
+            title: "Emin misin?",
+            text: "Kayıt Geri Dönülmeyecek şekilde Silinecek!",
+            type: "warning",
+            showCancelButton: true,
+            cancelButtonText: "İptal",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Evet, Kaydı Sil!",
+            closeOnConfirm: false
+        },
+      function () {
+          $http.post("/Admin/UserDelete/" + ID).then(function (result) {
+              $scope.userList = result.data;
+              swal("Silindi!", "Kayıt başarıyla Silindi...", "success");
+          });
+      });
     }
+
 
     ////Save and Edit 
     $scope.saveEditUser = function (ID, Username, Password) {

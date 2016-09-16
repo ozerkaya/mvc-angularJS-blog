@@ -9,11 +9,25 @@ myApp.controller("SocialNetworksController", function ($scope, $http) {
     });
 
     $scope.deleteSocialNetwork = function (ID) {
-        $http.post("/Admin/SocialNetworkDelete/" + ID).then(function (result) {
-            $scope.platformList = result.data;
-        });
-        swal("İşlem Başarılı", "", "success")
+        swal({
+            title: "Emin misin?",
+            text: "Kayıt Geri Dönülmeyecek şekilde Silinecek!",
+            type: "warning",
+            showCancelButton: true,
+            cancelButtonText: "İptal",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Evet, Kaydı Sil!",
+            closeOnConfirm: false
+        },
+         function () {
+             $http.post("/Admin/SocialNetworkDelete/" + ID).then(function (result) {
+                 $scope.platformList = result.data;
+                 swal("Silindi!", "Kayıt başarıyla Silindi...", "success");
+             });
+         });
     }
+
+
 
     $scope.editSocialNetwork = function (ID) {
         $http.post("/Admin/SocialNetworkEdit/" + ID).then(function (result) {
