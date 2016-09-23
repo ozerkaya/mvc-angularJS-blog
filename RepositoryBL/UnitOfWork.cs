@@ -21,9 +21,21 @@ namespace RepositoryBL.Interfaces
         private SimpleRepo<Labels> _labelsRepository;
         private SimpleRepo<SocialContacts> _socialContactsRepository;
         private SimpleRepo<Comments> _commentsRepository;
+        private SimpleRepo<ViewLogs> _viewLogsRepository;
 
         private bool _disposed = false;
 
+        public SimpleRepo<ViewLogs> ViewLogsRepository
+        {
+            get
+            {
+                if (_viewLogsRepository == null)
+                {
+                    _viewLogsRepository = new SimpleRepo<ViewLogs>(context);
+                }
+                return _viewLogsRepository;
+            }
+        }
         public SimpleRepo<ThemeOptions> ThemeOptionsRepository
         {
             get

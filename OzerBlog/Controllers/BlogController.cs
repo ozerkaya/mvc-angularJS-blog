@@ -12,10 +12,9 @@ namespace OzerBlog.Controllers
 {
     public class BlogController : Controller
     {
-        SimpleRepo<Posts> repo = new SimpleRepo<BlogDAL.DAL.Posts>(new DBContext());
         // GET: Blog
         [HttpGet]
-        [OzerBlog.Interceptors.Logging.CustomLogger]
+        
         public ActionResult Index(int id = 0)
         {
             using (UnitOfWork work = new UnitOfWork())
@@ -49,6 +48,7 @@ namespace OzerBlog.Controllers
             return View();
         }
 
+        [OzerBlog.Interceptors.Logging.CustomLogger]
         public ActionResult SinglePost(int id = 0)
         {
             if (id == 0)

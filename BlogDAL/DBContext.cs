@@ -29,6 +29,7 @@ namespace BlogDAL
         public DbSet<SocialContacts> SocialContacts { get; set; }
 
         public DbSet<Comments> Comments { get; set; }
+        public DbSet<ViewLogs> ViewLogs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -44,6 +45,11 @@ namespace BlogDAL
            .HasForeignKey(p => p.Post_ID)
            .WillCascadeOnDelete();
 
+            modelBuilder.Entity<ViewLogs>()
+           .HasRequired(p => p.Post)
+           .WithMany(p => p.Log)
+           .HasForeignKey(p => p.Post_ID)
+           .WillCascadeOnDelete();
 
             modelBuilder.Entity<Labels>()
                 .HasRequired(a => a.LabelTypes)
