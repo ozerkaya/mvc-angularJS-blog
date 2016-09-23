@@ -18,49 +18,49 @@
 
 @using (Html.BeginForm("Index", "Admin", FormMethod.Post))
 {
+
+    <table align="center">
+        <tr>
+            <td align="center">
+                @{
+    if (Model == null)
     {
-        <table align="center">
-            <tr>
-                <td align="center">
-                    @{
-                        if (Model == null)
-                        {
-
-                        }
-                        else
-                        {
-                            <script>
-                                swal("Dikkat", "@Model.loginMessage", "error")
-                            </script>
-                        }
-                    }
-
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.TextBoxFor(ok => ok.username, new { @placeholder = "Username" })
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.PasswordFor(ok => ok.password, new { @placeholder = "Password" })
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="submit" value="Bağlan" />
-                </td>
-            </tr>
-            <tr>
-                <td align="center">
-                    <a href="#">Şifremi Unuttum</a>
-                </td>
-            </tr>
-
-        </table>
 
     }
+    else
+    {
+        <script>
+            swal("Dikkat", "@Model.loginMessage", "error")
+        </script>
+    }
+                }
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.TextBoxFor(ok => ok.username, new { @placeholder = "Username" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.PasswordFor(ok => ok.password, new { @placeholder = "Password" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" value="Bağlan" />
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <a href="#">Şifremi Unuttum</a>
+            </td>
+        </tr>
+
+    </table>
+
+
 
 
 }

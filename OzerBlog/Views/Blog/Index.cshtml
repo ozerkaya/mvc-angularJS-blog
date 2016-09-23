@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<BlogDAL.DAL.Posts>
+@using OzerBlog.Extensions
 @{
     ViewBag.Title = "Index";
 }
@@ -7,37 +8,37 @@
 <body ng-controller="IndexBlogController">
 
 
-        @foreach (var item in Model)
-        {
-            <table>
-                <tr>
-                    <td>
-                        <h2><a href="~/Blog/SinglePost/@item.ID">@item.title</a></h2>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>
-                            @Html.Raw(item.content)
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label class="label-warning" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px">@item.date.ToString("dd.MM.yyyy")</label>
+    @foreach (var item in Model)
+    {
+        <table>
+            <tr>
+                <td>
+                    <h2> @Html.EncodedLink(item.title, "SinglePost", "Blog", new { id = item.ID }, null)</h2>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        @Html.Raw(item.content)
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="label-warning" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px">@item.date.ToString("dd.MM.yyyy")</label>
 
-                        @foreach (var label in item.Label)
-                        {
+                    @foreach (var label in item.Label)
+                    {
 
-                            <label class="label-info" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px">@label.Label</label>
+                        <label class="label-info" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px">@label.Label</label>
 
-                        }
-                    </td>
-                </tr>
+                    }
+                </td>
+            </tr>
 
-            </table>
+        </table>
 
-        }
+    }
 </body>
 </html>
 <script src="~/AngularJSControllers/IndexBlog.js"></script>

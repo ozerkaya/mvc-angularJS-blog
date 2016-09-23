@@ -5,6 +5,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Web.Http;
+
+
 
 namespace OzerBlog
 {
@@ -14,8 +17,8 @@ namespace OzerBlog
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            
         }
-
         protected void Session_Start()
         {
             using (var db = new DBContext())

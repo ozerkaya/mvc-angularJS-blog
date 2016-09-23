@@ -70,6 +70,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
@@ -809,6 +810,7 @@
     <Compile Include="Controllers\SinglePostController.cs" />
     <Compile Include="Controllers\SocialNetworkController.cs" />
     <Compile Include="Enums\Labels.cs" />
+    <Compile Include="Extensions\RazorHelpers.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -859,6 +861,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\EncodeUrl\" />
     <Folder Include="Views\SinglePost\" />
   </ItemGroup>
   <ItemGroup>

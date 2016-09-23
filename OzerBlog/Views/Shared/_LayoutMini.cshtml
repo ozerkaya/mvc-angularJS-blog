@@ -1,4 +1,5 @@
 ﻿@using OzerBlog.Helpers;
+@using OzerBlog.Extensions
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,24 +51,24 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/Blog/Index/">BLOG</a>
+                        @Html.EncodedLink("BLOG", "Index", "Blog", null, null)
                     </li>
                     <li>
-                        <a href="/About/Index/">HAKKIMDA</a>
+                        @Html.EncodedLink("HAKKIMDA", "Index", "About", null, null)
                     </li>
                     <li>
-                        <a href="/Project/Index/">PROJELER</a>
+                        @Html.EncodedLink("PROJELER", "Index", "Project", null, null)
                     </li>
                     <li>
-                        <a href="/SocialNetwork/Index/">SOSYAL AĞ</a>
+                        @Html.EncodedLink("SOSYAL AĞ", "Index", "SocialNetwork", null, null)
                     </li>
                     <li>
-                        <a href="/Admin/Index/">ADMIN</a>
+                        @Html.EncodedLink("ADMIN", "Index", "Admin", null, null)
                     </li>
                     @if (Session["Login"] == "True")
                     {
                         <li>
-                            <a href="/Admin/LogOut/">LOGOUT</a>
+                            @Html.EncodedLink("LOGOUT", "LogOut", "Admin", null, null)
                         </li>
                     }
                 </ul>
