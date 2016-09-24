@@ -10,7 +10,7 @@ myApp.controller("PostController", function ($scope, $http, $location, $anchorSc
 
     ////Take Selected Post Datas
     $scope.editPostTake = function (ID) {
-        $http.post("/Admin/PostsEdit/" + ID).then(function (result) {
+        $http.post("/Admin/PostsEdit/?id=" + ID).then(function (result) {
             $scope.postTitle = result.data.Post.title;
             $scope.postContent = result.data.Post.content;
             $scope.postID = result.data.Post.ID;
@@ -52,7 +52,7 @@ myApp.controller("PostController", function ($scope, $http, $location, $anchorSc
             closeOnConfirm: false
         },
           function () {
-              $http.post("/Admin/PostDelete/" + ID).then(function (result) {
+              $http.post("/Admin/PostDelete/?id=" + ID).then(function (result) {
                   $scope.postList = result.data;
                   swal("Silindi!", "Kayıt başarıyla Silindi...", "success");
               });
