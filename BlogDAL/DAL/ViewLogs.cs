@@ -11,9 +11,7 @@ namespace BlogDAL.DAL
 
         public string Ip { get; set; }
 
-        public Posts Post { get; set; }
-
-        public int Post_ID { get; set; }
+        public string Title { get; set; }
 
         public DateTime Date { get; set; }
     }

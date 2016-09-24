@@ -10,6 +10,7 @@ namespace OzerBlog.Controllers
     public class ProjectController : Controller
     {        
         // GET: Project
+        [OzerBlog.Interceptors.Logging.CustomLogger]
         public ActionResult Index(int id=0)
         {
             ViewBag.title = "Projelerim";

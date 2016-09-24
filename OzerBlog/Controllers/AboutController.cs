@@ -9,6 +9,7 @@ namespace OzerBlog.Controllers
     public class AboutController : Controller
     {
         // GET: About
+        [OzerBlog.Interceptors.Logging.CustomLogger]
         public ActionResult Index()
         {
             ViewBag.title = "Hakkımda";

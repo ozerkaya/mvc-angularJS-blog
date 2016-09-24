@@ -13,7 +13,7 @@ namespace BlogDAL.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201609232135547_ver14"; }
+            get { return "201609242141197_ver14"; }
         }
         
         string IMigrationMetadata.Source

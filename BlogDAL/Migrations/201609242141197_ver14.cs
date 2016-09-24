@@ -13,19 +13,15 @@ namespace BlogDAL.Migrations
                     {
                         ID = c.Int(nullable: false, identity: true),
                         Ip = c.String(unicode: false),
-                        Post_ID = c.Int(nullable: false),
+                        Title = c.String(unicode: false),
                         Date = c.DateTime(nullable: false, precision: 0),
                     })
-                .PrimaryKey(t => t.ID)
-                .ForeignKey("dbo.Posts", t => t.Post_ID, cascadeDelete: true)
-                .Index(t => t.Post_ID);
+                .PrimaryKey(t => t.ID);
             
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.ViewLogs", "Post_ID", "dbo.Posts");
-            DropIndex("dbo.ViewLogs", new[] { "Post_ID" });
             DropTable("dbo.ViewLogs");
         }
     }

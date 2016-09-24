@@ -45,12 +45,6 @@ namespace BlogDAL
            .HasForeignKey(p => p.Post_ID)
            .WillCascadeOnDelete();
 
-            modelBuilder.Entity<ViewLogs>()
-           .HasRequired(p => p.Post)
-           .WithMany(p => p.Log)
-           .HasForeignKey(p => p.Post_ID)
-           .WillCascadeOnDelete();
-
             modelBuilder.Entity<Labels>()
                 .HasRequired(a => a.LabelTypes)
                 .WithMany()

@@ -55,24 +55,24 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        @Html.EncodedLink("BLOG", "Index", "Blog", null, null)
+                        @Html.ActionLink("BLOG", "Index", "Blog", null, null)
                     </li>
                     <li>
-                        @Html.EncodedLink("HAKKIMDA", "Index", "About", null, null)
+                        @Html.ActionLink("HAKKIMDA", "Index", "About", null, null)
                     </li>
                     <li>
-                        @Html.EncodedLink("PROJELER", "Index", "Project", null, null)
+                        @Html.ActionLink("PROJELER", "Index", "Project", null, null)
                     </li>
                     <li>
-                        @Html.EncodedLink("SOSYAL AĞ", "Index", "SocialNetwork", null, null)
+                        @Html.ActionLink("SOSYAL AĞ", "Index", "SocialNetwork", null, null)
                     </li>
                     <li>
-                        @Html.EncodedLink("ADMIN", "Index", "Admin", null, null)
+                        @Html.ActionLink("ADMIN", "Index", "Admin", null, null)
                     </li>
                     @if (Session["Login"] == "True")
                     {
                         <li>
-                            @Html.EncodedLink("LOGOUT", "LogOut", "Admin", null, null)
+                            @Html.ActionLink("LOGOUT", "LogOut", "Admin", null, null)
                         </li>
                     }
                 </ul>

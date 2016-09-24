@@ -10,7 +10,7 @@
             </td>
             <td width="90%">
                 @*@Html.ActionLink(item.title, "../Blog/Index/", new { labelId = item.link })*@
-                @Html.EncodedLink(item.title, "Index", "Blog", new { id = item.link }, null)
+                @Html.ActionLink(item.title, "Index", "Blog", new { id = item.link }, null)
             </td>
         </tr>
     }
@@ -20,7 +20,7 @@
         </td>
         <td width="90%">
             @*<a href="/Blog/Index/@item.link">@item.title</a>*@
-            @Html.EncodedLink("Tüm Kategoriler", "Index", "Blog", new { id = 0 }, null)
+            @Html.ActionLink("Tüm Kategoriler", "Index", "Blog", new { id = 0 }, null)
         </td>
     </tr>
 </table>
@@ -32,7 +32,7 @@
             <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
         </td>
         <td width="90%">
-            @Html.EncodedLink("Blog", "Index", "Blog", null, null)
+            @Html.ActionLink("Blog", "Index", "Blog", null, null)
         </td>
     </tr>
 
@@ -41,7 +41,7 @@
             <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
         </td>
         <td width="90%">
-            @Html.EncodedLink("Hakkımda", "Index", "About", null, null)
+            @Html.ActionLink("Hakkımda", "Index", "About", null, null)
         </td>
     </tr>
 
@@ -50,7 +50,7 @@
             <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
         </td>
         <td width="90%">
-            @Html.EncodedLink("Projeler", "Index", "Project", null, null)
+            @Html.ActionLink("Projeler", "Index", "Project", null, null)
         </td>
     </tr>
 
@@ -59,7 +59,7 @@
             <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
         </td>
         <td width="90%">
-            @Html.EncodedLink("Sosyal Ağ", "Index", "SocialNetwork", null, null)
+            @Html.ActionLink("Sosyal Ağ", "Index", "SocialNetwork", null, null)
         </td>
     </tr>
 
@@ -68,7 +68,7 @@
             <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
         </td>
         <td width="90%">
-            @Html.EncodedLink("Admin", "Index", "Admin", null, null)
+            @Html.ActionLink("Admin", "Index", "Admin", null, null)
         </td>
     </tr>
 </table>

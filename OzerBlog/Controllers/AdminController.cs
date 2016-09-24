@@ -342,7 +342,7 @@ namespace OzerBlog.Controllers
         {
             using (UnitOfWork work = new UnitOfWork())
             {
-                var repo = work.ViewLogsRepository.list("Post").OrderByDescending(ok => ok.ID);
+                var repo = work.ViewLogsRepository.list().OrderByDescending(ok => ok.ID);
                 List<Logsget> logList = new List<Logsget>();
                 foreach (var item in repo)
                 {
@@ -351,7 +351,7 @@ namespace OzerBlog.Controllers
                         Date = item.Date.ToString(),
                         ID = item.ID,
                         Ip = item.Ip,
-                        Title = item.Post.title
+                        Title = item.Title
                     };
                     logList.Add(logs);
                 }

@@ -11,6 +11,7 @@ namespace OzerBlog.Controllers
     public class SocialNetworkController : Controller
     {
         // GET: SocialNetwork
+        [OzerBlog.Interceptors.Logging.CustomLogger]
         public ActionResult Index()
         {
             ViewBag.title = "Sosyal Ağım";
