@@ -14,7 +14,7 @@ namespace OzerBlog.Controllers
     {
         // GET: Blog
         [HttpGet]
-        
+
         public ActionResult Index(int id = 0)
         {
             using (UnitOfWork work = new UnitOfWork())
@@ -49,15 +49,16 @@ namespace OzerBlog.Controllers
         }
 
         [OzerBlog.Interceptors.Logging.CustomLogger]
-        public ActionResult SinglePost(int id = 0)
+        public ActionResult SinglePost(string title = "")
         {
-            if (id == 0)
+            if (title == string.Empty)
             {
                 return RedirectToAction("Index", "Blog");
             }
             using (UnitOfWork work = new UnitOfWork())
             {
-                Posts post = work.PostsRepository.find(ok => ok.ID == id, "Label").FirstOrDefault();
+                title = title.Replace("-", " ");
+                Posts post = work.PostsRepository.find(ok => ok.title == title, "Label").FirstOrDefault();
                 ViewBag.title = post.title;
                 return View(post);
             }

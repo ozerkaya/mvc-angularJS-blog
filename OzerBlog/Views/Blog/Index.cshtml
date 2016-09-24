@@ -13,7 +13,7 @@
         <table>
             <tr>
                 <td>
-                    <h2> @Html.ActionLink(item.title, "SinglePost", "Blog", new { id = item.ID }, null)</h2>
+                    <h2> @Html.ActionLink(item.title, "SinglePost", "Blog", new { title = item.title.Replace(" ","-") }, null)</h2>
                 </td>
             </tr>
             <tr>

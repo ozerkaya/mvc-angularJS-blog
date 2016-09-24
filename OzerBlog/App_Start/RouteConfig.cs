@@ -105,14 +105,15 @@ namespace OzerBlog
             //);
 
             routes.MapRoute(
-               name: "Default",
-               url: "{controller}/{action}/{id}",
-               defaults: new { controller = "Blog", action = "Index", id = UrlParameter.Optional }
+               name: "SinglePost",
+               url: "{controller}/{action}/{title}",
+               defaults: new { controller = "Blog", action = "Index", title = UrlParameter.Optional }
            );
+
         }
         public static void RegisterRoutes(RouteCollection routes)
         {
-            routes.Add(new EncryptedRoute("EncodeUrl/{url}", null, null));
+            //routes.Add(new EncryptedRoute("EncodeUrl/{url}", null, null));
             RegisterRoutesInternal(routes);
         }
 
