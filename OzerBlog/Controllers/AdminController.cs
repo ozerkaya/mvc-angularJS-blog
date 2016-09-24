@@ -109,6 +109,13 @@ namespace OzerBlog.Controllers
 
         }
 
+        [HttpGet]
+        public ActionResult Logs()
+        {
+            return View();
+
+        }
+
         public ActionResult PostsGet()
         {
             using (UnitOfWork work = new UnitOfWork())
@@ -328,6 +335,27 @@ namespace OzerBlog.Controllers
             using (UnitOfWork work = new UnitOfWork())
             {
                 return Json(work.SocialContactsRepository.list().OrderByDescending(ok => ok.ID), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult LogsGet()
+        {
+            using (UnitOfWork work = new UnitOfWork())
+            {
+                var repo = work.ViewLogsRepository.list("Post").OrderByDescending(ok => ok.ID);
+                List<Logsget> logList = new List<Logsget>();
+                foreach (var item in repo)
+                {
+                    Logsget logs = new Logsget
+                    {
+                        Date = item.Date.ToString(),
+                        ID = item.ID,
+                        Ip = item.Ip,
+                        Title = item.Post.title
+                    };
+                    logList.Add(logs);
+                }
+                return Json(logList, JsonRequestBehavior.AllowGet);
             }
         }
 

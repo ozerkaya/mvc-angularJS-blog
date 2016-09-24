@@ -26,7 +26,7 @@ namespace OzerBlog.Interceptors
                         work.ViewLogsRepository.insert(new ViewLogs
                         {
                             Date = DateTime.Now,
-                            Ip = HttpContext.Current.Request.UserHostAddress + " - " + HttpContext.Current.Request.UserAgent,
+                            Ip = HttpContext.Current.Request.UserHostAddress ,
                             Post_ID = modelSingle.ID
                         });
                     }

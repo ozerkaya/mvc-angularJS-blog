@@ -103,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AngularJSControllers\IndexBlog.js" />
+    <Content Include="AngularJSControllers\Logs.js" />
     <Content Include="AngularJSControllers\SingleBlog.js" />
     <Content Include="AngularJSControllers\SocialNetworks.js" />
     <Content Include="AngularJSControllers\Post.js" />
@@ -818,6 +819,7 @@
     <Compile Include="Helpers\Security.cs" />
     <Compile Include="Interceptors\Logging.cs" />
     <Compile Include="Models\Login.cs" />
+    <Compile Include="Models\Logsget.cs" />
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\PostEditTake.cs" />
     <Compile Include="Models\PostsGet.cs" />
@@ -852,6 +854,7 @@
     <Content Include="Views\Blog\SinglePost.cshtml" />
     <Content Include="Views\Admin\SocialNetwork.cshtml" />
     <Content Include="Views\Shared\_RightMenu.cshtml" />
+    <Content Include="Views\Admin\Logs.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
