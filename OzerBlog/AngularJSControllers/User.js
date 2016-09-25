@@ -9,7 +9,7 @@ myApp.controller("UserController", function ($scope, $http) {
 
     ////Take Selected User Datas
     $scope.editUserTake = function (ID) {
-        $http.post("/Admin/UsersEdit/" + ID).then(function (result) {
+        $http.post("/Admin/UsersEdit/?id=" + ID).then(function (result) {
             $scope.userUsername = result.data.username;
             $scope.userID = result.data.ID;
         });
@@ -28,7 +28,7 @@ myApp.controller("UserController", function ($scope, $http) {
             closeOnConfirm: false
         },
       function () {
-          $http.post("/Admin/UserDelete/" + ID).then(function (result) {
+          $http.post("/Admin/UserDelete/?id=" + ID).then(function (result) {
               $scope.userList = result.data;
               swal("Silindi!", "Kayıt başarıyla Silindi...", "success");
           });

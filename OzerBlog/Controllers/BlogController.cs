@@ -15,19 +15,20 @@ namespace OzerBlog.Controllers
         // GET: Blog
         [HttpGet]
 
-        public ActionResult Index(int id = 0)
+        public ActionResult Index(string title="0")
         {
             using (UnitOfWork work = new UnitOfWork())
             {
                 var postList = new List<Posts>();
                 var posts = new List<Posts>();
-                if (id == 0)
+                if (title == "0")
                 {
                     posts = work.PostsRepository.list("Label").OrderByDescending(ok => ok.ID).ToList();
                 }
                 else
                 {
-                    List<int> labelIds = work.LabelsRepository.listByWhere(ok => ok.LabelTypes_ID == id).Select(ok => ok.Post_ID).ToList();
+                    title = title.Replace("-", " ");
+                    List<int> labelIds = work.LabelsRepository.listByWhere(ok => ok.LabelTypes.Key == title).Select(ok => ok.Post_ID).ToList();
                     posts = work.PostsRepository.listByWhere(ok => labelIds.Contains(ok.ID)).OrderByDescending(ok => ok.ID).ToList();
                 }
 

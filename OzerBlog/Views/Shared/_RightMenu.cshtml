@@ -10,7 +10,7 @@
             </td>
             <td width="90%">
                 @*@Html.ActionLink(item.title, "../Blog/Index/", new { labelId = item.link })*@
-                @Html.ActionLink(item.title, "Index", "Blog", new { id = item.link }, null)
+                @Html.ActionLink(item.title, "Index", "Blog", new { title = item.link.Replace(" ","-") }, null)
             </td>
         </tr>
     }
@@ -20,7 +20,7 @@
         </td>
         <td width="90%">
             @*<a href="/Blog/Index/@item.link">@item.title</a>*@
-            @Html.ActionLink("Tüm Kategoriler", "Index", "Blog", new { id = 0 }, null)
+            @Html.ActionLink("Tüm Kategoriler", "Index", "Blog", new { title = "0" }, null)
         </td>
     </tr>
 </table>

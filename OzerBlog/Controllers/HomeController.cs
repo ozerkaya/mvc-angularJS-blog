@@ -29,7 +29,7 @@ namespace OzerBlog.Controllers
                     menuList.Add(new Menu
                     {
                         title = item.Key + " (" + count.ToString() + ")",
-                        link = item.ID.ToString()
+                        link = item.Key.ToString()
                     });
                 }
                 return PartialView(menuList);
