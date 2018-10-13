@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
@@ -12,6 +14,72 @@ namespace OzerBlog.Extensions
 {
     public static class RazorHelpers
     {
+        public static MvcHtmlString Table(this HtmlHelper htmlHelper, IEnumerable<object> model,
+            string tableClass = "table table-bordered",
+            string responsiveColumn = "Table Values",
+            int widthPercent = 100,
+            List<string> exculudeList = null)
+        {
+            StringBuilder returnValue = new StringBuilder();
+            StringBuilder tdAll = new StringBuilder();
+            StringBuilder tdOdd = new StringBuilder();
+
+            if (model.Count() > 0)
+            {
+                PropertyInfo[] properties = model.FirstOrDefault().GetType().GetProperties();
+
+
+                returnValue.AppendLine("<TABLE class='" + tableClass + "' width='" + widthPercent + "%'>");
+                returnValue.AppendLine("<THEAD>");
+                returnValue.AppendLine("<TR>");
+                returnValue.AppendLine("<TH class='show hide'>" + responsiveColumn);
+                returnValue.AppendLine("</TH>");
+                foreach (var item in properties)
+                {
+                    if (exculudeList.IndexOf((string)item.Name) == -1)
+                    {
+                        returnValue.AppendLine("<TH>" + (string)item.Name.ToUpper() + "</TH>");
+                    }
+                }
+                returnValue.AppendLine("</TR>");
+                returnValue.AppendLine("</THEAD>");
+                returnValue.AppendLine("<TBODY>");
+
+                foreach (var item in model)
+                {
+                    returnValue.AppendLine("<TR>");
+                    foreach (var modelValue in item.GetType().GetProperties())
+                    {
+                        if (exculudeList.IndexOf((string)modelValue.Name) == -1)
+                        {
+                            tdAll.AppendLine("<TD>" + Convert.ToString(modelValue.GetValue(item) ?? ""));
+                            tdAll.AppendLine("</TD>");
+
+                            tdOdd.AppendLine((string)modelValue.Name + " : " + Convert.ToString(modelValue.GetValue(item) ?? ""));
+                            tdOdd.AppendLine("<br>");
+                        }
+                    }
+                    returnValue.AppendLine("<TD class='show hide'>");
+                    returnValue.AppendLine(string.Join(string.Empty, tdOdd));
+                    returnValue.AppendLine("</TD>");
+                    returnValue.AppendLine(string.Join(string.Empty, tdAll));
+                    returnValue.AppendLine("</TR>");
+                }
+
+                returnValue.AppendLine("</TBODY>");
+                returnValue.AppendLine("</TABLE>");
+            }
+            return new MvcHtmlString(string.Join(string.Empty, returnValue));
+        }
+
+
+
+
+
+
+
+
+
         public static MvcHtmlString EncodedLink(this HtmlHelper htmlHelper, string linkText, string actionName, string controllerName, object routeValues, object htmlAttributes)
         {
             string queryString = string.Empty;

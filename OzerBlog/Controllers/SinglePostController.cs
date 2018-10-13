@@ -23,6 +23,7 @@ namespace OzerBlog.Controllers
         {
             using (UnitOfWork work = new UnitOfWork())
             {
+
                 work.CommentRepository.insert(new Comments
                 {
                     Comment = comment,
@@ -32,6 +33,8 @@ namespace OzerBlog.Controllers
                     Post_ID = Convert.ToInt32(postID)
 
                 });
+
+
                 work.Save();
                 int postIDInt = Convert.ToInt32(postID);
                 return Json(work.CommentRepository.listByWhere(ok => ok.Post_ID == postIDInt).OrderByDescending(ok => ok.ID), JsonRequestBehavior.AllowGet);

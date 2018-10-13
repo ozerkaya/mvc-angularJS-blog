@@ -1,0 +1,17 @@
+﻿td.hide, th.hide {
+    display: none !important;
+}
+
+@media (max-width: 700px) {
+    .container {
+        width: 100%;
+    }
+
+    td, th {
+        display: none;
+    }
+
+        td.show, th.show {
+            display: table-cell !important;
+        }
+}

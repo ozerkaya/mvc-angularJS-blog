@@ -15,8 +15,25 @@ namespace OzerBlog.Controllers
         // GET: Blog
         [HttpGet]
 
-        public ActionResult Index(string title="0")
+        public ActionResult Index(string title = "0")
         {
+            
+            using (BlogDAL.DBContext context = new DBContext())
+            {                
+                var timeBegin = DateTime.Now;
+                var results = context.Labels.AsNoTracking().ToList();
+                var timeEnd = DateTime.Now;
+                TimeSpan fark = timeEnd - timeBegin;
+            }
+
+            using (BlogDAL.DBContext context = new DBContext())
+            {
+                var timeBegin = DateTime.Now;
+                var results = context.Labels.ToList();
+                var timeEnd = DateTime.Now;
+                TimeSpan fark = timeEnd - timeBegin;
+            }
+
             using (UnitOfWork work = new UnitOfWork())
             {
                 var postList = new List<Posts>();
@@ -35,6 +52,7 @@ namespace OzerBlog.Controllers
                 foreach (var item in posts)
                 {
                     string itemText = GeneratePostFontText(item.content);
+                    item.PageViewCount = work.ViewLogsRepository.countByWhere(ok => ok.Title == item.title);
                     item.content = itemText;
                     postList.Add(item);
                 }

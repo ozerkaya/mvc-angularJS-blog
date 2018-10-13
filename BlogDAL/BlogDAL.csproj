@@ -68,6 +68,9 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="Z.EntityFramework.Extensions">
+      <HintPath>..\packages\Z.EntityFramework.Extensions.3.10.32\lib\net45\Z.EntityFramework.Extensions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -83,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAL\Comments.cs" />
+    <Compile Include="DAL\Other.cs" />
     <Compile Include="DAL\SocialContacts.cs" />
     <Compile Include="DAL\Labels.cs" />
     <Compile Include="DAL\LabelTypes.cs" />
@@ -149,6 +153,22 @@
     <Compile Include="Migrations\201609242141197_ver14.Designer.cs">
       <DependentUpon>201609242141197_ver14.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810051201293_ver15.cs" />
+    <Compile Include="Migrations\201810051201293_ver15.Designer.cs">
+      <DependentUpon>201810051201293_ver15.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810081323124_ver16.cs" />
+    <Compile Include="Migrations\201810081323124_ver16.Designer.cs">
+      <DependentUpon>201810081323124_ver16.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810090811315_ver17.cs" />
+    <Compile Include="Migrations\201810090811315_ver17.Designer.cs">
+      <DependentUpon>201810090811315_ver17.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810090957547_ver18.cs" />
+    <Compile Include="Migrations\201810090957547_ver18.Designer.cs">
+      <DependentUpon>201810090957547_ver18.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -194,6 +214,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609242141197_ver14.resx">
       <DependentUpon>201609242141197_ver14.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810051201293_ver15.resx">
+      <DependentUpon>201810051201293_ver15.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810081323124_ver16.resx">
+      <DependentUpon>201810081323124_ver16.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810090811315_ver17.resx">
+      <DependentUpon>201810090811315_ver17.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810090957547_ver18.resx">
+      <DependentUpon>201810090957547_ver18.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -7,13 +7,14 @@
 <html ng-app="myIndexBlog">
 <body ng-controller="IndexBlogController">
 
+    
 
     @foreach (var item in Model)
     {
         <table>
             <tr>
                 <td>
-                    <h2> @Html.ActionLink(item.title, "SinglePost", "Blog", new { title = item.title.Replace(" ","-") }, null)</h2>
+                    <h2> @Html.ActionLink(item.title, "SinglePost", "Blog", new { title = item.title.Replace(" ", "-") }, null)</h2>
                 </td>
             </tr>
             <tr>
@@ -33,6 +34,7 @@
                         <label class="label-info" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px">@label.Label</label>
 
                     }
+                    <label class="label-success" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px">Görüntülenme:@item.PageViewCount</label>
                 </td>
             </tr>
 

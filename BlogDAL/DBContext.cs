@@ -31,6 +31,8 @@ namespace BlogDAL
         public DbSet<Comments> Comments { get; set; }
         public DbSet<ViewLogs> ViewLogs { get; set; }
 
+        public DbSet<Other> Others { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Labels>()

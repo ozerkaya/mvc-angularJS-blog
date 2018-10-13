@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using RepositoryBL;
 using BlogDAL;
 using RepositoryBL.Interfaces;
+using System.Web.Security;
 
 namespace OzerBlog.Controllers
 {
@@ -42,6 +43,7 @@ namespace OzerBlog.Controllers
                 {
                     Session["Username"] = model.username;
                     Session["Login"] = "True";
+                    FormsAuthentication.SetAuthCookie(model.username, true);
                     return RedirectToAction("AdminMenu", "Admin");
                 }
                 else
@@ -56,11 +58,14 @@ namespace OzerBlog.Controllers
 
         public ActionResult LogOut()
         {
+            FormsAuthentication.SignOut();
+            Session.Abandon();
             Session["Login"] = "False";
             return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult AdminMenu()
         {
             using (UnitOfWork work = new UnitOfWork())
@@ -70,6 +75,7 @@ namespace OzerBlog.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult AdminMenu(ThemeOptions options)
         {
             using (UnitOfWork work = new UnitOfWork())
@@ -92,17 +98,20 @@ namespace OzerBlog.Controllers
 
         }
 
+        [Authorize]
         public ActionResult Users()
         {
             return View();
         }
 
+        [Authorize]
         public ActionResult Pages()
         {
             return View();
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult Posts()
         {
             return View();
@@ -110,12 +119,14 @@ namespace OzerBlog.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult Logs()
         {
             return View();
 
         }
 
+        [Authorize]
         public ActionResult PostsGet()
         {
             using (UnitOfWork work = new UnitOfWork())
@@ -141,6 +152,7 @@ namespace OzerBlog.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult PostsEdit(int id)
         {
             using (UnitOfWork work = new UnitOfWork())
@@ -165,6 +177,7 @@ namespace OzerBlog.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult PostDelete(int id)
         {
             using (UnitOfWork work = new UnitOfWork())
@@ -175,6 +188,7 @@ namespace OzerBlog.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult SaveEditPost(int ID, string Content, string Title, string Labels, string labelsText)
         {
             using (UnitOfWork work = new UnitOfWork())
@@ -230,6 +244,7 @@ namespace OzerBlog.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult UsersGet()
         {
             using (UnitOfWork work = new UnitOfWork())
@@ -238,6 +253,7 @@ namespace OzerBlog.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult UsersEdit(int id)
         {
             using (UnitOfWork work = new UnitOfWork())
@@ -246,6 +262,7 @@ namespace OzerBlog.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult UserDelete(int id)
         {
             using (UnitOfWork work = new UnitOfWork())
@@ -256,6 +273,7 @@ namespace OzerBlog.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult SaveEditUser(int ID, string Username, string Password)
         {
             using (UnitOfWork work = new UnitOfWork())
@@ -281,6 +299,7 @@ namespace OzerBlog.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult AddNewLabel(string label)
         {
             using (UnitOfWork work = new UnitOfWork())
@@ -302,6 +321,7 @@ namespace OzerBlog.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult SaveEditSocialNetwork(int platformID, string platform, string adress, string image, bool active)
         {
             using (UnitOfWork work = new UnitOfWork())
@@ -330,6 +350,7 @@ namespace OzerBlog.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult SocialNetworkGet()
         {
             using (UnitOfWork work = new UnitOfWork())
@@ -338,6 +359,7 @@ namespace OzerBlog.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult LogsGet()
         {
             using (UnitOfWork work = new UnitOfWork())
@@ -359,6 +381,7 @@ namespace OzerBlog.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult SocialNetworkDelete(int id)
         {
             using (UnitOfWork work = new UnitOfWork())
@@ -369,6 +392,7 @@ namespace OzerBlog.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult SocialNetworkEdit(int id)
         {
             using (UnitOfWork work = new UnitOfWork())
@@ -377,6 +401,7 @@ namespace OzerBlog.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult SocialNetwork()
         {
             return View();
