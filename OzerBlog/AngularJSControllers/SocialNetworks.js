@@ -30,7 +30,7 @@ myApp.controller("SocialNetworksController", function ($scope, $http) {
 
 
     $scope.editSocialNetwork = function (ID) {
-        $http.post("/Admin/SocialNetworkEdit/" + ID).then(function (result) {
+        $http.post("/Admin/SocialNetworkEdit/?id=" + ID).then(function (result) {
             $scope.platformID = result.data.ID;
             $scope.platform = result.data.Platform;
             $scope.adress = result.data.Address;

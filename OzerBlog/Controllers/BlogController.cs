@@ -7,12 +7,13 @@ using System.Web.Mvc;
 using BlogDAL;
 using RepositoryBL;
 using RepositoryBL.Interfaces;
+using static OzerBlog.Helpers.HtmlGelpers;
 
 namespace OzerBlog.Controllers
 {
     public class BlogController : Controller
     {
-        // GET: Blog
+        [Compress]
         [HttpGet]
 
         public ActionResult Index(string title = "0")
@@ -53,6 +54,7 @@ namespace OzerBlog.Controllers
                 {
                     string itemText = GeneratePostFontText(item.content);
                     item.PageViewCount = work.ViewLogsRepository.countByWhere(ok => ok.Title == item.title);
+                    item.CommentCount = work.CommentRepository.countByWhere(ok => ok.Post_ID == item.ID);
                     item.content = itemText;
                     postList.Add(item);
                 }
@@ -61,12 +63,14 @@ namespace OzerBlog.Controllers
             }
         }
 
+        [Compress]
         [HttpPost]
         public ActionResult Index(Posts model)
         {
             return View();
         }
 
+        [Compress]
         [OzerBlog.Interceptors.Logging.CustomLogger]
         public ActionResult SinglePost(string title = "")
         {

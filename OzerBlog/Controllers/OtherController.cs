@@ -45,7 +45,7 @@ namespace OzerBlog.Controllers
                     }
                 }
 
-                int yari = i / 2;
+                int yari = array.Count() / 2;
 
                 var result = idList.GroupBy(oz => new { oz.ID }).Select(oz => new { ID = oz.FirstOrDefault().ID, Count = oz.Sum(b => b.Count) }).ToList();
 
@@ -66,8 +66,16 @@ namespace OzerBlog.Controllers
                     }
                 }
 
+                List<otherTransfer> resultList = new List<otherTransfer>();
+                foreach (var item in list)
+                {
+                    if (resultList.Count(ok => ok.Site == item.Site) == 0)
+                    {
+                        resultList.Add(item);
+                    }
+                }
 
-                return Json(list.OrderByDescending(ok => ok.Count).Skip(0).Take(3).OrderBy(ok => ok.Fiyat).ToList(), JsonRequestBehavior.AllowGet);
+                return Json(resultList.OrderByDescending(ok => ok.Count).Skip(0).Take(3).OrderBy(ok => ok.Fiyat).ToList(), JsonRequestBehavior.AllowGet);
             }
         }
     }

@@ -6,17 +6,20 @@ using System.Web;
 using System.Web.Mvc;
 using OzerBlog.Models;
 using RepositoryBL.Interfaces;
+using static OzerBlog.Helpers.HtmlGelpers;
 
 namespace OzerBlog.Controllers
 {
     public class HomeController : Controller
     {
         // GET: Home
+        [Compress]
         public ActionResult Index()
         {
             return View();
         }
 
+       
         public ActionResult _RightMenu()
         {
             using (UnitOfWork work = new UnitOfWork())

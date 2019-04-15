@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using RepositoryBL.Interfaces;
+using static OzerBlog.Helpers.HtmlGelpers;
 
 namespace OzerBlog.Controllers
 {
@@ -14,6 +15,7 @@ namespace OzerBlog.Controllers
     {
         SimpleRepo<Posts> repo = new SimpleRepo<BlogDAL.DAL.Posts>(new DBContext());
         // GET: SinglePost
+        [Compress]
         public ActionResult Index()
         {
             return View();
@@ -42,6 +44,7 @@ namespace OzerBlog.Controllers
 
         }
 
+     
         public ActionResult listComment(int id)
         {
             using (UnitOfWork work = new UnitOfWork())

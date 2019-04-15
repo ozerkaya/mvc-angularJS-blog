@@ -21,5 +21,8 @@ namespace BlogDAL.DAL
 
         [NotMapped]
         public int PageViewCount { get; set; }
+        [NotMapped]
+        public int CommentCount { get; set; }
+
     }
 }

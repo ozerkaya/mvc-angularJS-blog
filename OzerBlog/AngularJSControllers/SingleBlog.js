@@ -3,7 +3,7 @@ myApp.controller("SingleBlogController", function ($scope, $http) {
 
     $scope.loadComments = function (id) {
 
-        $http.get("/SinglePost/listComment/" + id).then(function (result) {
+        $http.get("/SinglePost/listComment/?id=" + id).then(function (result) {
             $scope.commentList = result.data;
         });
     };

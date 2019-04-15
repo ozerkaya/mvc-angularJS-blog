@@ -671,6 +671,7 @@
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\clean-blog.css" />
     <Content Include="Content\css\clean-blog.min.css" />
+    <Content Include="Content\css\core.css" />
     <Content Include="Content\css\Extra.css" />
     <Content Include="Content\css\sweetalert.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />

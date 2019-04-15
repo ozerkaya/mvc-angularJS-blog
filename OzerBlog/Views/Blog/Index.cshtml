@@ -11,34 +11,38 @@
 
     @foreach (var item in Model)
     {
-        <table>
-            <tr>
-                <td>
-                    <h2> @Html.ActionLink(item.title, "SinglePost", "Blog", new { title = item.title.Replace(" ", "-") }, null)</h2>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>
-                        @Html.Raw(item.content)
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label class="label-warning" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px">@item.date.ToString("dd.MM.yyyy")</label>
+        <div class="card-box" style="margin-top:15px;">
+            <table>
+                <tr>
+                    <td>
+                        <h2> @Html.ActionLink(item.title, "SinglePost", "Blog", new { title = item.title.Replace(" ", "-") }, null)</h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>
+                            @Html.Raw(item.content)
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="label-warning" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px;color:white;">@item.date.ToString("dd.MM.yyyy")</label>
 
-                    @foreach (var label in item.Label)
-                    {
+                        @foreach (var label in item.Label)
+                        {
 
-                        <label class="label-info" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px">@label.Label</label>
+                            <label class="label-info" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px;color:white;">@label.Label</label>
 
-                    }
-                    <label class="label-success" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px">Görüntülenme:@item.PageViewCount</label>
-                </td>
-            </tr>
+                        }
+                        <label class="label-success" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px;color:white;">Görüntülenme:@item.PageViewCount</label>
+                        <label class="label-success" style="font-size:15px;border-radius:3px;padding-left:5px;padding-right:5px;color:white;">Yorum:@item.CommentCount</label>
+                    </td>
+                </tr>
 
-        </table>
+            </table>
+        </div>
+        
 
     }
 </body>
