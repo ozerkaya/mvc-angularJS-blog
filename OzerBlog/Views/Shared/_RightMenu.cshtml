@@ -1,74 +1,46 @@
 ﻿@model List<OzerBlog.Models.Menu>
 @using OzerBlog.Extensions
 <h2>Kategoriler</h2>
-<table>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td width="10%">
-                <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
-            </td>
-            <td width="90%">
-                @*@Html.ActionLink(item.title, "../Blog/Index/", new { labelId = item.link })*@
-                @Html.ActionLink(item.title, "Index", "Blog", new { title = item.link.Replace(" ","-") }, null)
-            </td>
-        </tr>
-    }
-    <tr>
-        <td width="10%">
-            <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
-        </td>
-        <td width="90%">
-            @*<a href="/Blog/Index/@item.link">@item.title</a>*@
-            @Html.ActionLink("Tüm Kategoriler", "Index", "Blog", new { title = "0" }, null)
-        </td>
-    </tr>
-</table>
+
+@foreach (var item in Model)
+{
+    <div>
+        <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
+        @Html.ActionLink(item.title, "Index", "Blog", new { title = item.link.Replace(" ", "-") }, null)
+    </div>
+
+}
+<div>
+    <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
+    @Html.ActionLink("Tüm Kategoriler", "Index", "Blog", new { title = "0" }, null)
+</div>
+
+
 
 <h2>Sayfalar</h2>
-<table>
-    <tr>
-        <td width="10%">
-            <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
-        </td>
-        <td width="90%">
-            @Html.ActionLink("Blog", "Index", "Blog", null, null)
-        </td>
-    </tr>
 
-    <tr>
-        <td width="10%">
-            <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
-        </td>
-        <td width="90%">
-            @Html.ActionLink("Hakkımda", "Index", "About", null, null)
-        </td>
-    </tr>
+<div>
+    <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
+    @Html.ActionLink("Blog", "Index", "Blog", null, null)
+</div>
 
-    <tr>
-        <td width="10%">
-            <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
-        </td>
-        <td width="90%">
-            @Html.ActionLink("Projeler", "Index", "Project", null, null)
-        </td>
-    </tr>
+<div>
+    <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
+    @Html.ActionLink("Hakkımda", "Index", "About", null, null)
+</div>
 
-    <tr>
-        <td width="10%">
-            <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
-        </td>
-        <td width="90%">
-            @Html.ActionLink("Sosyal Ağ", "Index", "SocialNetwork", null, null)
-        </td>
-    </tr>
+<div>
+    <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
+    @Html.ActionLink("Projeler", "Index", "Project", null, null)
+</div>
 
-    <tr>
-        <td width="10%">
-            <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
-        </td>
-        <td width="90%">
-            @Html.ActionLink("Admin", "Index", "Admin", null, null)
-        </td>
-    </tr>
-</table>
+<div>
+    <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
+    @Html.ActionLink("Sosyal Ağ", "Index", "SocialNetwork", null, null)
+</div>
+
+<div>
+    <img src="~/Content/img/Folder-Classic-Yellow-icon.png" />
+    @Html.ActionLink("Admin", "Index", "Admin", null, null)
+</div>
+

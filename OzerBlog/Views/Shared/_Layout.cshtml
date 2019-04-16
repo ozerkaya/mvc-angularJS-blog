@@ -75,9 +75,9 @@
                     </li>
                     @if (Session["Login"] == "True")
                     {
-                        <li>
-                            @Html.ActionLink("LOGOUT", "LogOut", "Admin", null, null)
-                        </li>
+                    <li>
+                        @Html.ActionLink("LOGOUT", "LogOut", "Admin", null, null)
+                    </li>
                     }
                 </ul>
             </div>
@@ -101,7 +101,7 @@
     </header>
 
     <div class="col-md-9">
-            @RenderBody()
+        @RenderBody()
     </div>
 
     <div class="col-md-3">
