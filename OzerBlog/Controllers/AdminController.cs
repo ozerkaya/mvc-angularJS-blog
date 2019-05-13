@@ -199,8 +199,8 @@ namespace OzerBlog.Controllers
                 {
                     Posts post = new Posts
                     {
-                        content = Content,
-                        title = Title,
+                        content = KarakterDuzenle(Content),
+                        title = KarakterDuzenle(Title),
                         date = DateTime.Now
                     };
 
@@ -221,8 +221,8 @@ namespace OzerBlog.Controllers
                 else
                 {
                     Posts post = work.PostsRepository.findById(ID, "Label");
-                    post.content = Content;
-                    post.title = Title;
+                    post.content = KarakterDuzenle(Content);
+                    post.title = KarakterDuzenle(Title);
                     post.date = DateTime.Now;
                     work.LabelsRepository.removeRange(ok => ok.Post_ID == ID);
 
@@ -405,6 +405,30 @@ namespace OzerBlog.Controllers
         public ActionResult SocialNetwork()
         {
             return View();
+        }
+
+        public static string KarakterDuzenle(string metin)
+        {
+            string Duzenlenmis = metin;
+            Duzenlenmis = Duzenlenmis.Replace("&#304;", "I");
+            Duzenlenmis = Duzenlenmis.Replace("&#305;", "i");
+            Duzenlenmis = Duzenlenmis.Replace("&#214;", "Ö");
+            Duzenlenmis = Duzenlenmis.Replace("&#246;", "ö");
+            Duzenlenmis = Duzenlenmis.Replace("&Ouml;", "Ö");
+            Duzenlenmis = Duzenlenmis.Replace("&ouml;", "ö");
+            Duzenlenmis = Duzenlenmis.Replace("&#220;", "Ü");
+            Duzenlenmis = Duzenlenmis.Replace("&#252;", "ü");
+            Duzenlenmis = Duzenlenmis.Replace("&Uuml;", "Ü");
+            Duzenlenmis = Duzenlenmis.Replace("&uuml;", "ü");
+            Duzenlenmis = Duzenlenmis.Replace("&#199;", "Ç");
+            Duzenlenmis = Duzenlenmis.Replace("&#231;", "ç");
+            Duzenlenmis = Duzenlenmis.Replace("&Ccedil;", "Ç");
+            Duzenlenmis = Duzenlenmis.Replace("&ccedil;", "ç");
+            Duzenlenmis = Duzenlenmis.Replace("&#286;", "G");
+            Duzenlenmis = Duzenlenmis.Replace("&#287;", "g");
+            Duzenlenmis = Duzenlenmis.Replace("&#350;", "S");
+            Duzenlenmis = Duzenlenmis.Replace("&#351;", "s");
+            return Duzenlenmis;
         }
     }
 }

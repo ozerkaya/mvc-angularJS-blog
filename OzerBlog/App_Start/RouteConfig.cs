@@ -43,7 +43,7 @@ namespace OzerBlog
 
             private string Decrypt(string encryptedText)
             {
-                string key = "www.ozerkaya.info";
+                string key = "www.ozerkaya.com";
                 byte[] DecryptKey = { };
                 byte[] IV = { 55, 34, 87, 64, 87, 195, 54, 21 };
                 byte[] inputByte = new byte[encryptedText.Length];

@@ -115,7 +115,7 @@ namespace OzerBlog.Extensions
 
         private static string Encrypt(string plainText)
         {
-            string key = "www.ozerkaya.info";
+            string key = "www.ozerkaya.com";
             byte[] EncryptKey = { };
             byte[] IV = { 55, 34, 87, 64, 87, 195, 54, 21 };
             EncryptKey = System.Text.Encoding.UTF8.GetBytes(key.Substring(0, 8));
